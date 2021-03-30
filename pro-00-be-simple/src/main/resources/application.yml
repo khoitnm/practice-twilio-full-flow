@@ -5,7 +5,6 @@ server:
 twilio:
   # https://www.twilio.com/docs/conversations/create-tokens
   accountSid: ${TWILIO_ACCOUNT_SID}
-  authToken: ${TWILIO_AUTH_TOKEN}
   apiKey: ${TWILIO_API_KEY}
   apiSecret: ${TWILIO_API_SECRET}
   #To be able to support conversations across organizations, we only use one serviceSid for the whole application.
