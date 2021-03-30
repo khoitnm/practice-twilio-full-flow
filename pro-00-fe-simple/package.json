@@ -1,0 +1,59 @@
+{
+  "name": "pro-00-simple-client",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@material-ui/core": "^4.11.3",
+    "@testing-library/jest-dom": "^5.11.9",
+    "@testing-library/react": "^11.2.5",
+    "@testing-library/user-event": "^12.7.3",
+    "@twilio/conversations": "^1.1.0",
+    "@types/jest": "^26.0.20",
+    "@types/node": "^12.20.4",
+    "@types/react": "^17.0.2",
+    "@types/react-dom": "^17.0.1",
+    "axios": "^0.21.1",
+    "dotenv": "^8.2.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "4.0.3",
+    "twilio": "^3.58.0",
+    "typescript": "^4.2.2",
+    "web-vitals": "^1.1.0"
+  },
+  "devDependencies": {
+    "@twilio-labs/serverless-runtime-types": "^1.1.8",
+    "@types/react-router-dom": "^5.1.7",
+    "cross-env": "^7.0.3",
+    "env-cmd": "^10.1.0"
+  },
+  "scripts": {
+    "start": "env-cmd -f .env.development react-scripts start",
+    "build": "env-cmd -f .env.production react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "comment": {
+    "@twilio/conversations": "This is for Client App (ReactJS) which replace 'twilio-conversations'. https://www.npmjs.com/package/@twilio/conversations",
+    "twilio": "This is for back-end"
+  }
+}
