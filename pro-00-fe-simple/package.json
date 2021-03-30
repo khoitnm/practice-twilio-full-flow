@@ -14,6 +14,7 @@
     "@types/react-dom": "^17.0.1",
     "axios": "^0.21.1",
     "dotenv": "^8.2.0",
+    "http-proxy-middleware": "^1.1.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
@@ -55,5 +56,6 @@
   "comment": {
     "@twilio/conversations": "This is for Client App (ReactJS) which replace 'twilio-conversations'. https://www.npmjs.com/package/@twilio/conversations",
     "twilio": "This is for back-end"
-  }
+  },
+  "proxy": "http://localhost:8082"
 }

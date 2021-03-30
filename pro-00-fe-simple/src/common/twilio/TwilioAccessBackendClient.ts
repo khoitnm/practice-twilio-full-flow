@@ -7,8 +7,9 @@ import beClient from "../be-client/beClient";
 const twilioAccessBackendClient = {
 
     createAccessToken: async (username: string): Promise<TwilioAccess> => {
-        beClient.post()
-        return await twilioAccessBackendService.createAccessToken(username);
+        const axiosResponse = await beClient.post(`/twilio/access-info/${username}`, {});
+        const twilioAccessInfo: TwilioAccess = axiosResponse.data;
+        return twilioAccessInfo;
     }
 }
 export default twilioAccessBackendClient;
