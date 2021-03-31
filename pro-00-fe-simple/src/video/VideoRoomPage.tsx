@@ -1,17 +1,14 @@
 import React, {MouseEvent, useEffect, useState} from "react";
 import {useHistory} from "react-router-dom";
 import {Button, Container, Grid, TextField} from "@material-ui/core";
-import authenticationService from "../login/AuthenticationService";
-import {Conversation} from "@twilio/conversations/lib/conversation";
 import VideoRoomBE from "../common/twilio/video/VideoRoomBE";
 import backendVideoClient from "../common/twilio/video/BackendVideoClient";
 import twilioVideoClient from "../common/twilio/video/TwilioVideoClient";
 import {Room} from "twilio-video";
 import VideoRoomState from "./VideoRoomState";
+import VideoRoomItem from "./VideoRoomItem";
 
 const VideoRoomPage = (): JSX.Element => {
-  const authenticatedUser: AuthenticatedUser = authenticationService.validateAuthenticated();
-
   const [videoRooms, setVideoRooms] = useState<Array<VideoRoomState>>([]);
   const [targetParticipantUsername, setTargetParticipantUsername] = useState<string>('user02');
   const history = useHistory(); //for navigation
@@ -34,9 +31,6 @@ const VideoRoomPage = (): JSX.Element => {
     const updatedVideoRooms: VideoRoomState[] = [...videoRooms, videoRoomState];
     setVideoRooms(updatedVideoRooms);
   }
-  const onJoinVideoRoom = async (event: MouseEvent<HTMLAnchorElement> | MouseEvent<HTMLButtonElement>) => {
-    // event.
-  }
 
   return (
     <Container>
@@ -56,18 +50,8 @@ const VideoRoomPage = (): JSX.Element => {
 
           {/*List of VideoRooms: Begin*/}
           <Grid container spacing={3}>
-            {videoRooms.map((videoRoom: VideoRoomBE) => (
-              <Grid key={videoRoom.roomSid} container spacing={3}>
-                <Grid item xs={6}>
-                  SID: {videoRoom.roomSid} <br/>
-                  Unique Name: {videoRoom.uniqueName} <br/>
-                </Grid>
-                <Grid item xs={6}>
-                  <Button key={`join` + videoRoom.roomSid} color="secondary" fullWidth type="submit" variant="contained" onClick={onJoinVideoRoom}>
-                    Join Room
-                  </Button>
-                </Grid>
-              </Grid>
+            {videoRooms.map((videoRoom) => (
+              <VideoRoomItem key={videoRoom.roomSid} videoRoom={videoRoom}></VideoRoomItem>
             ))}
           </Grid>
           {/*List of VideoRooms: End*/}
