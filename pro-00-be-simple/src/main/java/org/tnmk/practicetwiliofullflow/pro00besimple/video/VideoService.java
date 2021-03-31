@@ -1,6 +1,7 @@
 package org.tnmk.practicetwiliofullflow.pro00besimple.video;
 
 import com.twilio.Twilio;
+import com.twilio.base.Page;
 import com.twilio.base.ResourceSet;
 import com.twilio.rest.video.v1.Room;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,13 @@ public class VideoService {
     this.twilioProperties = twilioProperties;
   }
 
+  /**
+   * https://www.twilio.com/docs/video/api/rooms-resource
+   * Note: Rooms created via the REST API exist for five minutes to allow the first Participant to connect.
+   * If no Participants join within five minutes, the Room times out and a new Room must be created.
+   * @param roomUniqueName
+   * @return
+   */
   public VideoRoom createVideo(String roomUniqueName) {
     Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
     Room room = Room.creator()
@@ -30,8 +38,8 @@ public class VideoService {
 
   public List<VideoRoom> getAllVideoRooms() {
     Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
-    ResourceSet<Room> roomResourceSet = Room.reader().read();
-    List<VideoRoom> videoRooms = VideoRoomMapper.toVideoRooms(roomResourceSet);
+    Page<Room> roomResourceSet = Room.reader().firstPage();
+    List<VideoRoom> videoRooms = VideoRoomMapper.toVideoRooms(roomResourceSet.getRecords());
     return videoRooms;
   }
 }
