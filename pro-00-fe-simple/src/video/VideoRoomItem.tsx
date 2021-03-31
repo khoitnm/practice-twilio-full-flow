@@ -15,7 +15,7 @@ const VideoRoomItem = (props: VideoRoomItemProps): JSX.Element => {
     try {
       const room: Room = await twilioVideoClient.joinVideoRoom(videoRoom.uniqueName);
     } catch (error) {
-      console.error(error);
+      console.error(`Cannot join video room: ${videoRoom.uniqueName}. Error message: ${error.toString()}`, error);
     }
   }
 
