@@ -18,7 +18,7 @@ const VideoRoomPage = (): JSX.Element => {
   };
 
   const onCallVideo = async (event: MouseEvent<HTMLAnchorElement> | MouseEvent<HTMLButtonElement>) => {
-    authenticatedUser.twilioAccessToken;
+    // authenticatedUser.twilioAccessToken;
   }
 
   return (
