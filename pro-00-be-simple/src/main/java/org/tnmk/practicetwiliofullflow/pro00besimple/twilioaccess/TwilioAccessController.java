@@ -1,9 +1,7 @@
-package org.tnmk.practicetwiliofullflow.pro00besimple.twilioaccess.rest;
+package org.tnmk.practicetwiliofullflow.pro00besimple.twilioaccess;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.tnmk.practicetwiliofullflow.pro00besimple.twilioaccess.model.TwilioAccessInfo;
-import org.tnmk.practicetwiliofullflow.pro00besimple.twilioaccess.service.TwilioAccessService;
 
 @RestController
 public class TwilioAccessController {

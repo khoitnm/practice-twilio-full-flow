@@ -15,7 +15,8 @@ public class VideoServiceTest extends BaseIntegrationTest {
   @Test()
   public void whenCreateAVideo_returnAVideoResponse() {
     VideoRoom videoResponse = videoService.createVideo();
-    Assertions.assertNotNull(videoResponse.getRoom());
+    Assertions.assertNotNull(videoResponse.getRoomSid());
+    Assertions.assertNotNull(videoResponse.getUniqueName());
     //No exception
   }
 }

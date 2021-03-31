@@ -1,4 +1,4 @@
-package org.tnmk.practicetwiliofullflow.pro00besimple.twilioaccess.model;
+package org.tnmk.practicetwiliofullflow.pro00besimple.twilioaccess;
 
 public class TwilioAccessInfo {
   private String accessToken;

@@ -5,7 +5,7 @@ import com.twilio.rest.conversations.v1.service.Conversation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.tnmk.practicetwiliofullflow.pro00besimple.twilioaccess.config.TwilioProperties;
+import org.tnmk.practicetwiliofullflow.pro00besimple.twilioaccess.TwilioProperties;
 
 import java.lang.invoke.MethodHandles;
 

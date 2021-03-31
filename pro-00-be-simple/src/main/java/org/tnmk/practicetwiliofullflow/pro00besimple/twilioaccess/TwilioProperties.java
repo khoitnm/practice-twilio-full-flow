@@ -1,4 +1,4 @@
-package org.tnmk.practicetwiliofullflow.pro00besimple.twilioaccess.config;
+package org.tnmk.practicetwiliofullflow.pro00besimple.twilioaccess;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;

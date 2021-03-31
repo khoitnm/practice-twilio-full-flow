@@ -3,7 +3,7 @@ package org.tnmk.practicetwiliofullflow.pro00besimple.video;
 import com.twilio.Twilio;
 import com.twilio.rest.video.v1.Room;
 import org.springframework.stereotype.Service;
-import org.tnmk.practicetwiliofullflow.pro00besimple.twilioaccess.config.TwilioProperties;
+import org.tnmk.practicetwiliofullflow.pro00besimple.twilioaccess.TwilioProperties;
 
 import java.util.UUID;
 

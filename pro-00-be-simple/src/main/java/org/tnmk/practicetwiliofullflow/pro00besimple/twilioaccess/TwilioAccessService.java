@@ -1,4 +1,4 @@
-package org.tnmk.practicetwiliofullflow.pro00besimple.twilioaccess.service;
+package org.tnmk.practicetwiliofullflow.pro00besimple.twilioaccess;
 
 import com.twilio.jwt.accesstoken.AccessToken;
 import com.twilio.jwt.accesstoken.ChatGrant;
@@ -6,8 +6,6 @@ import com.twilio.jwt.accesstoken.Grant;
 import com.twilio.jwt.accesstoken.VideoGrant;
 import com.twilio.jwt.accesstoken.VoiceGrant;
 import org.springframework.stereotype.Service;
-import org.tnmk.practicetwiliofullflow.pro00besimple.twilioaccess.config.TwilioProperties;
-import org.tnmk.practicetwiliofullflow.pro00besimple.twilioaccess.model.TwilioAccessInfo;
 
 import java.util.Arrays;
 import java.util.List;
