@@ -1,40 +1,40 @@
-import Client from "@twilio/conversations";
+import ConversationSdkClient from "@twilio/conversations";
 import authenticationService from "../../login/AuthenticationService";
-import twilioAccessBackendClient from "./accesstoken/TwilioAccessBackendClient";
+import backendTwilioAccessClient from "./accesstoken/BackendTwilioAccessClient";
 
-let twilioClient: Client;
+let twilioConversationSdkClient: ConversationSdkClient;
 
-const createClient = async (accessToken: string): Promise<Client> => {
-    return await Client.create(accessToken);
+const createConversationSdkClient = async (accessToken: string): Promise<ConversationSdkClient> => {
+    return await ConversationSdkClient.create(accessToken);
 };
 /**
  * @return refreshed client
  * @param userIdentifier
  */
-const refreshNewClient = async (userIdentifier: string): Promise<Client> => {
-    const newTwilioAccess = await twilioAccessBackendClient.createAccessToken(userIdentifier);
-    return await twilioClient.updateToken(newTwilioAccess.accessToken);
+const refreshNewConversationSdkClient = async (userIdentifier: string): Promise<ConversationSdkClient> => {
+    const newTwilioAccess = await backendTwilioAccessClient.createAccessToken(userIdentifier);
+    return await twilioConversationSdkClient.updateToken(newTwilioAccess.accessToken);
 };
 
 const twilioClientFactory = {
     /**
      * This method should be called only after the user is logged in.
      */
-    getClient: async (): Promise<Client> => {
-        if (!twilioClient) {
+    getConversationClient: async (): Promise<ConversationSdkClient> => {
+        if (!twilioConversationSdkClient) {
             // The authenticatedUser should be initiated from LoginPage
             const authenticatedUser = authenticationService.validateAuthenticated();
             // TODO redirect to login page if there's no authenticatedUser
 
-            twilioClient = await createClient(authenticatedUser.twilioAccessToken);
-            twilioClient.on('tokenAboutToExpire', async () => {
-                twilioClient = await refreshNewClient(authenticatedUser.username);
+            twilioConversationSdkClient = await createConversationSdkClient(authenticatedUser.twilioAccessToken);
+            twilioConversationSdkClient.on('tokenAboutToExpire', async () => {
+                twilioConversationSdkClient = await refreshNewConversationSdkClient(authenticatedUser.username);
             });
-            twilioClient.on('tokenExpired', async () => {
-                twilioClient = await refreshNewClient(authenticatedUser.username);
+            twilioConversationSdkClient.on('tokenExpired', async () => {
+                twilioConversationSdkClient = await refreshNewConversationSdkClient(authenticatedUser.username);
             });
         }
-        return twilioClient;
+        return twilioConversationSdkClient;
     }
 }
 export default twilioClientFactory;

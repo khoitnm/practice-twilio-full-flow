@@ -16,14 +16,15 @@ public class VideoService {
     this.twilioProperties = twilioProperties;
   }
 
-  public VideoResponse createVideo(){
+  public VideoRoom createVideo() {
     Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
     Room room = Room.creator()
         .setType(Room.RoomType.GO)
-        .setUniqueName("Room_"+ UUID.randomUUID().toString())
+        .setUniqueName("Room_" + UUID.randomUUID().toString())
         .create();
-    VideoResponse videoResponse = new VideoResponse();
-    videoResponse.setRoom(room);
+    VideoRoom videoResponse = new VideoRoom();
+    videoResponse.setRoomSid(room.getSid());
+    videoResponse.setUniqueName(room.getUniqueName());
     return videoResponse;
   }
 }

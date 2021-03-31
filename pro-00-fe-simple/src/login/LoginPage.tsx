@@ -2,7 +2,7 @@ import React, {FormEvent, useState} from 'react';
 import {Button, Container, Grid, TextField} from '@material-ui/core';
 import routingPath from "../common/pagerouting/RoutingPath";
 import TwilioAccess from "../common/twilio/accesstoken/TwilioAccess";
-import twilioAccessBackendClient from "../common/twilio/accesstoken/TwilioAccessBackendClient";
+import backendTwilioAccessClient from "../common/twilio/accesstoken/BackendTwilioAccessClient";
 import twilioAccessRepository from "../common/twilio/accesstoken/TwilioAccessRepository";
 import {useHistory} from 'react-router-dom';
 import userRepository from "./UserRepository";
@@ -14,7 +14,7 @@ const LoginPage = (): JSX.Element => {
   const submitLogin = async (event: FormEvent) => {
     event.preventDefault();
 
-    const twilioAccess: TwilioAccess = await twilioAccessBackendClient.createAccessToken(username);
+    const twilioAccess: TwilioAccess = await backendTwilioAccessClient.createAccessToken(username);
     twilioAccessRepository.setTwilioAccessToken(twilioAccess.accessToken);
     userRepository.setUsername(username);
     history.push(routingPath.conversationsList);

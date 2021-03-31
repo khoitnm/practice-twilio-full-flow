@@ -11,7 +11,7 @@ import {User} from "@twilio/conversations";
  */
 const twilioConversationClient = {
     getSubscribedUsers: async (): Promise<Array<User>> => {
-        const client = await twilioClientFactory.getClient();
+        const client = await twilioClientFactory.getConversationClient();
         return await client.getSubscribedUsers();
     },
     /**
@@ -21,7 +21,7 @@ const twilioConversationClient = {
      * @param targetParticipantIdentifier
      */
     createConversation: async (targetParticipantIdentifier: string): Promise<Conversation> => {
-        const client = await twilioClientFactory.getClient();
+        const client = await twilioClientFactory.getConversationClient();
         const conversation: Conversation = await client.createConversation();
 
         //We should not use conversation.add(mainUserIdentifier) because adding to a conversation alone is not enough. It won't be able to see messages in a conversation?
@@ -33,12 +33,12 @@ const twilioConversationClient = {
     },
 
     loadConversationsList: async (): Promise<Paginator<Conversation>> => {
-        const client = await twilioClientFactory.getClient();
+        const client = await twilioClientFactory.getConversationClient();
         const paginator = await client.getSubscribedConversations()
         return paginator;
     },
     getConversation: async (conversationSid: string): Promise<Conversation> => {
-        const client = await twilioClientFactory.getClient();
+        const client = await twilioClientFactory.getConversationClient();
         const conversation = client.getConversationBySid(conversationSid);
         return conversation;
     },

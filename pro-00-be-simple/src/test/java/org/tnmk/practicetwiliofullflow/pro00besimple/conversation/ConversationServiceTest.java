@@ -6,10 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import org.tnmk.practicetwiliofullflow.pro00besimple.common.test.BaseIntegrationTest;
-import org.tnmk.practicetwiliofullflow.pro00besimple.video.VideoResponse;
-import org.tnmk.practicetwiliofullflow.pro00besimple.video.VideoService;
-
-import java.util.UUID;
 
 @ActiveProfiles("test")
 public class ConversationServiceTest extends BaseIntegrationTest {
