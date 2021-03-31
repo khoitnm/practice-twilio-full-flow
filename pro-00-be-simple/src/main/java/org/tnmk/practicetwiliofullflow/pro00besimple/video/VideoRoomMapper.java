@@ -10,6 +10,8 @@ public class VideoRoomMapper {
     VideoRoom videoResponse = new VideoRoom();
     videoResponse.setRoomSid(room.getSid());
     videoResponse.setUniqueName(room.getUniqueName());
+    videoResponse.setRoomType(room.getType().toString());
+    videoResponse.setStatus(room.getStatus().toString());
     return videoResponse;
   }
 

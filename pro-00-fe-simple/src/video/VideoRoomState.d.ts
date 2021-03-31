@@ -4,4 +4,5 @@
 export default interface VideoRoomState {
   roomSid: string;
   uniqueName: string;
+  state: string;
 }

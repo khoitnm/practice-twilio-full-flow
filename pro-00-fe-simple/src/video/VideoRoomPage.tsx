@@ -30,7 +30,11 @@ const VideoRoomPage = (): JSX.Element => {
 
   const onStartNewVideoRoom = async (event: MouseEvent<HTMLAnchorElement> | MouseEvent<HTMLButtonElement>) => {
     const room: Room = await twilioVideoClient.startNewVideoRoomOneOnOne(targetParticipantUsername);
-    const videoRoomState: VideoRoomState = {roomSid: room.sid, uniqueName: room.name};
+    const videoRoomState: VideoRoomState = {
+      roomSid: room.sid,
+      uniqueName: room.name,
+      state: room.state
+    };
     const updatedVideoRooms: VideoRoomState[] = [...videoRooms, videoRoomState];
     setVideoRooms(updatedVideoRooms);
   }

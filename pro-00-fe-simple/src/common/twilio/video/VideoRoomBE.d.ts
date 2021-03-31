@@ -4,4 +4,5 @@
 export default interface VideoRoomBE {
   roomSid: string;
   uniqueName: string;
+  state: string;
 }

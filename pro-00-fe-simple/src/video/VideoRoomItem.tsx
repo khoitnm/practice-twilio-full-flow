@@ -24,6 +24,7 @@ const VideoRoomItem = (props: VideoRoomItemProps): JSX.Element => {
       <Grid item xs={6}>
         SID: {videoRoom.roomSid} <br/>
         Unique Name: {videoRoom.uniqueName} <br/>
+        State: {videoRoom.state} <br/>
       </Grid>
       <Grid item xs={6}>
         <Button key={`join` + videoRoom.roomSid} color="secondary" fullWidth type="submit" variant="contained" onClick={onJoinVideoRoom}>

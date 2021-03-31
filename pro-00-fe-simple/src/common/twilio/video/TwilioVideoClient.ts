@@ -26,6 +26,5 @@ const twilioVideoClient = {
     const room: Room[] = [];
     return room;
   },
-
 }
 export default twilioVideoClient;
