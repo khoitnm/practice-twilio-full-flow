@@ -18,8 +18,8 @@ public class ConversationServiceTest extends BaseIntegrationTest {
   private ConversationService conversationService;
 
   @Test()
-  public void test() {
-    Conversation conversation = conversationService.createConversation("TestConversation_"+ System.nanoTime());
+  public void whenCreateAConversation_returnAConversationResult() {
+    Conversation conversation = conversationService.createConversation("TestConversation");
     Assertions.assertNotNull(conversation.getSid());
     //No exception
   }
