@@ -1,4 +1,4 @@
-package org.tnmk.practicetwiliofullflow.pro00besimple.common.test;
+package org.tnmk.practicetwiliofullflow.pro00besimple.testinfra;
 
 public class TestType {
   public static final String UNIT_TEST = "UnitTest";

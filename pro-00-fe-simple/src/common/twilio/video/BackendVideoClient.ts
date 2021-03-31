@@ -6,8 +6,8 @@ import VideoRoom from "./VideoRoom";
  */
 const backendVideoClient = {
 
-  createRoom: async (): Promise<VideoRoom> => {
-    const axiosResponse = await beClient.post(`/video/room`, {});
+  createRoom: async (videoRoomUniqueName: string): Promise<VideoRoom> => {
+    const axiosResponse = await beClient.post(`/video/room/${videoRoomUniqueName}`, {});
     const videoRoom: VideoRoom = axiosResponse.data;
     return videoRoom;
   }

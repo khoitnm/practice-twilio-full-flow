@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
-import org.tnmk.practicetwiliofullflow.pro00besimple.common.test.BaseIntegrationTest;
+import org.tnmk.practicetwiliofullflow.pro00besimple.testinfra.BaseIntegrationTest;
 
 @ActiveProfiles("test")
 public class VideoServiceTest extends BaseIntegrationTest {
@@ -14,7 +14,7 @@ public class VideoServiceTest extends BaseIntegrationTest {
 
   @Test()
   public void whenCreateAVideo_returnAVideoResponse() {
-    VideoRoom videoResponse = videoService.createVideo();
+    VideoRoom videoResponse = videoService.createVideo("IntegrationTest_createVideo_service");
     Assertions.assertNotNull(videoResponse.getRoomSid());
     Assertions.assertNotNull(videoResponse.getUniqueName());
     //No exception

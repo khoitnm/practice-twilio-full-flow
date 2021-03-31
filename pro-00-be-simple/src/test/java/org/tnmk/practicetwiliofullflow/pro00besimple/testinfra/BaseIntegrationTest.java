@@ -1,4 +1,4 @@
-package org.tnmk.practicetwiliofullflow.pro00besimple.common.test;
+package org.tnmk.practicetwiliofullflow.pro00besimple.testinfra;
 
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
