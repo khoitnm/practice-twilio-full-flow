@@ -10,7 +10,8 @@
 - API doc for JavaScript client app:
   - Overview: https://www.twilio.com/docs/video/javascript
   - Detail: https://media.twiliocdn.com/sdk/js/video/latest/docs/
-
+- API Doc is very limited. A better way is looking at the example code in this project which is mentioned by Twilio:
+  https://github.com/twilio/twilio-video-app-react
 ### Some other important information we need to understand:
 __Room time out__ <br/>
 https://www.twilio.com/docs/video/api/rooms-resource

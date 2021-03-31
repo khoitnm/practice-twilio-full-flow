@@ -6,6 +6,7 @@ import VideoRoomState from "./VideoRoomState";
 
 export interface VideoRoomItemProps {
   videoRoom: VideoRoomState;
+  fnJoinRoomCallback: (room: Room) => unknown;
 }
 
 const VideoRoomItem = (props: VideoRoomItemProps): JSX.Element => {
@@ -14,6 +15,7 @@ const VideoRoomItem = (props: VideoRoomItemProps): JSX.Element => {
   const onJoinVideoRoom = async (event: MouseEvent<HTMLAnchorElement> | MouseEvent<HTMLButtonElement>) => {
     try {
       const room: Room = await twilioVideoClient.joinVideoRoom(videoRoom.uniqueName);
+      props.fnJoinRoomCallback(room);
     } catch (error) {
       console.error(`Cannot join video room: ${videoRoom.uniqueName}. Error message: ${error.toString()}`, error);
     }
@@ -27,7 +29,7 @@ const VideoRoomItem = (props: VideoRoomItemProps): JSX.Element => {
         State: {videoRoom.state} <br/>
       </Grid>
       <Grid item xs={6}>
-        <Button key={`join` + videoRoom.roomSid} color="secondary" fullWidth type="submit" variant="contained" onClick={onJoinVideoRoom}>
+        <Button color="secondary" fullWidth type="submit" variant="contained" onClick={onJoinVideoRoom}>
           Join Room
         </Button>
       </Grid>
