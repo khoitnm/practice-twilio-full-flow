@@ -7,8 +7,11 @@ import twilioVideoClient from "../common/twilio/video/TwilioVideoClient";
 import {Room} from "twilio-video";
 import VideoRoomState from "./VideoRoomState";
 import VideoRoomItem from "./VideoRoomItem";
+import authenticationService from "../login/AuthenticationService";
 
 const VideoRoomPage = (): JSX.Element => {
+  const authenticatedUser: AuthenticatedUser = authenticationService.validateAuthenticated();
+
   const [videoRooms, setVideoRooms] = useState<Array<VideoRoomState>>([]);
   const [targetParticipantUsername, setTargetParticipantUsername] = useState<string>('user02');
   const history = useHistory(); //for navigation
@@ -35,6 +38,10 @@ const VideoRoomPage = (): JSX.Element => {
   return (
     <Container>
       <Grid container spacing={3}>
+        <Grid item xs={12}>
+          Username: {authenticatedUser.username}
+        </Grid>
+
         <Grid item xs={6}>
           <TextField value={targetParticipantUsername}
                      onChange={(e) => setTargetParticipantUsername(e.target.value)}

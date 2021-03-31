@@ -37,7 +37,7 @@ const ConversationsListPage = (): JSX.Element => {
             <Container>
                 <Grid container spacing={5} direction={'row'}>
                     <Grid item xs={4}>
-                        {authenticatedUser.username}
+                        Username: {authenticatedUser.username}
                     </Grid>
                     <Grid item xs={4}>
                         <Grid container spacing={1} direction={'column'}>
