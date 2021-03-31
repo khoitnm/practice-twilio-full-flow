@@ -1,6 +1,6 @@
 import Client from "@twilio/conversations";
 import authenticationService from "../../login/AuthenticationService";
-import twilioAccessBackendClient from "./TwilioAccessBackendClient";
+import twilioAccessBackendClient from "./accesstoken/TwilioAccessBackendClient";
 
 let twilioClient: Client;
 
@@ -17,6 +17,9 @@ const refreshNewClient = async (userIdentifier: string): Promise<Client> => {
 };
 
 const twilioClientFactory = {
+    /**
+     * This method should be called only after the user is logged in.
+     */
     getClient: async (): Promise<Client> => {
         if (!twilioClient) {
             // The authenticatedUser should be initiated from LoginPage

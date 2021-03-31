@@ -2,7 +2,7 @@ import {Button, Grid, TextField} from '@material-ui/core';
 import React, {MouseEvent, useEffect, useState} from "react";
 import {useHistory} from 'react-router-dom';
 import routingPath from "../common/pagerouting/RoutingPath";
-import twilioConversationClient from "../common/twilio/TwilioConversationClient";
+import twilioConversationClient from "../common/twilio/conversation/TwilioConversationClient";
 import authenticationService from "../login/AuthenticationService";
 import {User} from "@twilio/conversations";
 

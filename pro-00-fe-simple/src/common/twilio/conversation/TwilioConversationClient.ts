@@ -1,7 +1,7 @@
 import {Conversation} from "@twilio/conversations/lib/conversation";
 import {Paginator} from "@twilio/conversations/lib/interfaces/paginator";
 import {Message} from "@twilio/conversations/lib/message";
-import twilioClientFactory from "./TwilioClientFactory";
+import twilioClientFactory from "../TwilioClientFactory";
 import {User} from "@twilio/conversations";
 
 /**

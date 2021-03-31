@@ -1,9 +1,9 @@
 import React, {FormEvent, useState} from 'react';
 import {Button, Container, Grid, TextField} from '@material-ui/core';
 import routingPath from "../common/pagerouting/RoutingPath";
-import TwilioAccess from "../common/twilio/model/TwilioAccess";
-import twilioAccessBackendClient from "../common/twilio/TwilioAccessBackendClient";
-import twilioAccessRepository from "../common/twilio/TwilioAccessRepository";
+import TwilioAccess from "../common/twilio/accesstoken/TwilioAccess";
+import twilioAccessBackendClient from "../common/twilio/accesstoken/TwilioAccessBackendClient";
+import twilioAccessRepository from "../common/twilio/accesstoken/TwilioAccessRepository";
 import {useHistory} from 'react-router-dom';
 import userRepository from "./UserRepository";
 

@@ -1,5 +1,5 @@
-import TwilioAccess from "./model/TwilioAccess";
-import beClient from "../be-client/beClient";
+import TwilioAccess from "./TwilioAccess";
+import beClient from "../../be-client/beClient";
 
 /**
  * This is the client class that helps us to communicate with Backend code. It doesn't communicate directly to Twilio SDK.

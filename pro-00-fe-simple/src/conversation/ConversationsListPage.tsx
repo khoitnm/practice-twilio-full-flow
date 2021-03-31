@@ -1,7 +1,7 @@
 import {AppBar, Container, Grid, Toolbar} from '@material-ui/core';
 import React, {useEffect, useState} from "react";
 import authenticationService from "../login/AuthenticationService";
-import twilioConversationClient from "../common/twilio/TwilioConversationClient";
+import twilioConversationClient from "../common/twilio/conversation/TwilioConversationClient";
 import {Conversation} from "@twilio/conversations/lib/conversation";
 import ConversationCreationComponent from "./ConversationCreationComponent";
 

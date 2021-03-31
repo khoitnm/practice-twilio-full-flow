@@ -1,6 +1,6 @@
 import {AppBar, Button, Container, Grid, TextField, Toolbar} from '@material-ui/core';
 import React, {MouseEvent, useEffect, useState} from "react";
-import twilioConversationClient from "../common/twilio/TwilioConversationClient";
+import twilioConversationClient from "../common/twilio/conversation/TwilioConversationClient";
 import {RouteComponentProps} from "react-router-dom";
 import authenticationService from "../login/AuthenticationService";
 import {Conversation} from "@twilio/conversations/lib/conversation";

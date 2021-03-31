@@ -1,5 +1,5 @@
 import userRepository from "./UserRepository";
-import twilioAccessRepository from "../common/twilio/TwilioAccessRepository";
+import twilioAccessRepository from "../common/twilio/accesstoken/TwilioAccessRepository";
 
 const authenticationService = {
     /**
