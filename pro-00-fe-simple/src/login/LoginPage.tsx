@@ -7,6 +7,8 @@ import twilioAccessRepository from "../common/twilio/accesstoken/TwilioAccessRep
 import {useHistory} from 'react-router-dom';
 import userRepository from "./UserRepository";
 
+const NEXT_PAGE_AFTER_LOGIN = routingPath.videoRoom;
+
 const LoginPage = (): JSX.Element => {
   const [username, setUsername] = useState('user01');
   const history = useHistory(); //for navigation
@@ -17,7 +19,7 @@ const LoginPage = (): JSX.Element => {
     const twilioAccess: TwilioAccess = await backendTwilioAccessClient.createAccessToken(username);
     twilioAccessRepository.setTwilioAccessToken(twilioAccess.accessToken);
     userRepository.setUsername(username);
-    history.push(routingPath.conversationsList);
+    history.push(NEXT_PAGE_AFTER_LOGIN);
   };
 
   return (

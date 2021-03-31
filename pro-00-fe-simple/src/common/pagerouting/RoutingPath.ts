@@ -5,5 +5,6 @@ const routingPath = {
 
     // The path variable name 'conversationSid' must be the same as {@link ConversationDetailPageProps.conversationSid}
     conversationDetail: `/conversation/:conversationSid`,
+    videoRoom: `/video/room`,
 };
 export default routingPath;

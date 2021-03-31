@@ -1,14 +1,9 @@
-import React, {FormEvent, MouseEvent, useEffect, useState} from "react";
+import React, {MouseEvent, useEffect, useState} from "react";
 import {useHistory} from "react-router-dom";
-import TwilioAccess from "../common/twilio/accesstoken/TwilioAccess";
-import backendTwilioAccessClient from "../common/twilio/accesstoken/BackendTwilioAccessClient";
-import twilioAccessRepository from "../common/twilio/accesstoken/TwilioAccessRepository";
-import userRepository from "../login/UserRepository";
-import routingPath from "../common/pagerouting/RoutingPath";
-import {Button, Container, Grid, TextField} from "@material-ui/core";
+import {Button, Container, Grid} from "@material-ui/core";
 import authenticationService from "../login/AuthenticationService";
 
-const VideoCommunicationPage = (): JSX.Element => {
+const VideoRoomPage = (): JSX.Element => {
   const authenticatedUser: AuthenticatedUser = authenticationService.validateAuthenticated();
 
   const [videoCalls, setVideoCalls] = useState<Array<any>>([]);
@@ -39,4 +34,4 @@ const VideoCommunicationPage = (): JSX.Element => {
   );
 };
 
-export default VideoCommunicationPage;
+export default VideoRoomPage;
