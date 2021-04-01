@@ -14,7 +14,7 @@ const VideoRoomPage = (): JSX.Element => {
 
   // Logic for VideoRoomStarter: Begin //////////////////////////////////////////////////////////////////
   const onStartVideoRoom = async () => {
-    let existToken = accessToken || await backendTwilioAccessClient.createAccessToken(inputUsername);
+    let existToken: string = accessToken || await backendTwilioAccessClient.createAccessToken(inputUsername);
     setAccessToken(existToken);
     const joinedRoom = await twilioVideoClient.joinOrStartRoom(existToken, inputRoomName);
     setRoom(joinedRoom);
@@ -57,7 +57,7 @@ const VideoRoomPage = (): JSX.Element => {
       <div className={'row gx-5 mt-2'}>
 
         <div className={'col-9'}>
-          <VideoRoomCall/>
+          { room && <VideoRoomCall room={room}/>}
         </div>
 
         <div className={'col-3'}>

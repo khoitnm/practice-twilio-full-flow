@@ -1,4 +1,4 @@
-## Testing many users connect to the same Video Room on local__ <br/>
+## Testing many users connect to the same Video Room on local machine <br/>
 __Problem:__ <br/>
 If we want to connect many participants to the same Video Room on the same local machine with different Browsers,
 those Browsers will try to use the same Camera device, and it will fail:

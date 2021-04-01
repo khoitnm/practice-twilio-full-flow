@@ -1,4 +1,6 @@
 import React from "react";
+import {Participant, Room} from "twilio-video";
+import LocalParticipantVideo from "./LocalParticipantVideo";
 
 const styleVideoCall = {
   border: "1px solid #BBB",
@@ -6,17 +8,20 @@ const styleVideoCall = {
   backgroundColor: "#DDD",
 };
 
-const VideoRoomCall = (): JSX.Element => {
+export interface VideoRoomCallProps {
+  room: Room
+}
+
+const VideoRoomCall = ({room}: VideoRoomCallProps): JSX.Element => {
 
   return (
     <div className={'rol'} style={styleVideoCall}>
       <div className={'col-6'}>
-        Main user
-        <video>
-
-        </video>
+        {/*<LocalParticipantVideo participant={room.localParticipant}/>*/}
       </div>
-      <div className={'col-6'}>Participant user</div>
+      <div className={'col-6'}>Participants user
+        {JSON.stringify(room.participants)}
+      </div>
     </div>
   );
 };
