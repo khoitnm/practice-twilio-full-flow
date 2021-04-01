@@ -2,12 +2,18 @@ import React from "react";
 import VideoRoomStarter from "./VideoRoomStarter";
 import VideoRoomsList from "./VideoRoomsList";
 import VideoRoomCall from "./VideoRoomCall";
+import {Room} from "twilio-video";
 
 const VideoRoomPage = (): JSX.Element => {
   let accessToken: string;
+  let username: string;
+  let room: Room;
 
-  const callbackStartVideoCall = async () => {
 
+  const callbackStartVideoCall = async (result: any) => {
+    username = result.username;
+    accessToken = result.accessToken;
+    room = result.room;
   }
 
   return (
