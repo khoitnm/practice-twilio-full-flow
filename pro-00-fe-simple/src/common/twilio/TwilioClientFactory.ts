@@ -13,7 +13,7 @@ const createConversationSdkClient = async (accessToken: string): Promise<Convers
  */
 const refreshNewConversationSdkClient = async (userIdentifier: string): Promise<ConversationSdkClient> => {
     const newTwilioAccess = await backendTwilioAccessClient.createAccessToken(userIdentifier);
-    return await twilioConversationSdkClient.updateToken(newTwilioAccess.accessToken);
+    return await twilioConversationSdkClient.updateToken(newTwilioAccess);
 };
 
 const twilioClientFactory = {
