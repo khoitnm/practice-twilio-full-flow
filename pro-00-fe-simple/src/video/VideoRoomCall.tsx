@@ -6,17 +6,19 @@ const styleVideoCall = {
   backgroundColor: "#DDD",
 };
 
-const VideoRoomPage = (): JSX.Element => {
+const VideoRoomCall = (): JSX.Element => {
 
   return (
-    <>
-      {/*Main Video Call: begin*/}
-      <div style={styleVideoCall}>
+    <div className={'rol'} style={styleVideoCall}>
+      <div className={'col-6'}>
+        Main user
+        <video>
 
+        </video>
       </div>
-      {/*Main Video Call: end*/}
-    </>
+      <div className={'col-6'}>Participant user</div>
+    </div>
   );
 };
 
-export default VideoRoomPage;
+export default VideoRoomCall;

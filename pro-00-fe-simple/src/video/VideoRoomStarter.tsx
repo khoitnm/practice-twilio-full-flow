@@ -13,7 +13,7 @@ const VideoRoomStarter = (props: VideoRoomStarterProps): JSX.Element => {
   const [room, setRoom] = useState<Room>();
   const [accessToken, setAccessToken] = useState<string>();
 
-  const isJoinedVideo = () => {
+  const isJoinedVideo = (): boolean => {
     const isJoined = room?.state === 'connected';
     return isJoined;
   }

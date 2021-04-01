@@ -17,8 +17,11 @@
 ### Some other important information we need to understand:
 __Basic Terminologies__
 - Media: a general term refers to either Video, or Audio, or Picture, etc. (in our case, we are focusing on Video and Audio only)
-- Video: just show animation images, it may or may not have sound data???
-- Track: It lets you specify timed text tracks (or time-based data) data which is usually used for subtitles, for example. The tracks are formatted in WebVTT format (.vtt files) — Web Video Text Tracks.
+- Video: just show graphic animation, it doesn't have any sound data. Hence, we'll need the Audio (sound) data, and then we can mute/unmute it.
+  The video and sound data is represented as Track, which will be mentioned in the next terminology.
+- Track: 
+  - General meaning in HTML: It lets you specify timed text tracks (or time-based data) data which is usually used for subtitles, for example. The tracks are formatted in WebVTT format (.vtt files) — Web Video Text Tracks.
+  - Specific meaning in Twilio: a track is a data stream. So a Video Track means a Video Data Stream.
 
 __Room time out__ <br/>
 https://www.twilio.com/docs/video/api/rooms-resource
