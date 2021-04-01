@@ -1,5 +1,5 @@
 import React, {ChangeEvent, useState} from "react";
-import VideoRoomStarter, {VideoRoomResult} from "./VideoRoomStarter";
+import VideoRoomStarter from "./VideoRoomStarter";
 import VideoRoomsList from "./VideoRoomsList";
 import VideoRoomCall from "./VideoRoomCall";
 import {Room} from "twilio-video";

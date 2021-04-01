@@ -1,14 +1,5 @@
-import React, {ChangeEvent, useState} from "react";
+import React, {ChangeEvent} from "react";
 import {Room} from "twilio-video";
-import backendTwilioAccessClient from "../common/twilio/accesstoken/BackendTwilioAccessClient";
-import twilioVideoClient from "../common/twilio/video/TwilioVideoClient";
-
-export interface VideoRoomResult {
-  inputUsername: string,
-  inputRoomName: string,
-  accessToken: string,
-  room?: Room,
-}
 
 export interface VideoRoomStarterProps {
   inputUsername: string,
