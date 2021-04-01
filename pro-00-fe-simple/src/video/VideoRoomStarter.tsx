@@ -1,62 +1,96 @@
 import React, {useState} from "react";
 import {Room} from "twilio-video";
+import backendTwilioAccessClient from "../common/twilio/accesstoken/BackendTwilioAccessClient";
+import twilioVideoClient from "../common/twilio/video/TwilioVideoClient";
+
+enum VideoStatus {
+  NONE, CONNECTED, DISCONNECTED
+}
 
 export interface VideoRoomStarterProps {
   callbackStartVideoCall: (result: any) => void;
 };
 
 const VideoRoomStarter = (props: VideoRoomStarterProps): JSX.Element => {
-  let accessToken: string;
-  let room: Room;
-
   const [inputUsername, setInputUsername] = useState<string>('user01');
   const [inputRoomName, setInputRoomName] = useState<string>('room01');//We use the name 'inputRoomName' to distinguish with room.name
-  const [joinStatus, setJoinStatus] = useState<boolean>(false);//whether joined Video Room or not.
+  const [room, setRoom] = useState<Room>();
+  const [accessToken, setAccessToken] = useState<string>();
+  const [joinStatus, setJoinStatus] = useState<VideoStatus>(VideoStatus.NONE);//whether joined Video Room or not.
 
-  const onStartVideoRoom = () => {
-    console.log(`${inputUsername} - ${inputRoomName}`);
-    setJoinStatus(true);
+  const isJoinedVideo = () => {
+    return joinStatus === VideoStatus.CONNECTED;
+  }
+
+  const onStartVideoRoom = async () => {
+    let existToken;
+
+    if (accessToken) {
+      existToken = accessToken;
+    } else {
+      const twilioAccess = await backendTwilioAccessClient.createAccessToken(inputUsername);
+      existToken = twilioAccess.accessToken;
+      setAccessToken(existToken);
+    }
+
+    //Start New or Join Existing Room
+    if (room) {
+      const joinedRoom = await twilioVideoClient.joinVideoRoom(existToken, inputRoomName);
+      setRoom(joinedRoom);
+    }else {
+      const joinedRoom = await twilioVideoClient.startNewVideoRoomOneOnOne(existToken, inputRoomName);
+      setRoom(joinedRoom);
+    }
+
+    setJoinStatus(VideoStatus.CONNECTED);
     props.callbackStartVideoCall({accessToken, username: inputUsername, room});
   }
+
   const onLeaveVideoCall = () => {
-    setJoinStatus(false);
+    const disconnectedRoom = room?.disconnect();
+    setRoom(disconnectedRoom);
+    setJoinStatus(VideoStatus.DISCONNECTED);
   }
 
   return (
     <div className={'row bg-light pt-2 pb-2 gx-5'}>
       <div className={'col-2'}>
         <input type={'input'} placeholder={'Username'} title={'username'} className={'form-control'}
-               disabled={joinStatus}
+               value={inputUsername}
+               disabled={isJoinedVideo()}
                onChange={(e) => setInputUsername(e.target.value)}/>
       </div>
       <div className={'col-2'}>
         <input type={'input'} placeholder={'Room unique name'} title={'Room Unique Name'} className={'form-control'}
-               disabled={joinStatus}
+               value={inputRoomName}
+               disabled={isJoinedVideo()}
                onChange={(e) => setInputRoomName(e.target.value)}/>
       </div>
       <div className={'col-3'}>
-        <select disabled={joinStatus} title={'Camera option'} defaultValue={'01'} className={'form-select'}>
+        <select disabled={isJoinedVideo()} title={'Camera option'} defaultValue={'01'} className={'form-select'}>
           <option value={'01'}>Cam 01</option>
           <option value={'02'}>Cam 02</option>
         </select>
       </div>
       <div className={'col-3'}>
-        <select disabled={joinStatus} title={'Audio option'} defaultValue={'01'} className={'form-select'}>
+        <select disabled={isJoinedVideo()} title={'Audio option'} defaultValue={'01'} className={'form-select'}>
           <option value={'01'}>Audio 01</option>
           <option value={'02'}>Audio 02</option>
         </select>
       </div>
       <div className={'col-2'}>
-        <button onClick={onStartVideoRoom} hidden={joinStatus} className={'btn btn-primary'}>
-          Start New Room
+        <button onClick={onStartVideoRoom} hidden={isJoinedVideo()} className={'btn btn-primary'}>
+          Join Room
         </button>
-        <button onClick={onLeaveVideoCall} hidden={!joinStatus} className={'btn btn-primary'}>
+        <button onClick={onLeaveVideoCall} hidden={joinStatus === VideoStatus.DISCONNECTED || joinStatus === VideoStatus.NONE} className={'btn btn-primary'}>
           Leave Room
         </button>
 
       </div>
+      <div className={'col-12'}>
+        Room info: {room?.sid}, status: {room?.state}
+      </div>
     </div>
-
   );
 };
 
