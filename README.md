@@ -11,8 +11,15 @@
   - Overview: https://www.twilio.com/docs/video/javascript
   - Detail: https://media.twiliocdn.com/sdk/js/video/latest/docs/
 - API Doc is very limited. A better way is looking at the example code in this project which is mentioned by Twilio:
-  https://github.com/twilio/twilio-video-app-react
+  https://github.com/twilio/twilio-video-app-react (quickly run the test by just using `npm start server`)
+  https://www.twilio.com/blog/video-chat-react-hooks (there's a guideline how to build a Video component)
+
 ### Some other important information we need to understand:
+__Basic Terminologies__
+- Media: a general term refers to either Video, or Audio, or Picture, etc. (in our case, we are focusing on Video and Audio only)
+- Video: just show animation images, it may or may not have sound data???
+- Track: It lets you specify timed text tracks (or time-based data) data which is usually used for subtitles, for example. The tracks are formatted in WebVTT format (.vtt files) — Web Video Text Tracks.
+
 __Room time out__ <br/>
 https://www.twilio.com/docs/video/api/rooms-resource
 > Note: Rooms created via the REST API exist for five minutes to allow the first Participant to connect.
