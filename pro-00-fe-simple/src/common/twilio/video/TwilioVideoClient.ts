@@ -1,6 +1,9 @@
 import Video, {Room} from "twilio-video";
 import backendVideoClient from "./BackendVideoClient";
 
+const TWILIO_ERROR_CODE_CANNOT_START_VIDEO_SOURCE = 0;
+
+
 class TwilioVideoClient {
   startNewVideoRoomOneOnOne = async (accessToken: string, roomUniqueName: string): Promise<Room> => {
     const videoRoom = await backendVideoClient.createRoom(roomUniqueName);
@@ -27,6 +30,10 @@ class TwilioVideoClient {
       room = await this.joinVideoRoom(accessToken, roomUniqueName);
       // We try to join first before trying to creat a new Room later because most of the time, people only trying to join an existing room (with invitation link).
     } catch (error) {
+      if (error.code === TWILIO_ERROR_CODE_CANNOT_START_VIDEO_SOURCE) {
+        console.error(`Cannot join the room ${roomUniqueName}. The reason could be you are trying to join the same Video Room by many Browsers at the same time. If that's the case, you can try using only one Browser only (with different tab), or try to plug another camera into your computer`, error);
+        throw error;
+      }
       console.log(`Room ${roomUniqueName} doesn't exist and we also cannot create it from FE, hence we'll create it from BE before joining...`)
       room = await this.startNewVideoRoomOneOnOne(accessToken, roomUniqueName);
     }

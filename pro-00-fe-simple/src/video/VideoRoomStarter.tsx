@@ -3,12 +3,6 @@ import {Room} from "twilio-video";
 import backendTwilioAccessClient from "../common/twilio/accesstoken/BackendTwilioAccessClient";
 import twilioVideoClient from "../common/twilio/video/TwilioVideoClient";
 
-const ERROR_STATUS_ROOM_EXIST = 409;
-
-enum VideoStatus {
-  NONE, CONNECTED, DISCONNECTED
-}
-
 export interface VideoRoomStarterProps {
   callbackStartVideoCall: (result: any) => void;
 };
@@ -18,10 +12,10 @@ const VideoRoomStarter = (props: VideoRoomStarterProps): JSX.Element => {
   const [inputRoomName, setInputRoomName] = useState<string>('room01');//We use the name 'inputRoomName' to distinguish with room.name
   const [room, setRoom] = useState<Room>();
   const [accessToken, setAccessToken] = useState<string>();
-  const [joinStatus, setJoinStatus] = useState<VideoStatus>(VideoStatus.NONE);//whether joined Video Room or not.
 
   const isJoinedVideo = () => {
-    return joinStatus === VideoStatus.CONNECTED;
+    const isJoined = room?.state === 'connected';
+    return isJoined;
   }
 
   const onStartVideoRoom = async () => {
@@ -39,14 +33,14 @@ const VideoRoomStarter = (props: VideoRoomStarterProps): JSX.Element => {
     const joinedRoom = await twilioVideoClient.joinOrStartRoom(existToken, inputRoomName);
     setRoom(joinedRoom);
 
-    setJoinStatus(VideoStatus.CONNECTED);
     props.callbackStartVideoCall({accessToken, username: inputUsername, room});
   }
 
   const onLeaveVideoCall = () => {
     const disconnectedRoom = room?.disconnect();
-    setRoom(disconnectedRoom);
-    setJoinStatus(VideoStatus.DISCONNECTED);
+    // We cannot just set disconnectedRoom into setRoom()
+    // because both `disconnectedRoom` and current `room` actually are referring to the same object memory.
+    setRoom({...disconnectedRoom} as Room);
   }
 
   return (
@@ -79,7 +73,7 @@ const VideoRoomStarter = (props: VideoRoomStarterProps): JSX.Element => {
         <button onClick={onStartVideoRoom} hidden={isJoinedVideo()} className={'btn btn-primary'}>
           Join
         </button>
-        <button onClick={onLeaveVideoCall} hidden={joinStatus === VideoStatus.DISCONNECTED || joinStatus === VideoStatus.NONE}
+        <button onClick={onLeaveVideoCall} hidden={!isJoinedVideo()}
                 className={'btn btn-primary'}>
           Leave
         </button>
