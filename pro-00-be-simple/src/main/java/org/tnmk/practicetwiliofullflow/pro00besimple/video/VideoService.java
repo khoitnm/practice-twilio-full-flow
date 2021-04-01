@@ -2,14 +2,12 @@ package org.tnmk.practicetwiliofullflow.pro00besimple.video;
 
 import com.twilio.Twilio;
 import com.twilio.base.Page;
-import com.twilio.base.ResourceSet;
+import com.twilio.exception.ApiException;
 import com.twilio.rest.video.v1.Room;
 import org.springframework.stereotype.Service;
 import org.tnmk.practicetwiliofullflow.pro00besimple.twilioaccess.TwilioProperties;
 
-import java.util.Iterator;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class VideoService {
@@ -27,7 +25,7 @@ public class VideoService {
    * @param roomUniqueName
    * @return
    */
-  public VideoRoom createVideo(String roomUniqueName) {
+  public VideoRoom createVideo(String roomUniqueName) throws ApiException {
     Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
     Room room = Room.creator()
         .setType(Room.RoomType.GO)

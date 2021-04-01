@@ -1,5 +1,8 @@
 package org.tnmk.practicetwiliofullflow.pro00besimple.video;
 
+import com.twilio.exception.ApiException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,9 +19,17 @@ public class VideoController {
   }
 
   @PostMapping("/video/room/{videRoomUniqueName}")
-  public VideoRoom createVideoRoom(@PathVariable("videRoomUniqueName") String videRoomUniqueName) {
-    VideoRoom videoRoom = videoService.createVideo(videRoomUniqueName);
-    return videoRoom;
+  public ResponseEntity createVideoRoom(@PathVariable("videRoomUniqueName") String videRoomUniqueName) {
+    try {
+      VideoRoom videoRoom = videoService.createVideo(videRoomUniqueName);
+      return new ResponseEntity<>(videoRoom, HttpStatus.OK);
+    } catch (ApiException ex) {
+      if (ex.getCode() == 53113) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+      } else {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    }
   }
 
   @GetMapping("/video/rooms")

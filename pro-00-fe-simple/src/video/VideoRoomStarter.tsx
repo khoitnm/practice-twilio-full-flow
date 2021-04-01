@@ -3,6 +3,8 @@ import {Room} from "twilio-video";
 import backendTwilioAccessClient from "../common/twilio/accesstoken/BackendTwilioAccessClient";
 import twilioVideoClient from "../common/twilio/video/TwilioVideoClient";
 
+const ERROR_STATUS_ROOM_EXIST = 409;
+
 enum VideoStatus {
   NONE, CONNECTED, DISCONNECTED
 }
@@ -34,12 +36,17 @@ const VideoRoomStarter = (props: VideoRoomStarterProps): JSX.Element => {
     }
 
     //Start New or Join Existing Room
-    if (room) {
-      const joinedRoom = await twilioVideoClient.joinVideoRoom(existToken, inputRoomName);
-      setRoom(joinedRoom);
-    }else {
+    try {
       const joinedRoom = await twilioVideoClient.startNewVideoRoomOneOnOne(existToken, inputRoomName);
       setRoom(joinedRoom);
+    } catch (error) {
+      if (error.response.status == ERROR_STATUS_ROOM_EXIST) {
+        const joinedRoom = await twilioVideoClient.joinVideoRoom(existToken, inputRoomName);
+        setRoom(joinedRoom);
+        console.log(`Room ${inputRoomName} already exist, hence we just join it.`)
+      } else {
+        console.error(JSON.stringify(error), error);
+      }
     }
 
     setJoinStatus(VideoStatus.CONNECTED);
@@ -82,7 +89,8 @@ const VideoRoomStarter = (props: VideoRoomStarterProps): JSX.Element => {
         <button onClick={onStartVideoRoom} hidden={isJoinedVideo()} className={'btn btn-primary'}>
           Join Room
         </button>
-        <button onClick={onLeaveVideoCall} hidden={joinStatus === VideoStatus.DISCONNECTED || joinStatus === VideoStatus.NONE} className={'btn btn-primary'}>
+        <button onClick={onLeaveVideoCall} hidden={joinStatus === VideoStatus.DISCONNECTED || joinStatus === VideoStatus.NONE}
+                className={'btn btn-primary'}>
           Leave Room
         </button>
 
