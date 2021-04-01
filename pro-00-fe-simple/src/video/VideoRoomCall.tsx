@@ -17,7 +17,7 @@ const VideoRoomCall = ({room}: VideoRoomCallProps): JSX.Element => {
   return (
     <div className={'rol'} style={styleVideoCall}>
       <div className={'col-6'}>
-        {/*<LocalParticipantVideo participant={room.localParticipant}/>*/}
+        <LocalParticipantVideo participant={room.localParticipant}/>
       </div>
       <div className={'col-6'}>Participants user
         {JSON.stringify(room.participants)}
