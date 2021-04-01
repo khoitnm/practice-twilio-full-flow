@@ -38,7 +38,7 @@ const VideoRoomJoining = (props: VideoRoomItemProps): JSX.Element => {
       Participants: {JSON.stringify(room.participants)}<br/>
 
       <Button color="secondary" fullWidth type="submit" variant="contained" onClick={onDisconnectVideoRoom}>
-        Join Room
+        Leave Room
       </Button>
     </Grid>
   );

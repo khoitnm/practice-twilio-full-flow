@@ -17,3 +17,11 @@ __Room time out__ <br/>
 https://www.twilio.com/docs/video/api/rooms-resource
 > Note: Rooms created via the REST API exist for five minutes to allow the first Participant to connect.
 > If no Participants join within five minutes, the Room times out and a new Room must be created.
+
+<p/>
+__Testing many users connect to the same Video Room on local__ <br/>
+If we want to connect many participants to the same Video Room on the same local machine, 
+that local machine must be connected to multiple cameras devices. 
+Otherwise, only the first participant can connect to it. 
+The second participant won't be able to connect because of error `twilio AbortError: Starting video failed`
+
