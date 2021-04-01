@@ -96,7 +96,8 @@ const VideoRoomStarter = (props: VideoRoomStarterProps): JSX.Element => {
 
       </div>
       <div className={'col-12'}>
-        Room info: {room?.sid}, status: {room?.state}
+        Room info: {room?.sid}, status: {room?.state} <p/>
+        Local Participant: {JSON.stringify(room?.localParticipant)}
       </div>
     </div>
   );
