@@ -1,6 +1,16 @@
 import React from "react";
 
-const VideoRoomStarter = (): JSX.Element => {
+export interface VideoRoomStarterProps {
+  callbackStartVideoCall: () => void;
+};
+
+const VideoRoomStarter = (props: VideoRoomStarterProps): JSX.Element => {
+
+
+
+  const onStartVideoCall = () => {
+    props.callbackStartVideoCall();
+  }
 
   return (
     <div className={'row bg-light pt-2 pb-2 gx-5'}>
@@ -23,7 +33,7 @@ const VideoRoomStarter = (): JSX.Element => {
         </select>
       </div>
       <div className={'col-2'}>
-        <button className={'btn btn-primary'}>Start New Room</button>
+        <button className={'btn btn-primary'} onClick={onStartVideoCall}>Start New Room</button>
       </div>
     </div>
 

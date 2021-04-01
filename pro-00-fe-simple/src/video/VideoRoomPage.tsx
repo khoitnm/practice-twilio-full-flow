@@ -4,11 +4,16 @@ import VideoRoomsList from "./VideoRoomsList";
 import VideoRoomCall from "./VideoRoomCall";
 
 const VideoRoomPage = (): JSX.Element => {
+  let accessToken: string;
+
+  const callbackStartVideoCall = async () => {
+
+  }
 
   return (
     <div className={'container'}>
 
-      <VideoRoomStarter/>
+      <VideoRoomStarter callbackStartVideoCall={callbackStartVideoCall}/>
 
       {/*Body row: begin*/}
       <div className={'row gx-5 mt-2'}>
