@@ -39,13 +39,13 @@ const VideoRoomStarter = ({
       </div>
       <div className={'col-md-3'}>
         <select disabled={isJoinedVideo} title={'Camera option'} defaultValue={'01'} className={'form-select'}>
-          <option value={'01'}>Cam 01</option>
+          <option value={'01'}>Not implemented yet</option>
           <option value={'02'}>Cam 02</option>
         </select>
       </div>
       <div className={'col-md-2'}>
         <select disabled={isJoinedVideo} title={'Audio option'} defaultValue={'01'} className={'form-select'}>
-          <option value={'01'}>Audio 01</option>
+          <option value={'01'}>Not implemented yet</option>
           <option value={'02'}>Audio 02</option>
         </select>
       </div>

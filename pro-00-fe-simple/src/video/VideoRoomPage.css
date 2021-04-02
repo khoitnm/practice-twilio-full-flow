@@ -2,17 +2,14 @@
     border-bottom: 1px solid #DDD;
 }
 
-.video-call-space {
-    /*border: 1px solid #BBB;*/
-    /*border-radius: 5px;*/
-    /*background-color: #DDD;*/
-}
-
 .local-participant {
+    background-color: #333;
+    border-bottom: 1px solid #111;
     /*text-align: center;*/
 }
 
 .remote-participants {
+    background-color: #333;
     /*display: flex;*/
     /*flex-wrap: nowrap;*/
     /*justify-content: space-between;*/
@@ -20,13 +17,14 @@
 }
 
 .participant {
-    color: #EEE;
     text-align: center;
-    border: 5px solid #777;
+    /*border: 5px solid #777;*/
     /*border-radius: 5px;*/
-    background-color: #777;
 }
-
+.participant-name {
+    color: #EEE;
+    padding-bottom: 10px;
+}
 .participant-video {
     width: 100%;
     /*border-radius: 5px;*/

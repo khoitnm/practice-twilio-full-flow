@@ -79,7 +79,7 @@ const ParticipantVideo = ({participant}: ParticipantVideoProps): JSX.Element => 
 
   return (
     <div className={'participant'}>
-      {participant.identity}
+      <div className={'participant-name'}>{participant.identity}</div>
       <video ref={videoRef} autoPlay={true} className={'participant-video'}/>
       <audio ref={audioRef} autoPlay={true} muted={true}/>
 

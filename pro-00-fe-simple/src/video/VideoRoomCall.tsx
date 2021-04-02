@@ -41,16 +41,40 @@ const VideoRoomCall = ({room}: VideoRoomCallProps): JSX.Element => {
   ));
 
   return (
-    <div className={'row video-call-space p-3'}>
-      <div className={'col-3 local-participant'}>
-        {room && <ParticipantVideo key={room?.localParticipant.sid} participant={room.localParticipant}/>}
+    <>
+      <div className={'row local-participant pb-3'}>
+        <div className={'col-12'}>
+          {room && <ParticipantVideo key={room?.localParticipant.sid} participant={room.localParticipant}/>}
+
+        </div>
+      </div>
+
+      <div className={'row remote-participants pt-3'}>
+        <div className={'col-3 '}>
+          {remoteParticipantsComponent}
+        </div>
+        <div className={'col-3'}>
+          <div className={'participant'}>
+            <div className={'participant-name'}>User02</div>
+            <video autoPlay={true} className={'participant-video'}/>
+          </div>
+        </div>
+        <div className={'col-3'}>
+          <div className={'participant'}>
+            <div className={'participant-name'}>User03</div>
+            <video autoPlay={true} className={'participant-video'}/>
+          </div>
+        </div>
+        <div className={'col-3'}>
+          <div className={'participant'}>
+            <div className={'participant-name'}>User04</div>
+            <video autoPlay={true} className={'participant-video'}/>
+          </div>
+        </div>
+
 
       </div>
-      <div className={'col-9 remote-participant'}>
-        {remoteParticipantsComponent}
-        {/*Remote Participants: {JSON.stringify(room?.participants)}<p/>*/}
-      </div>
-    </div>
+    </>
   );
 };
 

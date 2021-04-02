@@ -5,11 +5,11 @@ const VideoRoomsList = (): JSX.Element => {
 
   return (
     <>
-      <div className={'pb-3'} style={{textAlign: "center"}}>
-        Rooms
+      <div className={'pb-3 pt-3'} style={{textAlign: "center"}}>
+        Available Rooms
       </div>
       <div>
-        <button className={'btn btn-outline-primary w-100'} title={'Room01 Sid SRxxxxxxxxxxxxxxx'}>Room01</button>
+        <button className={'btn btn-outline-secondary w-100'} title={'Room01 Sid SRxxxxxxxxxxxxxxx'}>Room01</button>
       </div>
     </>
   );
