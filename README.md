@@ -1,0 +1,1 @@
+Please view detail doc at [StartApplication](./doc/StartApplication.md)
