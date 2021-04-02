@@ -58,7 +58,7 @@ const VideoRoomPage = (): JSX.Element => {
       />
 
       {/*Body row: begin*/}
-      <div className={'row gx-5 mt-2'}>
+      <div className={'row bg-light mt-2'}>
 
         <div className={'col-9'}>
           {room && <VideoRoomCall room={room}/>}

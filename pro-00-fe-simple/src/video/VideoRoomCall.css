@@ -1,7 +1,7 @@
 .video-call-space {
-    border: 1px solid #BBB;
-    border-radius: 5px;
-    background-color: #DDD;
+    /*border: 1px solid #BBB;*/
+    /*border-radius: 5px;*/
+    /*background-color: #DDD;*/
 }
 
 .local-participant {
@@ -14,12 +14,17 @@
     /*justify-content: space-between;*/
     /*padding: 0 2em 2em;*/
 }
+
 .participant {
+    color: #EEE;
     text-align: center;
-    border: 1px solid #999;
-    border-radius: 5px;
-    background-color: #AAA;
+    border: 5px solid #777;
+    /*border-radius: 5px;*/
+    background-color: #777;
 }
+
 .participant-video {
     width: 100%;
+    /*border-radius: 5px;*/
+    margin-bottom: -5px;
 }

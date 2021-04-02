@@ -45,6 +45,7 @@ const VideoRoomCall = ({room}: VideoRoomCallProps): JSX.Element => {
     <div className={'row video-call-space p-3'}>
       <div className={'col-3 local-participant'}>
         {room && <ParticipantVideo key={room?.localParticipant.sid} participant={room.localParticipant}/>}
+
       </div>
       <div className={'col-9 remote-participant'}>
         {remoteParticipantsComponent}
