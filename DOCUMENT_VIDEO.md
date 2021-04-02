@@ -1,5 +1,3 @@
-# practice-twilio-full-flow
-
 ## Twilio Video:
 ### General guidelines
 - Foundation knowledge: https://www.twilio.com/docs/video/tutorials/basic-concepts 
