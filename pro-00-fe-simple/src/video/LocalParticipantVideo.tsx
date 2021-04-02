@@ -50,16 +50,16 @@ const LocalParticipantVideo = ({participant}: LocalParticipantVideoProps): JSX.E
   const audioRef = useRef() as React.MutableRefObject<HTMLAudioElement>;
 
   return (
-    <>
+    <div className={'participant bg-secondary text-light'}>
       {participant.identity}
-      <video ref={videoRef} autoPlay={true}/>
+      <video ref={videoRef} autoPlay={true} className={'participant-video'}/>
       <audio ref={audioRef} autoPlay={true} muted={false}/>
 
       {/*Participant: {JSON.stringify(participant)}<p/>*/}
       {/*Video Tracks: {JSON.stringify(participant.videoTracks)}<p/>*/}
       {/*Audio Tracks: {JSON.stringify(participant.audioTracks)}<p/>*/}
 
-    </>
+    </div>
   );
 };
 

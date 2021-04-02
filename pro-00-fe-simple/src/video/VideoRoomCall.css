@@ -1,0 +1,25 @@
+.video-call-space {
+    border: 1px solid #BBB;
+    border-radius: 5px;
+    background-color: #DDD;
+}
+
+.local-participant {
+    /*text-align: center;*/
+}
+
+.remote-participants {
+    /*display: flex;*/
+    /*flex-wrap: nowrap;*/
+    /*justify-content: space-between;*/
+    /*padding: 0 2em 2em;*/
+}
+.participant {
+    text-align: center;
+    border: 1px solid #999;
+    border-radius: 5px;
+    background-color: #AAA;
+}
+.participant-video {
+    width: 100%;
+}

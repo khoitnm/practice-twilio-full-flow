@@ -2,12 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Participant, Room} from "twilio-video";
 import LocalParticipantVideo from "./LocalParticipantVideo";
 import RemoteParticipantVideo from "./RemoteParticipantVideo";
-
-const styleVideoCall = {
-  border: "1px solid #BBB",
-  borderRadius: '5px',
-  backgroundColor: "#DDD",
-};
+import './VideoRoomCall.css';
 
 export interface VideoRoomCallProps {
   room?: Room
@@ -46,11 +41,11 @@ const VideoRoomCall = ({room}: VideoRoomCallProps): JSX.Element => {
   ));
 
   return (
-    <div className={'row'} style={styleVideoCall}>
-      <div className={'col-6'}>
+    <div className={'row video-call-space p-3'}>
+      <div className={'col-6 local-participant'}>
         { room && <LocalParticipantVideo key={room?.localParticipant.sid} participant={room.localParticipant}/>}
       </div>
-      <div className={'col-6'}>
+      <div className={'col-6 remote-participant'}>
         {remoteParticipantsComponent}
         Remote Participants: {JSON.stringify(room?.participants)}<p/>
       </div>
