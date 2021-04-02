@@ -2,6 +2,14 @@
     border-bottom: 1px solid #DDD;
 }
 
+.room-item {
+    background-color: transparent;
+    border: 0px;
+    border-bottom: 1px solid #DDD;
+    box-shadow: 0px 1px white;
+    padding: 10px;
+}
+
 .local-participant {
     background-color: #333;
     border-bottom: 1px solid #111;
