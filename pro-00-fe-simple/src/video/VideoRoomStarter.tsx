@@ -24,7 +24,7 @@ const VideoRoomStarter = ({
   const isJoinedVideo = room?.state === 'connected';
 
   return (
-    <div className={'row bg-light pt-2 pb-2'}>
+    <div className={'row bg-light pt-2 pb-2 video-starter'}>
       <div className={'col-md-2'}>
         <input type={'input'} placeholder={'Username'} title={'username'} className={'form-control'}
                value={inputUsername}
@@ -59,7 +59,7 @@ const VideoRoomStarter = ({
 
       </div>
       <div className={'col-12'}>
-        Room info: {room?.sid}, status: {room?.state} <p/>
+        {/*Room info: {room?.sid}, status: {room?.state} <p/>*/}
         {/*Local Participant: {JSON.stringify(room?.localParticipant)}*/}
       </div>
     </div>

@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Participant, Room} from "twilio-video";
 import ParticipantVideo from "./ParticipantVideo";
-import './VideoRoomCall.css';
 import arrayHelper from "../common/util/ArrayHelper";
 
 export interface VideoRoomCallProps {

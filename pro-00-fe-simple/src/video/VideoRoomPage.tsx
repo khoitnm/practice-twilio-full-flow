@@ -5,6 +5,7 @@ import VideoRoomCall from "./VideoRoomCall";
 import {Room} from "twilio-video";
 import backendTwilioAccessClient from "../common/twilio/accesstoken/BackendTwilioAccessClient";
 import twilioVideoClient from "../common/twilio/video/TwilioVideoClient";
+import './VideoRoomPage.css';
 
 const VideoRoomPage = (): JSX.Element => {
   const [inputUsername, setInputUsername] = useState<string>('user01');
@@ -58,7 +59,7 @@ const VideoRoomPage = (): JSX.Element => {
       />
 
       {/*Body row: begin*/}
-      <div className={'row bg-light mt-2'}>
+      <div className={'row bg-light'}>
 
         <div className={'col-9'}>
           {room && <VideoRoomCall room={room}/>}
