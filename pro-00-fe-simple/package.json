@@ -59,5 +59,5 @@
     "@twilio/conversations": "This is for Client App (ReactJS) which replace 'twilio-conversations'. https://www.npmjs.com/package/@twilio/conversations",
     "twilio": "This is for back-end"
   },
-  "proxy": "http://localhost:8082"
+  "proxy": "http://localhost:8080"
 }
