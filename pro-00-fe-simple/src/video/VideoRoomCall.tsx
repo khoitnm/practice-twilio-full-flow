@@ -18,10 +18,12 @@ const VideoRoomCall = ({room}: VideoRoomCallProps): JSX.Element => {
 
   useEffect(() => {
     const onParticipantConnected = (participant: Participant) => {
+      console.log(`participant ${participant.identity} have just joined.`);
       setRemoteParticipants((prevParticipants: Array<Participant>) => [...prevParticipants, participant]);
     };
 
     const onParticipantDisconnected = (disconnectedParticipant: Participant) => {
+      console.log(`participant ${disconnectedParticipant.identity} left.`);
       setRemoteParticipants((prevParticipants: Array<Participant>) =>
         prevParticipants.filter((p) => p !== disconnectedParticipant)
       );
@@ -44,7 +46,7 @@ const VideoRoomCall = ({room}: VideoRoomCallProps): JSX.Element => {
   ));
 
   return (
-    <div className={'rol'} style={styleVideoCall}>
+    <div className={'row'} style={styleVideoCall}>
       <div className={'col-6'}>
         { room && <LocalParticipantVideo key={room?.localParticipant.sid} participant={room.localParticipant}/>}
       </div>
