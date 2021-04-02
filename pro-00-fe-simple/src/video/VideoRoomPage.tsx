@@ -65,7 +65,7 @@ const VideoRoomPage = (): JSX.Element => {
           {room && <VideoRoomCall room={room}/>}
         </div>
 
-        <div className={'col-3'}>
+        <div className={'col-3 gx-0 rooms-panel'}>
           <VideoRoomsList/>
         </div>
 
