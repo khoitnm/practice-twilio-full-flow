@@ -9,7 +9,7 @@ export interface VideoRoomCallProps {
 }
 
 const VideoRoomCall = ({room}: VideoRoomCallProps): JSX.Element => {
-  const [remoteParticipants, setRemoteParticipants] = useState<Array<Participant>>([]);
+  const [remoteParticipants, setRemoteParticipants] = useState<Array<Participant>>(arrayHelper.toDefinedArray(room?.participants.values()));
 
   useEffect(() => {
     const onParticipantConnected = (participant: Participant) => {
@@ -24,7 +24,7 @@ const VideoRoomCall = ({room}: VideoRoomCallProps): JSX.Element => {
       );
     };
 
-    //We are creating listeners, and those listener shouldn be created only one time when the component is initiated only.
+    //We are creating listeners, and those listener should be created only one time when the component is initiated only.
     //Listeners shouldn't be register multiple times, that's why we put it in this useEffect();
     room?.on("participantConnected", onParticipantConnected);
     room?.on("participantDisconnected", onParticipantDisconnected);
@@ -43,10 +43,10 @@ const VideoRoomCall = ({room}: VideoRoomCallProps): JSX.Element => {
 
   return (
     <div className={'row video-call-space p-3'}>
-      <div className={'col-6 local-participant'}>
-        { room && <ParticipantVideo key={room?.localParticipant.sid} participant={room.localParticipant}/>}
+      <div className={'col-3 local-participant'}>
+        {room && <ParticipantVideo key={room?.localParticipant.sid} participant={room.localParticipant}/>}
       </div>
-      <div className={'col-6 remote-participant'}>
+      <div className={'col-9 remote-participant'}>
         {remoteParticipantsComponent}
         {/*Remote Participants: {JSON.stringify(room?.participants)}<p/>*/}
       </div>
