@@ -2,12 +2,16 @@ import React, {ChangeEvent, useEffect, useState} from "react";
 import VideoRoomStarter from "./VideoRoomStarter";
 import VideoRoomsList from "./VideoRoomsList";
 import VideoRoomCall from "./VideoRoomCall";
-import {Room} from "twilio-video";
+import {Participant, Room} from "twilio-video";
 import backendTwilioAccessClient from "../common/twilio/accesstoken/BackendTwilioAccessClient";
 import twilioVideoClient from "../common/twilio/video/TwilioVideoClient";
 import './VideoRoomPage.css';
 import backendVideoClient from "../common/twilio/video/BackendVideoClient";
 import VideoRoomBE from "../common/twilio/video/VideoRoomBE";
+import arrayHelper from "../common/util/ArrayHelper";
+import {TwilioError} from "twilio-video/tsdef/TwilioError";
+
+const CODE_ROOM_END = 53118;
 
 const createInitUsername = () => {
   let currentUserIdStr = localStorage.getItem('currentUserId');
@@ -29,9 +33,29 @@ const VideoRoomPage = (): JSX.Element => {
   const [rooms, setRooms] = useState<Array<VideoRoomBE>>([]);
   const [accessToken, setAccessToken] = useState<string>();
 
-  useEffect(()=> {
+  useEffect(() => {
     backendVideoClient.findAllRooms().then(rooms => setRooms(rooms));
-  },[room]);
+  }, [room]);
+
+  useEffect(() => {
+    const onRoomEnd = (room: Room, error: TwilioError) => {
+      if (!error || error.code == CODE_ROOM_END) {
+        alert(`Room ${room.name} is ended.`)
+        setRoom(undefined);
+      } else {
+        alert(`Room ${room.name} is ended unexpected. Error: ${JSON.stringify(error)}`)
+      }
+    };
+
+    //We are creating listeners, and those listener should be created only one time when the component is initiated only.
+    //Listeners shouldn't be register multiple times, that's why we put it in this useEffect();
+    room?.on("disconnected", onRoomEnd);
+    // room.participants.forEach(participantConnected);
+    return () => {
+      //Don't remove all listeners because other listeners could be subscribed by other React Components.
+      room?.off("disconnected", onRoomEnd);
+    };
+  }, [room]);
 
   // Logic for VideoRoomStarter: Begin //////////////////////////////////////////////////////////////////
   const onStartVideoRoom = async () => {
