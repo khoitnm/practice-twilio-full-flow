@@ -19,7 +19,7 @@ const createInitUsername = () => {
     currentUserIdStr = '0';
   }
   let nextUserId: number = (+currentUserIdStr) + 1;
-  if (nextUserId >= 5) {
+  if (nextUserId > 3) {
     nextUserId = 1;
   }
   localStorage.setItem('currentUserId', nextUserId.toString())
