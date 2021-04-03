@@ -45,11 +45,23 @@ const VideoRoomPage = (): JSX.Element => {
         alert(`Room ${room.name} is ended unexpected. Error: ${JSON.stringify(error)}`)
       }
     };
-
+    const closeRoomResources = () => {
+      if (room) {
+        room.disconnect();
+        setRoom(undefined);
+      }
+    };
     //We are creating listeners, and those listener should be created only one time when the component is initiated only.
     //Listeners shouldn't be register multiple times, that's why we put it in this useEffect();
     room?.on("disconnected", onRoomEnd);
-    // room.participants.forEach(participantConnected);
+
+    // Follow this recommendation: https://www.twilio.com/docs/video/reconnection-states-and-events
+    window.addEventListener("pagehide", closeRoomResources);
+    window.addEventListener("beforeunload", closeRoomResources);
+    return () => {
+      window.removeEventListener("pagehide", closeRoomResources);
+      window.removeEventListener("beforeunload", closeRoomResources);
+    };
     return () => {
       //Don't remove all listeners because other listeners could be subscribed by other React Components.
       room?.off("disconnected", onRoomEnd);
