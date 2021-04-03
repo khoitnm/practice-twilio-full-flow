@@ -40,4 +40,10 @@ public class VideoService {
     List<VideoRoom> videoRooms = VideoRoomMapper.toVideoRooms(roomResourceSet.getRecords());
     return videoRooms;
   }
+
+  public VideoRoom endVideo(String roomSid) {
+    Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
+    Room room = Room.updater(roomSid, Room.RoomStatus.COMPLETED).update();
+    return VideoRoomMapper.toVideoRoom(room);
+  }
 }

@@ -46,7 +46,7 @@ const VideoRoomPage = (): JSX.Element => {
   }
 
   const onLeaveVideoCall = async () => {
-    const disconnectedRoom = room?.disconnect();
+    room?.disconnect();
     setRoom(undefined);
     // setRoom({...disconnectedRoom} as Room);
     // Both `disconnectedRoom` and current `room` actually are referring to the same object memory.
@@ -54,6 +54,12 @@ const VideoRoomPage = (): JSX.Element => {
     // So one way is using `setRoom({...disconnectedRoom} as Room);`
     // However, when doing that, room become a pure object and it won't have other methods such as `.on()` ...
     // So a better way is just setting null here, and child component should turn off video based on that.
+  }
+  const onEndVideoCall = async () => {
+    if (!room) {
+      return;
+    }
+    await backendVideoClient.endRoom(room.sid);
   }
 
   const onChangeInputUsername = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -76,6 +82,7 @@ const VideoRoomPage = (): JSX.Element => {
         onChangeInputRoomName={onChangeInputRoomName}
         onStartVideoRoom={onStartVideoRoom}
         onLeaveVideoCall={onLeaveVideoCall}
+        onEndVideoCall={onEndVideoCall}
       />
 
       {/*Body row: begin*/}

@@ -1,5 +1,5 @@
-import React, {MutableRefObject, useEffect, useRef, useState} from "react";
-import {AudioTrack, AudioTrackPublication, Participant, Room, Track, TrackPublication, VideoTrack, VideoTrackPublication} from "twilio-video";
+import React, {useEffect, useRef, useState} from "react";
+import {AudioTrack, Participant, VideoTrack} from "twilio-video";
 import mediaTrackHelper from "./MediaTrackHelper";
 import arrayHelper from "../common/util/ArrayHelper";
 
@@ -14,7 +14,7 @@ export interface ParticipantVideoProps {
 /**
  * LocalParticipant means the main User who join the Video Room.
  *
- * With video, if we want to bind a videoTrack to <video> dom, we have to use something like {@link Track}.attach('#domId').
+ * With video, if we want to bind a videoTrack to <video> dom, we have to use something like {@link VideoTrack}.attach('#domId').
  * With ReactJS, we have to use `useRef()` approach.
  */
 const ParticipantVideo = ({participant, mute}: ParticipantVideoProps): JSX.Element => {
@@ -83,11 +83,6 @@ const ParticipantVideo = ({participant, mute}: ParticipantVideoProps): JSX.Eleme
       <div className={'participant-name'}>{participant.identity}</div>
       <video ref={videoRef} autoPlay={true} className={'participant-video'}/>
       <audio ref={audioRef} autoPlay={true} muted={mute}/>
-
-      {/*Participant: {JSON.stringify(participant)}<p/>*/}
-      {/*Video Tracks: {JSON.stringify(participant.videoTracks)}<p/>*/}
-      {/*Audio Tracks: {JSON.stringify(participant.audioTracks)}<p/>*/}
-
     </div>
   );
 };

@@ -3,10 +3,9 @@ import backendVideoClient from "./BackendVideoClient";
 
 const TWILIO_ERROR_CODE_CANNOT_START_VIDEO_SOURCE = 0;
 
-
 class TwilioVideoClient {
   startNewVideoRoomOneOnOne = async (accessToken: string, roomUniqueName: string): Promise<Room> => {
-    const videoRoom = await backendVideoClient.createRoom(roomUniqueName);
+    await backendVideoClient.createRoom(roomUniqueName);
     const room: Room = await Video.connect(accessToken, {name: roomUniqueName});
     return room;
   }

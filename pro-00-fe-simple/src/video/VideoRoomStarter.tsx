@@ -10,6 +10,7 @@ export interface VideoRoomStarterProps {
   onChangeInputRoomName: (event: ChangeEvent<HTMLInputElement>) => void;
   onStartVideoRoom: () => void;
   onLeaveVideoCall: () => void;
+  onEndVideoCall: () => void;
 };
 
 const VideoRoomStarter = ({
@@ -19,7 +20,8 @@ const VideoRoomStarter = ({
                             onChangeInputUsername,
                             onChangeInputRoomName,
                             onStartVideoRoom,
-                            onLeaveVideoCall
+                            onLeaveVideoCall,
+                            onEndVideoCall
                           }: VideoRoomStarterProps): JSX.Element => {
   const isJoinedVideo = room?.state === 'connected';
 
@@ -31,7 +33,7 @@ const VideoRoomStarter = ({
                disabled={isJoinedVideo}
                onChange={onChangeInputUsername}/>
       </div>
-      <div className={'col-md-3'}>
+      <div className={'col-md-2'}>
         <input type={'input'} placeholder={'Room unique name'} title={'Room Unique Name'} className={'form-control'}
                value={inputRoomName}
                disabled={isJoinedVideo}
@@ -39,23 +41,28 @@ const VideoRoomStarter = ({
       </div>
       <div className={'col-md-3'}>
         <select disabled={isJoinedVideo} title={'Camera option'} defaultValue={'01'} className={'form-select'}>
-          <option value={'01'}>Not implemented yet</option>
+          <option value={'01'}>Cam 01 (TODO)</option>
           <option value={'02'}>Cam 02</option>
         </select>
       </div>
-      <div className={'col-md-2'}>
+      <div className={'col-md-3'}>
         <select disabled={isJoinedVideo} title={'Audio option'} defaultValue={'01'} className={'form-select'}>
-          <option value={'01'}>Not implemented yet</option>
+          <option value={'01'}>Audio 01 (TODO)</option>
           <option value={'02'}>Audio 02</option>
         </select>
       </div>
       <div className={'col-md-2'}>
-        <button onClick={onStartVideoRoom} hidden={isJoinedVideo} className={'btn btn-primary w-100'}>
+        <button onClick={onStartVideoRoom} hidden={isJoinedVideo} className={'btn btn-primary w-50'}>
           Join
         </button>
-        <button onClick={onLeaveVideoCall} hidden={!isJoinedVideo} className={'btn btn-primary w-100'}>
-          Leave
-        </button>
+        <div hidden={!isJoinedVideo} className="btn-group w-100" role="group" aria-label="Basic example">
+          <button onClick={onLeaveVideoCall} className={'btn btn-primary'}>
+            Leave
+          </button>
+          <button onClick={onEndVideoCall} hidden={!isJoinedVideo} className={'btn btn-danger'}>
+            End
+          </button>
+        </div>
 
       </div>
       <div className={'col-12'}>

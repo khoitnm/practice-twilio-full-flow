@@ -11,10 +11,14 @@ const backendVideoClient = {
     const videoRoom: VideoRoomBE = axiosResponse.data;
     return videoRoom;
   },
+  endRoom: async (roomSid: string): Promise<void> => {
+    await beClient.delete(`/video/room/${roomSid}`, {});
+  },
   findAllRooms: async (): Promise<Array<VideoRoomBE>> => {
     const axiosResponse = await beClient.get(`/video/rooms`, {});
     const videoRooms: Array<VideoRoomBE> = axiosResponse.data;
     return videoRooms;
   }
+
 }
 export default backendVideoClient;

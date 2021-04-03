@@ -38,8 +38,8 @@ const VideoRoomCall = ({room}: VideoRoomCallProps): JSX.Element => {
 
 
     const remoteParticipantsComponent = remoteParticipants.map((participant) => (
-      <div className={'col-3 '}>
-        <ParticipantVideo key={participant.sid} participant={participant}/>
+      <div className={'col-3 '} key={participant.sid}>
+        <ParticipantVideo participant={participant}/>
       </div>
     ));
 
