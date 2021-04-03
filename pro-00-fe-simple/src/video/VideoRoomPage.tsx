@@ -2,13 +2,12 @@ import React, {ChangeEvent, useEffect, useState} from "react";
 import VideoRoomStarter from "./VideoRoomStarter";
 import VideoRoomsList from "./VideoRoomsList";
 import VideoRoomCall from "./VideoRoomCall";
-import {Participant, Room} from "twilio-video";
+import {Room} from "twilio-video";
 import backendTwilioAccessClient from "../common/twilio/accesstoken/BackendTwilioAccessClient";
 import twilioVideoClient from "../common/twilio/video/TwilioVideoClient";
 import './VideoRoomPage.css';
 import backendVideoClient from "../common/twilio/video/BackendVideoClient";
 import VideoRoomBE from "../common/twilio/video/VideoRoomBE";
-import arrayHelper from "../common/util/ArrayHelper";
 import {TwilioError} from "twilio-video/tsdef/TwilioError";
 
 const CODE_ROOM_END = 53118;
