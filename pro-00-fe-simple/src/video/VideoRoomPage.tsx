@@ -12,7 +12,10 @@ const createInitUsername = () => {
   if (!currentUserIdStr) {
     currentUserIdStr = '0';
   }
-  const nextUserId: number = (+currentUserIdStr) + 1;
+  let nextUserId: number = (+currentUserIdStr) + 1;
+  if (nextUserId >= 5) {
+    nextUserId = 1;
+  }
   localStorage.setItem('currentUserId', nextUserId.toString())
   return 'user' + nextUserId;
 }

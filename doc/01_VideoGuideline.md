@@ -11,6 +11,7 @@
 - API Doc is very limited. A better way is looking at the example code in this project which is mentioned by Twilio:
   https://github.com/twilio/twilio-video-app-react (quickly run the test by just using `npm start server`)
   https://www.twilio.com/blog/video-chat-react-hooks (there's a guideline how to build a Video component)
+- Switching camera: https://www.twilio.com/blog/2018/06/switching-cameras-twilio-video-chat.html
 
 ### Some other important information we need to understand:
 __Basic Terminologies__
