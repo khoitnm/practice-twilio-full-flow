@@ -40,7 +40,7 @@ const VideoRoomPage = (): JSX.Element => {
     const onRoomEnd = (room: Room, error: TwilioError) => {
       if (!error || error.code == CODE_ROOM_END) {
         alert(`Room ${room.name} is ended.`)
-        setRoom(undefined);
+//         setRoom(undefined);
       } else {
         alert(`Room ${room.name} is ended unexpected. Error: ${JSON.stringify(error)}`)
       }
