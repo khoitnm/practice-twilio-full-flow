@@ -7,8 +7,18 @@ import backendTwilioAccessClient from "../common/twilio/accesstoken/BackendTwili
 import twilioVideoClient from "../common/twilio/video/TwilioVideoClient";
 import './VideoRoomPage.css';
 
+const createInitUsername = () => {
+  let currentUserIdStr = localStorage.getItem('currentUserId');
+  if (!currentUserIdStr) {
+    currentUserIdStr = '0';
+  }
+  const nextUserId: number = (+currentUserIdStr) + 1;
+  localStorage.setItem('currentUserId', nextUserId.toString())
+  return 'user' + nextUserId;
+}
+
 const VideoRoomPage = (): JSX.Element => {
-  const [inputUsername, setInputUsername] = useState<string>('user01');
+  const [inputUsername, setInputUsername] = useState<string>(createInitUsername());
   const [inputRoomName, setInputRoomName] = useState<string>('room01');//We use the name 'inputRoomName' to distinguish with room.name
   const [room, setRoom] = useState<Room | undefined>();
   const [accessToken, setAccessToken] = useState<string>();

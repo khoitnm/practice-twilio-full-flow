@@ -7,7 +7,8 @@ const TRACK_KIND_VIDEO = 'video';
 const TRACK_KIND_AUDIO = 'audio';
 
 export interface ParticipantVideoProps {
-  participant: Participant
+  participant: Participant,
+  mute?: boolean
 }
 
 /**
@@ -16,7 +17,7 @@ export interface ParticipantVideoProps {
  * With video, if we want to bind a videoTrack to <video> dom, we have to use something like {@link Track}.attach('#domId').
  * With ReactJS, we have to use `useRef()` approach.
  */
-const ParticipantVideo = ({participant}: ParticipantVideoProps): JSX.Element => {
+const ParticipantVideo = ({participant, mute}: ParticipantVideoProps): JSX.Element => {
   const [videoTracks, setVideoTracks] = useState<Array<VideoTrack>>([]);
   const [audioTracks, setAudioTracks] = useState<Array<AudioTrack>>([]);
 
@@ -81,7 +82,7 @@ const ParticipantVideo = ({participant}: ParticipantVideoProps): JSX.Element => 
     <div className={'participant'}>
       <div className={'participant-name'}>{participant.identity}</div>
       <video ref={videoRef} autoPlay={true} className={'participant-video'}/>
-      <audio ref={audioRef} autoPlay={true} muted={true}/>
+      <audio ref={audioRef} autoPlay={true} muted={mute}/>
 
       {/*Participant: {JSON.stringify(participant)}<p/>*/}
       {/*Video Tracks: {JSON.stringify(participant.videoTracks)}<p/>*/}
