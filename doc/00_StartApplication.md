@@ -5,7 +5,7 @@ Therefore, we'll need to start both server and font-end.
 Before starting the server, we need to configure the Twilio Account:
 
 Step 1: <br/>
-In `pro-00-be-simple/src/main/resources/application.yml`
+Copy `pro-00-be-simple/src/main/resources/application.yml` to `application-local.yml`, and then replace blow values with your real Twilio Account information:
 ``` 
   accountSid: ${TWILIO_ACCOUNT_SID}
   apiKey: ${TWILIO_API_KEY}
