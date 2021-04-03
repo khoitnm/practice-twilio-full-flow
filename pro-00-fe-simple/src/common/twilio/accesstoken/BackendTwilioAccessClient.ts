@@ -1,5 +1,5 @@
 import TwilioAccess from "./TwilioAccess";
-import beClient from "../../be-client/beClient";
+import beAxios from "../../be-axios/beAxios";
 
 /**
  * This is the client class that helps us to communicate with Backend code. It doesn't communicate directly to Twilio SDK.
@@ -7,7 +7,7 @@ import beClient from "../../be-client/beClient";
 const backendTwilioAccessClient = {
 
     createAccessToken: async (username: string): Promise<string> => {
-        const axiosResponse = await beClient.post(`/twilio/access-info/${username}`, {});
+        const axiosResponse = await beAxios.post(`/twilio/access-info/${username}`, {});
         const twilioAccessInfo: TwilioAccess = axiosResponse.data;
         return twilioAccessInfo.accessToken;
     }
