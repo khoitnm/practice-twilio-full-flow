@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from "react";
+import React, {ChangeEvent, useEffect, useState} from "react";
 import VideoRoomStarter from "./VideoRoomStarter";
 import VideoRoomsList from "./VideoRoomsList";
 import VideoRoomCall from "./VideoRoomCall";
@@ -6,6 +6,8 @@ import {Room} from "twilio-video";
 import backendTwilioAccessClient from "../common/twilio/accesstoken/BackendTwilioAccessClient";
 import twilioVideoClient from "../common/twilio/video/TwilioVideoClient";
 import './VideoRoomPage.css';
+import backendVideoClient from "../common/twilio/video/BackendVideoClient";
+import VideoRoomBE from "../common/twilio/video/VideoRoomBE";
 
 const createInitUsername = () => {
   let currentUserIdStr = localStorage.getItem('currentUserId');
@@ -24,7 +26,12 @@ const VideoRoomPage = (): JSX.Element => {
   const [inputUsername, setInputUsername] = useState<string>(createInitUsername());
   const [inputRoomName, setInputRoomName] = useState<string>('room01');//We use the name 'inputRoomName' to distinguish with room.name
   const [room, setRoom] = useState<Room | undefined>();
+  const [rooms, setRooms] = useState<Array<VideoRoomBE>>([]);
   const [accessToken, setAccessToken] = useState<string>();
+
+  useEffect(()=> {
+    backendVideoClient.findAllRooms().then(rooms => setRooms(rooms));
+  },[room]);
 
   // Logic for VideoRoomStarter: Begin //////////////////////////////////////////////////////////////////
   const onStartVideoRoom = async () => {
@@ -79,7 +86,7 @@ const VideoRoomPage = (): JSX.Element => {
         </div>
 
         <div className={'col-3 gx-0 rooms-panel'}>
-          <VideoRoomsList/>
+          <VideoRoomsList rooms={rooms}/>
         </div>
 
       </div>
