@@ -52,3 +52,15 @@ Open the same URL in the second tab:
 Then join room `room01` with username `user02`
 
 Then we'll see `user01` and `user02` talking to each other.
+
+# Connecting Video from other devices <br/>
+When testing with Video, we must either run on localhost, or run on https, running on http won't work.
+So let say you have a laptop at start the web server at localhost:3001, then your second device (mobile or laptop, for example) won't be able to connect with http.
+On solution to test with second device is using [ngrok](https://ngrok.com/), you can register a free account and use it:
+- Register a free account (free forever)
+- Download
+- Connect to it by using the commandline provided by ngrok when you login into it's [dashboard](https://dashboard.ngrok.com/get-started/setup):
+  `./ngrok authtoken xxxxxxxxx_your_auth_token_xxxxxxxxx`
+- Then port forward it by using the command line:
+  `ngrok http 3001 -host-header="localhost:3001"` (View more at https://stackoverflow.com/questions/45425721/invalid-host-header-when-ngrok-tries-to-connect-to-react-dev-server)
+
