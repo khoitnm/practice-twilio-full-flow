@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
-import {AudioTrack, Participant, VideoTrack} from "twilio-video";
+import {AudioTrack, AudioTrackPublication, LocalAudioTrack, LocalAudioTrackPublication, Participant, VideoTrack} from "twilio-video";
 import mediaTrackHelper from "./MediaTrackHelper";
 import arrayHelper from "../common/util/ArrayHelper";
 
@@ -8,7 +8,7 @@ const TRACK_KIND_AUDIO = 'audio';
 
 export interface ParticipantVideoProps {
   participant: Participant,
-  initMute?: boolean
+  isLocalParticipant?: boolean
 }
 
 /**
@@ -17,10 +17,10 @@ export interface ParticipantVideoProps {
  * With video, if we want to bind a videoTrack to <video> dom, we have to use something like {@link VideoTrack}.attach('#domId').
  * With ReactJS, we have to use `useRef()` approach.
  */
-const ParticipantVideo = ({participant, initMute}: ParticipantVideoProps): JSX.Element => {
+const ParticipantVideo = ({participant, isLocalParticipant}: ParticipantVideoProps): JSX.Element => {
   const [videoTracks, setVideoTracks] = useState<Array<VideoTrack>>([]);
   const [audioTracks, setAudioTracks] = useState<Array<AudioTrack>>([]);
-  const [mute, setMute] = useState<boolean>(initMute || true);
+  const [mute, setMute] = useState<boolean>(!isLocalParticipant);
 
   useEffect(() => {
     //Note: And a new participant join a Room, he may not have track data yet (track items inside tracks array are still null, but track array is not null)
@@ -77,6 +77,14 @@ const ParticipantVideo = ({participant, initMute}: ParticipantVideoProps): JSX.E
   }, [audioTracks]);
 
   const onMuteControl = () => {
+    participant.audioTracks.forEach((publication: AudioTrackPublication) => {
+      const localPublication = publication as LocalAudioTrackPublication;
+      if (mute) {
+        localPublication?.track.enable();
+      } else {
+        localPublication?.track.disable();
+      }
+    });
     setMute(!mute);
   }
 
@@ -88,9 +96,9 @@ const ParticipantVideo = ({participant, initMute}: ParticipantVideoProps): JSX.E
     <div className={'participant'}>
       <div className={'participant-name'}>{participant.identity}</div>
       <video ref={videoRef} autoPlay={true} className={'participant-video'}/>
-      <audio ref={audioRef} autoPlay={true} muted={mute}/>
+      <audio ref={audioRef} autoPlay={true} muted={false}/>
 
-      <button className={'participant-controller-button'} onClick={onMuteControl}>
+      <button hidden={!isLocalParticipant} className={'participant-controller-button'} onClick={onMuteControl}>
         <i hidden={!mute} className="bi bi-mic"></i>
         <i hidden={mute} className="bi bi-mic-mute"></i>
       </button>

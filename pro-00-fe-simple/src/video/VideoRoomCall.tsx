@@ -47,7 +47,7 @@ const VideoRoomCall = ({room}: VideoRoomCallProps): JSX.Element => {
       <>
         <div className={'row local-participant pb-3'}>
           <div className={'col-12'}>
-            {room && <ParticipantVideo key={room?.localParticipant.sid} participant={room.localParticipant} initMute={true}/>}
+            {room && <ParticipantVideo key={room?.localParticipant.sid} participant={room.localParticipant} isLocalParticipant={true}/>}
           </div>
 
         </div>
