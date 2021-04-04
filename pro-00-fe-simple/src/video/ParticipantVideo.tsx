@@ -8,7 +8,7 @@ const TRACK_KIND_AUDIO = 'audio';
 
 export interface ParticipantVideoProps {
   participant: Participant,
-  mute?: boolean
+  initMute?: boolean
 }
 
 /**
@@ -17,9 +17,10 @@ export interface ParticipantVideoProps {
  * With video, if we want to bind a videoTrack to <video> dom, we have to use something like {@link VideoTrack}.attach('#domId').
  * With ReactJS, we have to use `useRef()` approach.
  */
-const ParticipantVideo = ({participant, mute}: ParticipantVideoProps): JSX.Element => {
+const ParticipantVideo = ({participant, initMute}: ParticipantVideoProps): JSX.Element => {
   const [videoTracks, setVideoTracks] = useState<Array<VideoTrack>>([]);
   const [audioTracks, setAudioTracks] = useState<Array<AudioTrack>>([]);
+  const [mute, setMute] = useState<boolean>(initMute || true);
 
   useEffect(() => {
     //Note: And a new participant join a Room, he may not have track data yet (track items inside tracks array are still null, but track array is not null)
@@ -75,14 +76,24 @@ const ParticipantVideo = ({participant, mute}: ParticipantVideoProps): JSX.Eleme
     }
   }, [audioTracks]);
 
+  const onMuteControl = () => {
+    setMute(!mute);
+  }
+
   const videoRef = useRef() as React.MutableRefObject<HTMLVideoElement>;
   const audioRef = useRef() as React.MutableRefObject<HTMLAudioElement>;
+
 
   return (
     <div className={'participant'}>
       <div className={'participant-name'}>{participant.identity}</div>
       <video ref={videoRef} autoPlay={true} className={'participant-video'}/>
       <audio ref={audioRef} autoPlay={true} muted={mute}/>
+
+      <button className={'participant-controller-button'} onClick={onMuteControl}>
+        <i hidden={!mute} className="bi bi-mic"></i>
+        <i hidden={mute} className="bi bi-mic-mute"></i>
+      </button>
     </div>
   );
 };
