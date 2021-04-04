@@ -9,7 +9,6 @@ export interface VideoRoomCallProps {
 
 const VideoRoomCall = ({room}: VideoRoomCallProps): JSX.Element => {
     const [remoteParticipants, setRemoteParticipants] = useState<Array<Participant>>(arrayHelper.toDefinedArray(room?.participants.values()));
-    const [localParticipantMute, setLocalParticipantMute] = useState<boolean>(true);
 
     useEffect(() => {
       const onParticipantConnected = (participant: Participant) => {
@@ -43,48 +42,17 @@ const VideoRoomCall = ({room}: VideoRoomCallProps): JSX.Element => {
       </div>
     ));
 
-    const onMuteControl = () => {
-      setLocalParticipantMute(!localParticipantMute);
-    }
 
     return (
       <>
         <div className={'row local-participant pb-3'}>
           <div className={'col-12'}>
-            {room && <ParticipantVideo key={room?.localParticipant.sid} participant={room.localParticipant} mute={localParticipantMute}/>}
-          </div>
-          <div className={'col-12  pt-3'}>
-            <button className={'local-participant-controller-button'} onClick={onMuteControl}>
-              <i hidden={!localParticipantMute} className="bi bi-mic"></i>
-              <i hidden={localParticipantMute} className="bi bi-mic-mute"></i>
-            </button>
+            {room && <ParticipantVideo key={room?.localParticipant.sid} participant={room.localParticipant} isLocalParticipant={true}/>}
           </div>
         </div>
 
-        <div className={'row remote-participants pt-3'}>
+        <div className={'row remote-participants'}>
           {remoteParticipantsComponent}
-          {room?.participants.size && room?.participants.size > 0 && <>
-              <div className={'col-3'}>
-                  <div className={'participant'}>
-                      <div className={'participant-name'}>User02</div>
-                      <video autoPlay={true} className={'participant-video'}/>
-                  </div>
-              </div>
-              <div className={'col-3'}>
-                  <div className={'participant'}>
-                      <div className={'participant-name'}>User03</div>
-                      <video autoPlay={true} className={'participant-video'}/>
-                  </div>
-              </div>
-              <div className={'col-3'}>
-                  <div className={'participant'}>
-                      <div className={'participant-name'}>User04</div>
-                      <video autoPlay={true} className={'participant-video'}/>
-                  </div>
-              </div>
-          </>
-          }
-
         </div>
       </>
     );

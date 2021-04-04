@@ -39,9 +39,14 @@
     /*border: 5px solid #777;*/
     /*border-radius: 5px;*/
 }
-.participant-name {
+.participant-header {
     color: #EEE;
+    padding-top: 10px;
     padding-bottom: 10px;
+}
+.participant-name {
+    padding-right: 10px;
+    padding-left: 10px;
 }
 .participant-video {
     width: 100%;
@@ -49,8 +54,10 @@
     margin-bottom: -5px;
 }
 
-.local-participant-controller-button {
+.participant-controller-button {
     color: #EEEEEE;
     background-color: transparent;
     border: 0;
+    padding-left: 10px;
+    padding-right: 10px;
 }

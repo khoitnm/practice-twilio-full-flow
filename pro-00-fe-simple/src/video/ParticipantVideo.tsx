@@ -1,5 +1,13 @@
 import React, {useEffect, useRef, useState} from "react";
-import {AudioTrack, Participant, VideoTrack} from "twilio-video";
+import {
+  AudioTrack,
+  AudioTrackPublication,
+  LocalAudioTrack,
+  LocalAudioTrackPublication, LocalVideoTrack, LocalVideoTrackPublication,
+  Participant, Track, TrackPublication,
+  VideoTrack,
+  VideoTrackPublication
+} from "twilio-video";
 import mediaTrackHelper from "./MediaTrackHelper";
 import arrayHelper from "../common/util/ArrayHelper";
 
@@ -8,7 +16,7 @@ const TRACK_KIND_AUDIO = 'audio';
 
 export interface ParticipantVideoProps {
   participant: Participant,
-  mute?: boolean
+  isLocalParticipant?: boolean
 }
 
 /**
@@ -17,9 +25,11 @@ export interface ParticipantVideoProps {
  * With video, if we want to bind a videoTrack to <video> dom, we have to use something like {@link VideoTrack}.attach('#domId').
  * With ReactJS, we have to use `useRef()` approach.
  */
-const ParticipantVideo = ({participant, mute}: ParticipantVideoProps): JSX.Element => {
+const ParticipantVideo = ({participant, isLocalParticipant}: ParticipantVideoProps): JSX.Element => {
   const [videoTracks, setVideoTracks] = useState<Array<VideoTrack>>([]);
   const [audioTracks, setAudioTracks] = useState<Array<AudioTrack>>([]);
+  const [mute, setMute] = useState<boolean>(!isLocalParticipant);
+  const [videoDisplay, setVideoDisplay] = useState<boolean>(true);
 
   useEffect(() => {
     //Note: And a new participant join a Room, he may not have track data yet (track items inside tracks array are still null, but track array is not null)
@@ -75,14 +85,55 @@ const ParticipantVideo = ({participant, mute}: ParticipantVideoProps): JSX.Eleme
     }
   }, [audioTracks]);
 
+  const onMuteControl = () => {
+    if (!isLocalParticipant) return;
+    const updatedMediaTracks = controlMediaTracks(audioTracks, !mute);
+    setAudioTracks(updatedMediaTracks as Array<AudioTrack>);
+    setMute(!mute);
+  }
+
+  const onVideoControl = () => {
+    if (!isLocalParticipant) return;
+    const updatedMediaTracks = controlMediaTracks(videoTracks, !videoDisplay);
+    setVideoTracks(updatedMediaTracks as Array<VideoTrack>);
+    setVideoDisplay(!videoDisplay);
+  }
+
+  const controlMediaTracks = (tracks: Array<AudioTrack | VideoTrack>, newState: boolean): Array<AudioTrack | VideoTrack> => {
+    const newTrack: Array<AudioTrack | VideoTrack> = [];
+    tracks.forEach((track: AudioTrack | VideoTrack) => {
+      let localTrack = track as LocalAudioTrack | LocalVideoTrack;
+      if (newState) {
+        localTrack = localTrack.enable();
+      } else {
+        localTrack = localTrack.disable();
+      }
+      newTrack.push(localTrack);
+    });
+    return newTrack;
+  }
+
+
   const videoRef = useRef() as React.MutableRefObject<HTMLVideoElement>;
   const audioRef = useRef() as React.MutableRefObject<HTMLAudioElement>;
 
+
   return (
     <div className={'participant'}>
-      <div className={'participant-name'}>{participant.identity}</div>
+      <div className={'participant-header'}>
+        <span className={'participant-name'}>{participant.identity}</span>
+
+        <button hidden={!isLocalParticipant} className={'participant-controller-button'} onClick={onMuteControl}>
+          <i hidden={!mute} className="bi bi-mic"></i>
+          <i hidden={mute} className="bi bi-mic-mute"></i>
+        </button>
+        <button hidden={!isLocalParticipant} className={'participant-controller-button'} onClick={onVideoControl}>
+          <i hidden={!videoDisplay} className="bi bi-camera-video"></i>
+          <i hidden={videoDisplay} className="bi bi-camera-video-off"></i>
+        </button>
+      </div>
       <video ref={videoRef} autoPlay={true} className={'participant-video'}/>
-      <audio ref={audioRef} autoPlay={true} muted={mute || true}/>
+      <audio ref={audioRef} autoPlay={true} muted={mute}/>
     </div>
   );
 };
