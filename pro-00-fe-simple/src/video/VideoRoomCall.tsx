@@ -49,33 +49,10 @@ const VideoRoomCall = ({room}: VideoRoomCallProps): JSX.Element => {
           <div className={'col-12'}>
             {room && <ParticipantVideo key={room?.localParticipant.sid} participant={room.localParticipant} isLocalParticipant={true}/>}
           </div>
-
         </div>
 
-        <div className={'row remote-participants pt-3'}>
+        <div className={'row remote-participants'}>
           {remoteParticipantsComponent}
-          {room?.participants.size && room?.participants.size > 0 && <>
-              <div className={'col-3'}>
-                  <div className={'participant'}>
-                      <div className={'participant-name'}>User02</div>
-                      <video autoPlay={true} className={'participant-video'}/>
-                  </div>
-              </div>
-              <div className={'col-3'}>
-                  <div className={'participant'}>
-                      <div className={'participant-name'}>User03</div>
-                      <video autoPlay={true} className={'participant-video'}/>
-                  </div>
-              </div>
-              <div className={'col-3'}>
-                  <div className={'participant'}>
-                      <div className={'participant-name'}>User04</div>
-                      <video autoPlay={true} className={'participant-video'}/>
-                  </div>
-              </div>
-          </>
-          }
-
         </div>
       </>
     );

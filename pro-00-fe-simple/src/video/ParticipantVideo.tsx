@@ -120,18 +120,22 @@ const ParticipantVideo = ({participant, isLocalParticipant}: ParticipantVideoPro
 
   return (
     <div className={'participant'}>
-      <div className={'participant-name'}>{participant.identity}</div>
+      <div className={'participant-header'}>
+        <span className={'participant-name'}>{participant.identity}</span>
+
+        <button hidden={!isLocalParticipant} className={'participant-controller-button'} onClick={onMuteControl}>
+          <i hidden={!mute} className="bi bi-mic"></i>
+          <i hidden={mute} className="bi bi-mic-mute"></i>
+        </button>
+        <button hidden={!isLocalParticipant} className={'participant-controller-button'} onClick={onVideoControl}>
+          <i hidden={!videoDisplay} className="bi bi-camera-video"></i>
+          <i hidden={videoDisplay} className="bi bi-camera-video-off"></i>
+        </button>
+      </div>
       <video ref={videoRef} autoPlay={true} className={'participant-video'}/>
       <audio ref={audioRef} autoPlay={true} muted={false}/>
 
-      <button hidden={!isLocalParticipant} className={'participant-controller-button'} onClick={onMuteControl}>
-        <i hidden={!mute} className="bi bi-mic"></i>
-        <i hidden={mute} className="bi bi-mic-mute"></i>
-      </button>
-      <button hidden={!isLocalParticipant} className={'participant-controller-button'} onClick={onVideoControl}>
-        <i hidden={!videoDisplay} className="bi bi-camera-video"></i>
-        <i hidden={videoDisplay} className="bi bi-camera-video-off"></i>
-      </button>
+
     </div>
   );
 };
