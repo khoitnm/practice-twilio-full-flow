@@ -56,10 +56,10 @@ const VideoRoomStarter = ({
           Join
         </button>
         <div hidden={!isJoinedVideo} className="btn-group w-100" role="group" aria-label="Basic example">
-          <button onClick={onLeaveVideoCall} className={'btn btn-primary'}>
+          <button onClick={onLeaveVideoCall} className={'btn btn-primary'} title={"Leave Video Room. Other Participants still continue normally."}>
             Leave
           </button>
-          <button onClick={onEndVideoCall} hidden={!isJoinedVideo} className={'btn btn-danger'}>
+          <button onClick={onEndVideoCall} hidden={!isJoinedVideo} className={'btn btn-danger'} title={"Close Video call for ALL Participants."}>
             End
           </button>
         </div>

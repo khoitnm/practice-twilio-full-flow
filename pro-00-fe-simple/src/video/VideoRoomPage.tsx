@@ -110,6 +110,7 @@ const VideoRoomPage = (): JSX.Element => {
 
   const onChangeInputUsername = (event: ChangeEvent<HTMLInputElement>): void => {
     setInputUsername(event.target.value);
+    setAccessToken(undefined);
   }
   const onChangeInputRoomName = (event: ChangeEvent<HTMLInputElement>): void => {
     setInputRoomName(event.target.value);

@@ -133,7 +133,7 @@ const ParticipantVideo = ({participant, isLocalParticipant}: ParticipantVideoPro
         </button>
       </div>
       <video ref={videoRef} autoPlay={true} className={'participant-video'}/>
-      <audio ref={audioRef} autoPlay={true} muted={mute}/>
+      <audio ref={audioRef} autoPlay={true} muted={true}/>
     </div>
   );
 };
