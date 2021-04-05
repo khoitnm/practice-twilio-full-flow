@@ -1,13 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
-import {
-  AudioTrack,
-  AudioTrackPublication,
-  LocalAudioTrack,
-  LocalAudioTrackPublication, LocalVideoTrack, LocalVideoTrackPublication,
-  Participant, Track, TrackPublication,
-  VideoTrack,
-  VideoTrackPublication
-} from "twilio-video";
+import {AudioTrack, LocalAudioTrack, LocalVideoTrack, Participant, VideoTrack} from "twilio-video";
 import mediaTrackHelper from "./MediaTrackHelper";
 import arrayHelper from "../common/util/ArrayHelper";
 

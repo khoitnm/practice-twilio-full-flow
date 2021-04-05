@@ -72,8 +72,6 @@ const VideoRoomPage = (): JSX.Element => {
     return () => {
       window.removeEventListener("pagehide", closeRoomResources);
       window.removeEventListener("beforeunload", closeRoomResources);
-    };
-    return () => {
       //Don't remove all listeners because other listeners could be subscribed by other React Components.
       room?.off("disconnected", onRoomEnd);
     };
@@ -81,8 +79,9 @@ const VideoRoomPage = (): JSX.Element => {
 
   // Logic for VideoRoomStarter: Begin //////////////////////////////////////////////////////////////////
   const onStartVideoRoom = async () => {
-    // Don't reuse the old accessToken because it could be expired.
-    let existToken: string = await backendTwilioAccessClient.createAccessToken(inputUsername);
+    //Have to reuse accessToken to avoid conflict with other connecting accessToken.
+    //TODO need to recheck whether the current accessToken is expired or not.
+    let existToken: string = accessToken || await backendTwilioAccessClient.createAccessToken(inputUsername);
     setAccessToken(existToken);
     const joinedRoom = await twilioVideoClient.joinOrStartRoom(existToken, inputRoomName);
     setRoom(joinedRoom);
