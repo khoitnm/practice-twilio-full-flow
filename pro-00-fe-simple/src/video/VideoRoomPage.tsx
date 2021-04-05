@@ -81,7 +81,8 @@ const VideoRoomPage = (): JSX.Element => {
 
   // Logic for VideoRoomStarter: Begin //////////////////////////////////////////////////////////////////
   const onStartVideoRoom = async () => {
-    let existToken: string = accessToken || await backendTwilioAccessClient.createAccessToken(inputUsername);
+    // Don't reuse the old accessToken because it could be expired.
+    let existToken: string = await backendTwilioAccessClient.createAccessToken(inputUsername);
     setAccessToken(existToken);
     const joinedRoom = await twilioVideoClient.joinOrStartRoom(existToken, inputRoomName);
     setRoom(joinedRoom);
