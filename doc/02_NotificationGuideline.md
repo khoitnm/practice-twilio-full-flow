@@ -16,7 +16,11 @@ So the conclusion is:
         - Trigger Room End in back-end: [VideoController.endVideoRoom()](../pro-00-be-simple/src/main/java/org/tnmk/practicetwiliofullflow/pro00besimple/video/VideoController.java)
         - Event Listener [VideoRoomPage.onRoomEnd()](../pro-00-fe-simple/src/video/VideoRoomPage.tsx)
         - Document: https://www.twilio.com/docs/video/api/rooms-resource?code-sample=code-complete-a-room&code-language=Java&code-sdk-version=8.x
-
+    - Reconnection:
+      When a user is disconnected (because of network, for example), he could be automatically reconnected within a short time frame (30 seconds, for example).
+      However, if he's disconnected for a longer time, it cannot be reconnected automatically anymore.
+        - Event Listener when reconnecting fails: [VideoRoomPage.onRoomEnd()](../pro-00-fe-simple/src/video/VideoRoomPage.tsx)
+        - Document: https://www.twilio.com/docs/video/reconnection-states-and-events
 
 Therefore, we may need to research about other notification solutions:
 - https://www.twilio.com/docs/notify/send-notifications
