@@ -11,6 +11,9 @@ import VideoRoomBE from "../common/twilio/video/VideoRoomBE";
 import {TwilioError} from "twilio-video/tsdef/TwilioError";
 
 const CODE_ROOM_END = 53118;
+const CODE_RECONNECT_FAIL__EXPIRE_ACCESS_TOKEN = 20104;
+const CODE_RECONNECT_FAIL__ATTEMPTS_EXHAUST = 53000;
+const CODE_RECONNECT_FAIL__TOO_LONG = 53204;
 
 const createInitUsername = () => {
   let currentUserIdStr = localStorage.getItem('currentUserId');
@@ -38,12 +41,20 @@ const VideoRoomPage = (): JSX.Element => {
 
   useEffect(() => {
     const onRoomEnd = (room: Room, error: TwilioError) => {
-      if (!error || error.code == CODE_ROOM_END) {
+      if (!error || error.code === CODE_ROOM_END) {
         alert(`Room ${room.name} is ended.`)
-//         setRoom(undefined);
+        setRoom(undefined);
+      } else if (error.code === CODE_RECONNECT_FAIL__EXPIRE_ACCESS_TOKEN) {
+        alert('Signaling reconnection failed due to expired AccessToken!');
+      } else if (error.code === CODE_RECONNECT_FAIL__ATTEMPTS_EXHAUST) {
+        alert('Signaling reconnection attempts exhausted!');
+      } else if (error.code === CODE_RECONNECT_FAIL__TOO_LONG) {
+        alert('Signaling reconnection took too long!');
       } else {
         alert(`Room ${room.name} is ended unexpected. Error: ${JSON.stringify(error)}`)
       }
+
+      console.log(`Room ${room.name} ended: ${JSON.stringify(error, null, 2)}`);// pretty print.
     };
     const closeRoomResources = () => {
       if (room) {
