@@ -15,7 +15,7 @@ public class ConversationServiceTest extends BaseIntegrationTest {
 
   @Test()
   public void whenCreateAConversation_returnAConversationResult() {
-    Conversation conversation = conversationService.createConversation("TestConversation");
+    Conversation conversation = conversationService.createConversation();
     Assertions.assertNotNull(conversation.getSid());
     //No exception
   }

@@ -10,7 +10,7 @@ public class TwilioProperties {
   private String accountSid;
   private String apiKey;
   private String apiSecret;
-  private String serviceSid;
+  private String conversationServiceSid;
 
   public String getAccountSid() {
     return accountSid;
@@ -36,11 +36,11 @@ public class TwilioProperties {
     this.apiSecret = apiSecret;
   }
 
-  public String getServiceSid() {
-    return serviceSid;
+  public String getConversationServiceSid() {
+    return conversationServiceSid;
   }
 
-  public void setServiceSid(String serviceSid) {
-    this.serviceSid = serviceSid;
+  public void setConversationServiceSid(String conversationServiceSid) {
+    this.conversationServiceSid = conversationServiceSid;
   }
 }

@@ -19,11 +19,10 @@ public class ConversationService {
     this.twilioProperties = twilioProperties;
   }
 
-  public Conversation createConversation(String friendlyName) {
+  public Conversation createConversation() {
     Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
     try {
-      Conversation conversation = Conversation.creator(twilioProperties.getServiceSid())
-          .setFriendlyName(friendlyName).create();
+      Conversation conversation = Conversation.creator(twilioProperties.getConversationServiceSid()).create();
       logger.info("Created conversation {}", conversation.getSid());
       return conversation;
     } catch (Exception ex) {

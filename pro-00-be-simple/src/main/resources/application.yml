@@ -8,4 +8,4 @@ twilio:
   apiKey: ${TWILIO_API_KEY}
   apiSecret: ${TWILIO_API_SECRET}
   #To be able to support conversations across organizations, we only use one serviceSid for the whole application.
-  serviceSid: ${TWILIO_CHAT_SERVICE_SID}
+  conversationServiceSid: ${TWILIO_CHAT_SERVICE_SID}
