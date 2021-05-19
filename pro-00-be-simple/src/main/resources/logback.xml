@@ -9,6 +9,6 @@
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
     </root>
-<!--    <logger name="org.springframework" level="OFF"/>-->
+<!--    <logger name="com.twilio.http" level="ERROR"/>-->
     <logger name="org.springframework.boot.test.context.SpringBootTestContextBootstrapper" level="OFF"/>
 </configuration>

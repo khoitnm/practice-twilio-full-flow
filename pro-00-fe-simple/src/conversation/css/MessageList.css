@@ -1,0 +1,32 @@
+
+.messages {
+    padding-left: 40px;
+}
+
+.message {
+    padding-top: 10px;
+}
+.message-icon {
+    padding-right: 10px;
+}
+.message-payload {
+    padding-left: 10px;
+    border-left: 2px solid #EEEEEE;
+    border-top: 1px solid rgba(0,0,0,0.02);
+}
+.message-author {
+    padding-top: 5px;
+}
+
+.message-author-name {
+    font-weight: bold;
+}
+
+.message-author-time {
+    padding-left: 20px;
+    color: #999;
+}
+
+.message-content {
+    padding-bottom: 5px;
+}

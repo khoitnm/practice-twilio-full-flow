@@ -1,19 +1,17 @@
 package org.tnmk.practicetwiliofullflow.pro00besimple.video;
 
-import com.twilio.rest.video.v1.Room;
-
 public class VideoRoom {
-  private String roomSid;
+  private String sid;
   private String uniqueName;
   private String roomType;
   private String status;
 
-  public String getRoomSid() {
-    return roomSid;
+  public String getSid() {
+    return sid;
   }
 
-  public void setRoomSid(String roomSid) {
-    this.roomSid = roomSid;
+  public void setSid(String sid) {
+    this.sid = sid;
   }
 
   public String getUniqueName() {

@@ -5,7 +5,9 @@ import com.twilio.jwt.accesstoken.ChatGrant;
 import com.twilio.jwt.accesstoken.Grant;
 import com.twilio.jwt.accesstoken.VideoGrant;
 import com.twilio.jwt.accesstoken.VoiceGrant;
+import com.twilio.rest.conversations.v1.User;
 import org.springframework.stereotype.Service;
+import org.tnmk.practicetwiliofullflow.pro00besimple.conversation.UserService;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,22 +19,30 @@ public class TwilioAccessService {
 
   private final List<Grant> defaultGrants;
 
-  public TwilioAccessService(TwilioProperties twilioProperties) {
+  private final UserService userService;
+
+  public TwilioAccessService(TwilioProperties twilioProperties, UserService userService) {
     this.twilioProperties = twilioProperties;
-    this.defaultGrants = getDefaultGrants(twilioProperties.getServiceSid());
+    this.defaultGrants = getDefaultGrants(twilioProperties.getConversationServiceSid());
+    this.userService = userService;
   }
 
   /**
-   * @param userId
+   * @param userIdentity
    * @return all necessary information for client app to call Twilio requests
    * @see TwilioAccessInfo
    */
-  public TwilioAccessInfo createTwilioAccessInfo(String userId) {
+  public TwilioAccessInfo createTwilioAccessInfo(String userIdentity) {
+//    User user = userService.getUser(userIdentity);
+//    if (user == null) {
+//      userService.createUser(userIdentity);
+//    }
+
     AccessToken token = new AccessToken.Builder(
         twilioProperties.getAccountSid(),
         twilioProperties.getApiKey(),
         twilioProperties.getApiSecret()
-    ).identity(userId).grants(defaultGrants).build();
+    ).identity(userIdentity).grants(defaultGrants).build();
     return new TwilioAccessInfo(token.toJwt());
   }
 
@@ -40,9 +50,9 @@ public class TwilioAccessService {
    * TODO At this moment, we only provide ChatGrant.
    *   In the future, we may provide more grants such as {@link VideoGrant}, {@link VoiceGrant}.
    */
-  private List<Grant> getDefaultGrants(String serviceSid) {
+  private List<Grant> getDefaultGrants(String conversationServiceSid) {
     ChatGrant chatGrant = new ChatGrant();
-    chatGrant.setServiceSid(serviceSid);
+    chatGrant.setServiceSid(conversationServiceSid);
 
     VideoGrant videoGrant = new VideoGrant();
 

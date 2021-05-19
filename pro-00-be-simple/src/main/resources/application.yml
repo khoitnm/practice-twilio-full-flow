@@ -9,3 +9,23 @@ twilio:
   apiSecret: ${TWILIO_API_SECRET}
   #To be able to support conversations across organizations, we only use one serviceSid for the whole application.
   conversationServiceSid: ${TWILIO_CHAT_SERVICE_SID}
+spring:
+  jackson:
+    # This will help to convert string format to ZonedDateTime.
+    date-format: com.fasterxml.jackson.databind.util.StdDateFormat
+
+    # This time-zone only works with java.util.Date or the java.util.Calendar.
+    # It doesn't work with Java 8 date types, like LocalDate, LocalDateTime, etc.
+    time-zone: UTC
+
+    # View more in {@link SerializationFeature}
+    serialization:
+      # "birthDate":1505736233603                   //write-dates-as-timestamps = true
+      # "birthDate":"2017-09-18T12:04:27.345+0000"  //write-dates-as-timestamps = false
+      WRITE_DATES_AS_TIMESTAMPS: false
+
+
+    deserialization:
+      # https://stackoverflow.com/questions/59097664/timezone-of-zoneddatetime-changed-to-utc-during-auto-conversion-of-requestbody-w
+#      adjust-dates-to-context-time-zone: false
+      ADJUST_DATES_TO_CONTEXT_TIME_ZONE: false

@@ -4,13 +4,18 @@ import com.twilio.Twilio;
 import com.twilio.base.Page;
 import com.twilio.exception.ApiException;
 import com.twilio.rest.video.v1.Room;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.tnmk.practicetwiliofullflow.pro00besimple.common.utils.JsonUtils;
 import org.tnmk.practicetwiliofullflow.pro00besimple.twilioaccess.TwilioProperties;
 
+import java.lang.invoke.MethodHandles;
 import java.util.List;
 
 @Service
 public class VideoService {
+  private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
   private final TwilioProperties twilioProperties;
 
@@ -43,7 +48,19 @@ public class VideoService {
 
   public VideoRoom endVideo(String roomSid) {
     Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
-    Room room = Room.updater(roomSid, Room.RoomStatus.COMPLETED).update();
-    return VideoRoomMapper.toVideoRoom(room);
+    try {
+      Room beforeEndingRoom = Room.fetcher(roomSid).fetch();
+      VideoRoom videoRoom = VideoRoomMapper.toVideoRoom(beforeEndingRoom);
+      logger.info("Room before ending: {}", JsonUtils.toJsonString(videoRoom));
+
+      Room room = Room.updater(roomSid, Room.RoomStatus.COMPLETED).update();
+      return VideoRoomMapper.toVideoRoom(room);
+    } catch (ApiException ex) {
+      Room room = Room.fetcher(roomSid).fetch();
+      VideoRoom videoRoom = VideoRoomMapper.toVideoRoom(room);
+      throw new IllegalStateException("Cannot end the room " + roomSid +
+          ".\n Room details: " + JsonUtils.toJsonString(videoRoom) +
+          ".\n Root cause: " + ex.getMessage(), ex);
+    }
   }
 }

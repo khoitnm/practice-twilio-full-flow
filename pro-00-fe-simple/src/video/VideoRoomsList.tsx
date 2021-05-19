@@ -1,8 +1,8 @@
 import React from "react";
-import VideoRoomBE from "../common/twilio/video/VideoRoomBE";
+import BeVideoRoom from "../common/twilio/video/BeVideoRoom";
 
 export interface VideoRoomsListProps {
-  rooms: Array<VideoRoomBE>
+  rooms: Array<BeVideoRoom>
 }
 
 const VideoRoomsList = ({rooms}: VideoRoomsListProps): JSX.Element => {

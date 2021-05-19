@@ -31,6 +31,12 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- Common libraries: lang, io, etc. -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+
         <!-- Twilio -->
         <dependency>
             <groupId>com.twilio.sdk</groupId>

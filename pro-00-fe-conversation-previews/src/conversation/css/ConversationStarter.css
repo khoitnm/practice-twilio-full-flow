@@ -1,0 +1,19 @@
+.conversation-starter {
+    border-bottom: 1px solid #05a5c6;
+    color: white;
+    background-color: #0dcaf0;
+}
+
+.conversation-starter input:disabled {
+    background-color: #0dcaf0;
+    border-color: #0abee3;
+}
+.messages-badge {
+    color: #fff200;
+    cursor: pointer;
+}
+
+.messages-badge-text {
+    font-style: normal;
+    /*color: white;*/
+}

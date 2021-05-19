@@ -7,8 +7,9 @@ import java.util.List;
 
 public class VideoRoomMapper {
   public static VideoRoom toVideoRoom(Room room) {
+    if (room == null) return null;
     VideoRoom videoResponse = new VideoRoom();
-    videoResponse.setRoomSid(room.getSid());
+    videoResponse.setSid(room.getSid());
     videoResponse.setUniqueName(room.getUniqueName());
     videoResponse.setRoomType(room.getType().toString());
     videoResponse.setStatus(room.getStatus().toString());

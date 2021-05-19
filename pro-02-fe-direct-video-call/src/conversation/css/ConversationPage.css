@@ -1,0 +1,28 @@
+.conversations-list {
+    background-color: #0dcaf0;
+    padding-top: 20px;
+    border-right: 1px solid rgba(0, 0, 0, 0.2);
+}
+.conversation-item-name {
+    font-size: small;
+    font-weight: lighter;
+    color: rgba(255,255,255, 0.8);
+}
+.remote-user-item {
+    color: white;
+    background-color: transparent;
+    border: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    cursor: pointer;
+}
+
+.remote-user-item:hover {
+    color: black;
+    /*background-color: #FFF;*/
+    background-color: #09b3d6;
+}
+
+.button-group-input {
+    cursor: pointer;
+}

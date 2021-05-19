@@ -1,0 +1,15 @@
+.navigation-header {
+    background-color: #333333;
+}
+.navigation-icon {
+    color: white;
+    font-size: larger;
+}
+.navigation-item {
+    color: #0dcaf0;
+    font-size: large;
+    text-decoration: none;
+}
+.navigation-item:hover {
+    color: #09b3d6;
+}

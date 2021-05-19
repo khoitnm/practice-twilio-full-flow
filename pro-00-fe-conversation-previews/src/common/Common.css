@@ -1,0 +1,41 @@
+
+.simple-button {
+    vertical-align: middle;
+    border-radius: 5px;
+    padding: .375rem .75rem;
+}
+
+.simple-sibling-button {
+    vertical-align: middle;
+    padding: .375rem .75rem;
+}
+.simple-sibling-button:first-child {
+    border-radius: 5px 0px 0px 5px;
+}
+.simple-sibling-button:last-child {
+    border-radius: 0px 5px 5px 0px;
+}
+
+.simple-bottom-button {
+    vertical-align: middle;
+    border-radius: 0px 0px 5px 5px;
+    padding: .375rem .75rem;
+}
+
+.simple-button-dark {
+    color: #EEEEEE;
+    background-color: #111111;
+    border: 0px;
+}
+
+.simple-button-alert {
+    color: #EEEEEE;
+    background-color: #dc3545;
+    border: 0px;
+}
+
+.simple-button-highlight {
+    color: #EEEEEE;
+    background-color: #0abee3;
+    border: 0px;
+}

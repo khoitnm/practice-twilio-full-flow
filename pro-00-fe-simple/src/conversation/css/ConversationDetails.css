@@ -1,0 +1,19 @@
+
+.conversation-header {
+    padding: 20px;
+    background-color: #DDDDDD;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.conversation-header-remote-user {
+    font-size: x-large;
+    font-weight: bold;
+    padding-right: 20px;
+}
+
+.conversation-header-conversation-id {
+    font-weight: lighter;
+    color: #555;
+}
+
+

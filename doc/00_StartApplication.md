@@ -29,12 +29,12 @@ After that, you'll see in the log that the server is starting at the port: 8080
 
 # Client (Web App)
 
-Build project with the command line from folder `pro-00-fe-simple`
+Build project with the command line from folder `pro-01-fe-simple`
 ``` 
 npm install
 ```
 
-Start project (from folder `pro-00-fe-simple`)
+Start project (from folder `pro-01-fe-simple`)
 ``` 
 npm start
 ```

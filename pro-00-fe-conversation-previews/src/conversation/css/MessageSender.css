@@ -1,0 +1,17 @@
+.new-message-editor-input {
+    padding-left: 40px;
+    padding-top: 20px;
+}
+
+.new-message-editor-buttons {
+    padding-left: 40px;
+    padding-bottom: 20px;
+}
+
+.message-editor-button {
+    color: #333;
+    background-color: transparent;
+    border: 0;
+    padding-left: 10px;
+    padding-right: 10px;
+}
