@@ -1,11 +1,8 @@
 package org.tnmk.practicetwiliofullflow.pro00besimple.conversation;
 
 import com.twilio.rest.conversations.v1.User;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -14,7 +11,6 @@ import org.tnmk.practicetwiliofullflow.pro00besimple.testinfra.JsonHelper;
 
 import java.util.Arrays;
 
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -40,6 +36,7 @@ class MessageContractTest extends BaseIntegrationTest {
     // Conversation
     ConversationCreationRequest conversationCreationRequest = new ConversationCreationRequest(
         "conversation" + System.nanoTime(),
+        "conversation display name" + System.nanoTime(),
         Arrays.asList(user01.getIdentity(), user02.getIdentity()));
     ConversationCreationResult result = conversationService.createConversation(conversationCreationRequest);
 

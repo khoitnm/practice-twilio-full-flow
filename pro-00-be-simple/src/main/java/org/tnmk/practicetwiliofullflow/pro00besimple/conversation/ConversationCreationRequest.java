@@ -1,32 +1,17 @@
 package org.tnmk.practicetwiliofullflow.pro00besimple.conversation;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+
 import java.util.List;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class ConversationCreationRequest {
   private String uniqueName;
+  private String displayName;
   private List<String> participantIdentities;
-
-  public ConversationCreationRequest() {
-  }
-
-  public ConversationCreationRequest(String uniqueName, List<String> participantIdentities) {
-    this.uniqueName = uniqueName;
-    this.participantIdentities = participantIdentities;
-  }
-
-  public String getUniqueName() {
-    return uniqueName;
-  }
-
-  public void setUniqueName(String uniqueName) {
-    this.uniqueName = uniqueName;
-  }
-
-  public void setParticipantIdentities(List<String> participantIdentities) {
-    this.participantIdentities = participantIdentities;
-  }
-
-  public List<String> getParticipantIdentities() {
-    return participantIdentities;
-  }
 }

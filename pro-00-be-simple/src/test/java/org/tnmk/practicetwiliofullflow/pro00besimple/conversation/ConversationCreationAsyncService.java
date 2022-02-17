@@ -5,14 +5,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
-import org.springframework.util.concurrent.ListenableFutureTask;
 
 import java.lang.invoke.MethodHandles;
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
 
 @Service
 public class ConversationCreationAsyncService {
@@ -21,23 +18,22 @@ public class ConversationCreationAsyncService {
   @Autowired
   private ConversationService conversationService;
 
-
   @Async
   public CompletableFuture<ConversationCreationResult> createConversation(User user01, User user02, String uniqueName) {
     ConversationCreationRequest conversationCreationRequest = new ConversationCreationRequest(
-        uniqueName,
+        uniqueName, uniqueName,
         Arrays.asList(user01.getIdentity(), user02.getIdentity()));
 
     ConversationCreationResult result = conversationService.createConversation(conversationCreationRequest);
 
-    sendMessage(user01, result.getConversation().getSid(), "PerformanceTestMessage from "+user01.getIdentity());
-    sendMessage(user02, result.getConversation().getSid(), "PerformanceTestMessage from "+user02.getIdentity());
+    sendMessage(user01, result.getConversation().getSid(), "PerformanceTestMessage from " + user01.getIdentity());
+    sendMessage(user02, result.getConversation().getSid(), "PerformanceTestMessage from " + user02.getIdentity());
     logger.info("Created conversation: {}", uniqueName);
-//    return new AsyncResult<>(result);
+    //    return new AsyncResult<>(result);
     return CompletableFuture.completedFuture(result);
   }
 
-  private void sendMessage(User user01, String conversationSid, String messageBody){
+  private void sendMessage(User user01, String conversationSid, String messageBody) {
     SendMessageRequest sendMessageRequest = new SendMessageRequest();
     sendMessageRequest.setConversationSid(conversationSid);
     sendMessageRequest.setCreatedByUserIdentity(user01.getIdentity());
