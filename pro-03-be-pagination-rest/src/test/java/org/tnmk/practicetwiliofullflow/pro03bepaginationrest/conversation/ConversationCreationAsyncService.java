@@ -38,6 +38,6 @@ public class ConversationCreationAsyncService {
     sendMessageRequest.setConversationSid(conversationSid);
     sendMessageRequest.setCreatedByUserIdentity(user01.getIdentity());
     sendMessageRequest.setMessageBody(messageBody);
-    MessageDto messageResult = conversationService.sendMessage(sendMessageRequest);
+    conversationService.sendMessage(sendMessageRequest);
   }
 }

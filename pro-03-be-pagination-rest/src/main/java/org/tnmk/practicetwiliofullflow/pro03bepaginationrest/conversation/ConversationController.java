@@ -1,5 +1,6 @@
 package org.tnmk.practicetwiliofullflow.pro03bepaginationrest.conversation;
 
+import com.twilio.rest.conversations.v1.conversation.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -27,9 +28,10 @@ public class ConversationController {
 
   @PostMapping("/conversation/message")
   public MessageDto sendMessage(@RequestBody SendMessageRequest request) {
-    MessageDto message = conversationService.sendMessage(request);
+    Message message = conversationService.sendMessage(request);
+
     logger.info("Author {} (participantSid: {}) sent message {}", message.getAuthor(), message.getParticipantSid(), message.getConversationSid());
-    return message;
+    return MessageMapper.toMessageResult(message);
   }
 
   @PatchMapping("/conversation/message")
@@ -37,5 +39,16 @@ public class ConversationController {
     MessageDto message = conversationService.updateMessage(request);
     logger.info("Author {} (participantSid: {}) updated message {}", message.getAuthor(), message.getParticipantSid(), message.getConversationSid());
     return message;
+  }
+
+  @PatchMapping("/conversation/messages")
+  public PageDto<MessageDto> findMessages(@RequestBody FindMessagesRequest request) {
+    //
+    //
+    //    MessageDto message = conversationService.findMessages(request.getConversationSid());
+    //    logger.info("Author {} (participantSid: {}) updated message {}", message.getAuthor(), message.getParticipantSid(), message.getConversationSid());
+    //    return message;
+    // TODO
+    return null;
   }
 }

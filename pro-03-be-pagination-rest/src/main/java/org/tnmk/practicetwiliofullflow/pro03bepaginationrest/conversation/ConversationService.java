@@ -6,6 +6,7 @@ import com.twilio.exception.ApiException;
 import com.twilio.rest.conversations.v1.Conversation;
 import com.twilio.rest.conversations.v1.conversation.Message;
 import com.twilio.rest.conversations.v1.conversation.MessageCreator;
+import com.twilio.rest.conversations.v1.conversation.MessageReader;
 import com.twilio.rest.conversations.v1.conversation.MessageUpdater;
 import com.twilio.rest.conversations.v1.conversation.Participant;
 import com.twilio.rest.conversations.v1.user.UserConversation;
@@ -15,11 +16,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.tnmk.practicetwiliofullflow.pro03bepaginationrest.common.twilio.TwilioErrorCode;
-import org.tnmk.practicetwiliofullflow.pro03bepaginationrest.common.utils.JsonUtils;
 import org.tnmk.practicetwiliofullflow.pro03bepaginationrest.common.twilio.TwilioProperties;
+import org.tnmk.practicetwiliofullflow.pro03bepaginationrest.common.utils.JsonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -29,11 +31,9 @@ public class ConversationService {
 
   public ConversationCreationResult createConversation(ConversationCreationRequest request) {
     Conversation conversation = createConversation(request.getUniqueName(), request.getDisplayName());
-    List<Participant> participants = new ArrayList<>();
-    for (String participantIdentity : request.getParticipantIdentities()) {
-      Participant participant = joinConversation(participantIdentity, conversation.getSid());
-      participants.add(participant);
-    }
+    List<Participant> participants = request.getParticipantIdentities().parallelStream()
+      .map(participantIdentity -> joinConversation(participantIdentity, conversation.getSid()))
+      .collect(Collectors.toList());
     return new ConversationCreationResult(conversation, participants);
   }
 
@@ -93,7 +93,7 @@ public class ConversationService {
     return conversation;
   }
 
-  public MessageDto sendMessage(SendMessageRequest sendMessageRequest) {
+  public Message sendMessage(SendMessageRequest sendMessageRequest) {
     Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
 
     MessageCreator messageCreator = Message.creator(sendMessageRequest.getConversationSid())
@@ -102,8 +102,7 @@ public class ConversationService {
     if (!StringUtils.isEmpty(sendMessageRequest)) {
       messageCreator.setAttributes(JsonUtils.toJsonString(sendMessageRequest.getMessageAttributes()));
     }
-    Message sentMessage = messageCreator.create();
-    return MessageMapper.toMessageResult(sentMessage);
+    return messageCreator.create();
   }
 
   public MessageDto updateMessage(UpdateMessageRequest request) {
@@ -117,5 +116,16 @@ public class ConversationService {
     }
     Message message = updater.update();
     return MessageMapper.toMessageResult(message);
+  }
+
+  public Page<Message> findMessages(String conversationSid, Page<Message> previousPage) {
+    Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
+
+    MessageReader messageReader = Message.reader(conversationSid);
+    if (previousPage == null) {
+      return messageReader.firstPage();
+    } else {
+      return messageReader.nextPage(previousPage);
+    }
   }
 }
