@@ -10,6 +10,7 @@
 
     <modules>
         <module>pro-00-be-simple</module>
+        <module>pro-03-be-pagination-rest</module>
     </modules>
 
     <properties>
