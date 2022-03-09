@@ -7,6 +7,7 @@ import com.twilio.exception.ApiException;
 import com.twilio.rest.conversations.v1.Conversation;
 import com.twilio.rest.conversations.v1.conversation.Message;
 import com.twilio.rest.conversations.v1.conversation.MessageCreator;
+import com.twilio.rest.conversations.v1.conversation.MessageDeleter;
 import com.twilio.rest.conversations.v1.conversation.MessageUpdater;
 import com.twilio.rest.conversations.v1.conversation.Participant;
 import com.twilio.rest.conversations.v1.user.UserConversation;
@@ -142,5 +143,12 @@ public class ConversationService {
     url = url.replace(":pageSize", String.valueOf(pageSize));
     url = url.replace(":itemIndex", String.valueOf(itemIndex));
     return url;
+  }
+
+  public boolean deleteMessage(String conversationSid, String messageSid) {
+    Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
+    MessageDeleter messageDeleter = Message.deleter(conversationSid, messageSid);
+    log.info("[{}] message is deleted from ConversationSid {}", messageSid, conversationSid);
+    return messageDeleter.delete();
   }
 }

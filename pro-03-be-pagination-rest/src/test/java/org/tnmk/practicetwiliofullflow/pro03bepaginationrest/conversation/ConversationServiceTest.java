@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import org.tnmk.practicetwiliofullflow.pro03bepaginationrest.testinfra.BaseIntegrationTest;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -82,9 +83,66 @@ public class ConversationServiceTest extends BaseIntegrationTest {
     }
   }
 
+  @Test
+  public void test_findMessages_afterDeleting() {
+    // GIVEN
+    ConversationCreationResult result = conversationFixture.randomConversationWithParticipants(2);
+    Conversation conversation = result.getConversation();
+    Participant firstParticipant = result.getParticipants().get(0);
+
+    int messagesCount = 4;
+    int pageSize = 2;
+    try {
+
+      List<Message> messages = messageFixture.createMessages(conversation.getSid(), firstParticipant.getIdentity(), messagesCount);
+      logMessages("Given Messages", messages);
+
+      // WHEN
+      Page<Message> page00_BeforeRemoving = conversationService.findMessages(conversation.getSid(), 0, pageSize);
+      Page<Message> page01_BeforeRemoving = conversationService.findMessages(conversation.getSid(), 1, pageSize);
+      Message firstMessageInPage00 = page00_BeforeRemoving.getRecords().get(0);
+
+      conversationService.deleteMessage(conversation.getSid(), firstMessageInPage00.getSid());
+      Page<Message> page00_AfterRemoving = conversationService.findMessages(conversation.getSid(), 0, pageSize);
+      Page<Message> page01_AfterRemoving = conversationService.findMessages(conversation.getSid(), 1, pageSize);
+
+      logMessages("page00_BeforeRemoving", page00_BeforeRemoving.getRecords());
+      logMessages("page00_AfterRemoving", page00_AfterRemoving.getRecords());
+      logMessages("page01_BeforeRemoving", page01_BeforeRemoving.getRecords());
+      logMessages("page01_AfterRemoving", page01_AfterRemoving.getRecords());
+
+      // THEN
+      assertMessagesEquals(false, page00_BeforeRemoving.getRecords(), page00_AfterRemoving.getRecords());
+      assertMessagesEquals(true, page01_BeforeRemoving.getRecords(), page01_AfterRemoving.getRecords());
+    } finally {
+      // clean up
+      conversationFixture.cleanUpConversationAndUsers(result);
+    }
+  }
+
+  private void assertMessagesEquals(boolean expectEquals, List<Message> a, List<Message> b) {
+    Assertions.assertEquals(expectEquals,
+        equals(
+            toMessageSids(a),
+            toMessageSids(b)
+        )
+    );
+  }
+
+  private <T> boolean equals(Collection<T> a, Collection<T> b) {
+    if (a.size() != b.size()) {
+      return false;
+    }
+    return a.containsAll(b);
+  }
+
+  public List<String> toMessageSids(List<Message> messages) {
+    return messages.stream().map(Message::getSid).collect(Collectors.toList());
+  }
+
   private void logMessages(String prefixMessage, List<Message> messages) {
     log.info(prefixMessage + "\n\t{}", messages.stream()
-        .map(message -> String.format("[%s]'%s'", message.getIndex(), message.getBody()))
+        .map(message -> String.format("[%s-%s]'%s'", message.getIndex(), message.getSid(), message.getBody()))
         .collect(Collectors.joining("\n\t")));
   }
 }
