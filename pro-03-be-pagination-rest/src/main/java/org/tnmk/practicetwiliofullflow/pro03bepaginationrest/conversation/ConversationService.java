@@ -2,11 +2,11 @@ package org.tnmk.practicetwiliofullflow.pro03bepaginationrest.conversation;
 
 import com.twilio.Twilio;
 import com.twilio.base.Page;
+import com.twilio.base.Reader;
 import com.twilio.exception.ApiException;
 import com.twilio.rest.conversations.v1.Conversation;
 import com.twilio.rest.conversations.v1.conversation.Message;
 import com.twilio.rest.conversations.v1.conversation.MessageCreator;
-import com.twilio.rest.conversations.v1.conversation.MessageReader;
 import com.twilio.rest.conversations.v1.conversation.MessageUpdater;
 import com.twilio.rest.conversations.v1.conversation.Participant;
 import com.twilio.rest.conversations.v1.user.UserConversation;
@@ -27,13 +27,14 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ConversationService {
+  private static final String MESSAGE_URL_PATTERN = "https://conversations.twilio.com/v1/Conversations/:conversationSid/Messages?PageSize=:pageSize&Page=:pageIndex";
   private final TwilioProperties twilioProperties;
 
   public ConversationCreationResult createConversation(ConversationCreationRequest request) {
     Conversation conversation = createConversation(request.getUniqueName(), request.getDisplayName());
     List<Participant> participants = request.getParticipantIdentities().parallelStream()
-      .map(participantIdentity -> joinConversation(participantIdentity, conversation.getSid()))
-      .collect(Collectors.toList());
+        .map(participantIdentity -> joinConversation(participantIdentity, conversation.getSid()))
+        .collect(Collectors.toList());
     return new ConversationCreationResult(conversation, participants);
   }
 
@@ -119,14 +120,22 @@ public class ConversationService {
     return MessageMapper.toMessageResult(message);
   }
 
-  public Page<Message> findMessages(String conversationSid, Page<Message> previousPage) {
+  public Page<Message> findMessages(String conversationSid, int currentPageIndex, int currentPageSize) {
     Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
-
-    MessageReader messageReader = Message.reader(conversationSid);
-    if (previousPage == null) {
+    Reader<Message> messageReader = Message.reader(conversationSid).pageSize(currentPageSize);
+    if (currentPageIndex == 0) {
       return messageReader.firstPage();
     } else {
-      return messageReader.nextPage(previousPage);
+      String targetPageUrl = formatUrlForFindMessages(conversationSid, currentPageIndex, currentPageSize);
+      return messageReader.getPage(targetPageUrl);
     }
+  }
+
+  private String formatUrlForFindMessages(String conversationSid, int pageIndex, int pageSize) {
+    String url = MESSAGE_URL_PATTERN;
+    url = url.replace(":conversationSid", conversationSid);
+    url = url.replace(":pageIndex", String.valueOf(pageIndex));
+    url = url.replace(":pageSize", String.valueOf(pageSize));
+    return url;
   }
 }

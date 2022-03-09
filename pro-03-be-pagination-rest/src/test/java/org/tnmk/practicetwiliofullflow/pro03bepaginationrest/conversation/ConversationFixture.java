@@ -3,6 +3,7 @@ package org.tnmk.practicetwiliofullflow.pro03bepaginationrest.conversation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.tnmk.practicetwiliofullflow.pro03bepaginationrest.testinfra.UniqueTestData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ public class ConversationFixture {
     }
     ConversationCreationRequest conversationCreationRequest = new ConversationCreationRequest(
         "conversation" + System.nanoTime(),
-        "conversation display name" + System.nanoTime(),
+        "conversation display name" + UniqueTestData.uniqueInt(),
         userIdentities);
 
     ConversationCreationResult result = conversationService.createConversation(conversationCreationRequest);

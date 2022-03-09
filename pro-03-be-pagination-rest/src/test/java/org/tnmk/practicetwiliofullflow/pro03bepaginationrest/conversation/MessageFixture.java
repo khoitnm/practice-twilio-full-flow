@@ -3,6 +3,7 @@ package org.tnmk.practicetwiliofullflow.pro03bepaginationrest.conversation;
 import com.twilio.rest.conversations.v1.conversation.Message;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.tnmk.practicetwiliofullflow.pro03bepaginationrest.testinfra.UniqueTestData;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,7 +27,7 @@ public class MessageFixture {
         .conversationSid(conversationSid)
         .createdByUserIdentity(authorIdentity)
         .messageAttributes(null)
-        .messageBody("message body " + System.nanoTime())
+        .messageBody("message body " + UniqueTestData.uniqueInt())
         .build();
     return conversationService.sendMessage(sendMessageRequest);
   }

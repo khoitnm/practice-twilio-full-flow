@@ -13,6 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.tnmk.practicetwiliofullflow.pro03bepaginationrest.testinfra.BaseIntegrationTest;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @ActiveProfiles("test")
@@ -45,21 +46,38 @@ public class ConversationServiceTest extends BaseIntegrationTest {
 
   @Test
   public void test_findMessages() {
+    // GIVEN
     ConversationCreationResult result = conversationFixture.randomConversationWithParticipants(2);
     Conversation conversation = result.getConversation();
     Participant firstParticipant = result.getParticipants().get(0);
+
+    int messagesCount = 3;
+    int pageSize = 2;
     try {
 
-      List<Message> messages = messageFixture.createMessages(conversation.getSid(), firstParticipant.getIdentity(), 1);
+      List<Message> messages = messageFixture.createMessages(conversation.getSid(), firstParticipant.getIdentity(), 3);
+      logMessages("Given Messages", messages);
 
-      Page<Message> messagesPage = conversationService.findMessages(conversation.getSid(), null);
-      String url = messagesPage.getUrl("/");
-//      messagesPage.getNextPageUrl()
+      // WHEN
+      Page<Message> firstPage = conversationService.findMessages(conversation.getSid(), 0, pageSize);
+      Page<Message> nextPage = conversationService.findMessages(conversation.getSid(), 1, pageSize);
 
+      logMessages("First Page", messages);
+      logMessages("Next Page", messages);
+
+      String url = firstPage.getUrl("/");
+
+      // THEN
       log.info("page url: " + url);
+      Assertions.assertEquals(pageSize, firstPage.getRecords().size());
+      Assertions.assertEquals(messagesCount % pageSize, nextPage.getRecords().size());
     } finally {
       // clean up
       conversationFixture.cleanUpConversationAndUsers(result);
     }
+  }
+
+  private void logMessages(String prefixMessage, List<Message> messages) {
+    log.info(prefixMessage + "\n\t{}", messages.stream().map(Message::getBody).collect(Collectors.joining("\n\t")));
   }
 }
