@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ConversationService {
-  private static final String MESSAGE_URL_PATTERN = "https://conversations.twilio.com/v1/Conversations/:conversationSid/Messages?PageSize=:pageSize&Page=:pageIndex";
+  private static final String MESSAGE_URL_PATTERN = "https://conversations.twilio.com/v1/Conversations/:conversationSid/Messages?PageSize=:pageSize&Page=:pageIndex&PageToken=PT:itemIndex";
   private final TwilioProperties twilioProperties;
 
   public ConversationCreationResult createConversation(ConversationCreationRequest request) {
@@ -124,18 +124,23 @@ public class ConversationService {
     Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
     Reader<Message> messageReader = Message.reader(conversationSid).pageSize(currentPageSize);
     if (currentPageIndex == 0) {
-      return messageReader.firstPage();
+
+      Page<Message> page = messageReader.firstPage();
+      return page;
     } else {
       String targetPageUrl = formatUrlForFindMessages(conversationSid, currentPageIndex, currentPageSize);
+      log.debug("Messages targetPageUrl: {}", targetPageUrl);
       return messageReader.getPage(targetPageUrl);
     }
   }
 
   private String formatUrlForFindMessages(String conversationSid, int pageIndex, int pageSize) {
+    int itemIndex = pageIndex * pageSize;
     String url = MESSAGE_URL_PATTERN;
     url = url.replace(":conversationSid", conversationSid);
     url = url.replace(":pageIndex", String.valueOf(pageIndex));
     url = url.replace(":pageSize", String.valueOf(pageSize));
+    url = url.replace(":itemIndex", String.valueOf(itemIndex));
     return url;
   }
 }

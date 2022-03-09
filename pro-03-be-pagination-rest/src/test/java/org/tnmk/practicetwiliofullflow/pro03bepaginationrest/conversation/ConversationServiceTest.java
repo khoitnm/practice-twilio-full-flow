@@ -51,26 +51,31 @@ public class ConversationServiceTest extends BaseIntegrationTest {
     Conversation conversation = result.getConversation();
     Participant firstParticipant = result.getParticipants().get(0);
 
-    int messagesCount = 3;
-    int pageSize = 2;
+    int messagesCount = 8;
+    int pageSize = 3;
     try {
 
-      List<Message> messages = messageFixture.createMessages(conversation.getSid(), firstParticipant.getIdentity(), 3);
+      List<Message> messages = messageFixture.createMessages(conversation.getSid(), firstParticipant.getIdentity(), messagesCount);
       logMessages("Given Messages", messages);
 
       // WHEN
-      Page<Message> firstPage = conversationService.findMessages(conversation.getSid(), 0, pageSize);
-      Page<Message> nextPage = conversationService.findMessages(conversation.getSid(), 1, pageSize);
+      Page<Message> page00 = conversationService.findMessages(conversation.getSid(), 0, pageSize);
+      Page<Message> page01 = conversationService.findMessages(conversation.getSid(), 1, pageSize);
+      Page<Message> page02 = conversationService.findMessages(conversation.getSid(), 2, pageSize);
 
-      logMessages("First Page", messages);
-      logMessages("Next Page", messages);
+      // the pageIndex is too high, there will be no data in this page.
+      Page<Message> pageNoExist = conversationService.findMessages(conversation.getSid(), Integer.MAX_VALUE, pageSize);
 
-      String url = firstPage.getUrl("/");
+      logMessages("page00", page00.getRecords());
+      logMessages("page01", page01.getRecords());
+      logMessages("page02", page02.getRecords());
 
       // THEN
-      log.info("page url: " + url);
-      Assertions.assertEquals(pageSize, firstPage.getRecords().size());
-      Assertions.assertEquals(messagesCount % pageSize, nextPage.getRecords().size());
+      Assertions.assertEquals(pageSize, page00.getRecords().size());
+      Assertions.assertEquals(pageSize, page01.getRecords().size());
+      Assertions.assertEquals(messagesCount % pageSize, page02.getRecords().size());
+      Assertions.assertTrue(pageNoExist.getRecords().isEmpty());
+      Assertions.assertFalse(pageNoExist.hasNextPage());
     } finally {
       // clean up
       conversationFixture.cleanUpConversationAndUsers(result);
@@ -78,6 +83,8 @@ public class ConversationServiceTest extends BaseIntegrationTest {
   }
 
   private void logMessages(String prefixMessage, List<Message> messages) {
-    log.info(prefixMessage + "\n\t{}", messages.stream().map(Message::getBody).collect(Collectors.joining("\n\t")));
+    log.info(prefixMessage + "\n\t{}", messages.stream()
+        .map(message -> String.format("[%s]'%s'", message.getIndex(), message.getBody()))
+        .collect(Collectors.joining("\n\t")));
   }
 }
