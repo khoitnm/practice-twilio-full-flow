@@ -14,6 +14,7 @@ import com.twilio.rest.conversations.v1.user.UserConversation;
 import com.twilio.rest.conversations.v1.user.UserConversationReader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.tnmk.practicetwiliofullflow.pro03bepaginationrest.common.twilio.TwilioErrorCode;
@@ -28,7 +29,10 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ConversationService {
-  private static final String MESSAGE_URL_PATTERN = "https://conversations.twilio.com/v1/Conversations/:conversationSid/Messages?PageSize=:pageSize&Page=:pageIndex&PageToken=PT:itemIndex";
+  // When having itemIndex, we can just ignore the pageIndex.
+  private static final String MESSAGE_URL_PATTERN_WITH_ITEM_INDEX = "https://conversations.twilio.com/v1/Conversations/:conversationSid/Messages?PageSize=:pageSize&PageToken=PT:messageIndex";
+  private static final String MESSAGE_URL_PATTERN_WITH_PAGE_INDEX = "https://conversations.twilio.com/v1/Conversations/:conversationSid/Messages?PageSize=:pageSize&Page=:pageIndex";
+  private static final int DEFAULT_PAGE_SIZE = 50;
   private final TwilioProperties twilioProperties;
 
   public ConversationCreationResult createConversation(ConversationCreationRequest request) {
@@ -121,29 +125,39 @@ public class ConversationService {
     return MessageMapper.toMessageResult(message);
   }
 
-  public Page<Message> findMessages(String conversationSid, int currentPageIndex, int currentPageSize) {
-    Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
-    Reader<Message> messageReader = Message.reader(conversationSid).pageSize(currentPageSize);
-    if (currentPageIndex == 0) {
-
+  public Page<Message> findMessagesWithMessageIndex(String conversationSid, @Nullable Integer pageSize, @Nullable Integer messageIndex) {
+    Reader<Message> messageReader = Message.reader(conversationSid).pageSize(pageSize);
+    if (messageIndex == null || messageIndex == 0) {
       Page<Message> page = messageReader.firstPage();
       return page;
     } else {
-      String targetPageUrl = formatUrlForFindMessages(conversationSid, currentPageIndex, currentPageSize);
-      log.debug("Messages targetPageUrl: {}", targetPageUrl);
+      String targetPageUrl = formatUrlForFindMessagesWithMessageIndex(conversationSid, pageSize, messageIndex);
       return messageReader.getPage(targetPageUrl);
     }
   }
 
-  private String formatUrlForFindMessages(String conversationSid, int pageIndex, int pageSize) {
-    int itemIndex = pageIndex * pageSize;
-    String url = MESSAGE_URL_PATTERN;
+  private String formatUrlForFindMessagesWithMessageIndex(String conversationSid, Integer pageSize, Integer messageIndex) {
+    if (pageSize == null) {
+      pageSize = DEFAULT_PAGE_SIZE;
+    }
+    String url = MESSAGE_URL_PATTERN_WITH_ITEM_INDEX;
     url = url.replace(":conversationSid", conversationSid);
-    url = url.replace(":pageIndex", String.valueOf(pageIndex));
     url = url.replace(":pageSize", String.valueOf(pageSize));
-    url = url.replace(":itemIndex", String.valueOf(itemIndex));
+    url = url.replace(":messageIndex", String.valueOf(messageIndex));
     return url;
   }
+
+  private String formatUrlForFindMessagesWithPageIndex(String conversationSid, Integer pageSize, Integer pageIndex) {
+    if (pageSize == null) {
+      pageSize = DEFAULT_PAGE_SIZE;
+    }
+    String url = MESSAGE_URL_PATTERN_WITH_ITEM_INDEX;
+    url = url.replace(":conversationSid", conversationSid);
+    url = url.replace(":pageSize", String.valueOf(pageSize));
+    url = url.replace(":pageIndex", String.valueOf(pageIndex));
+    return url;
+  }
+
 
   public boolean deleteMessage(String conversationSid, String messageSid) {
     Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());

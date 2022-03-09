@@ -60,12 +60,12 @@ public class ConversationServiceTest extends BaseIntegrationTest {
       logMessages("Given Messages", messages);
 
       // WHEN
-      Page<Message> page00 = conversationService.findMessages(conversation.getSid(), 0, pageSize);
-      Page<Message> page01 = conversationService.findMessages(conversation.getSid(), 1, pageSize);
-      Page<Message> page02 = conversationService.findMessages(conversation.getSid(), 2, pageSize);
+      Page<Message> page00 = conversationService.findMessagesWithMessageIndex(conversation.getSid(), pageSize, 0 * pageSize);
+      Page<Message> page01 = conversationService.findMessagesWithMessageIndex(conversation.getSid(), pageSize, 1 * pageSize);
+      Page<Message> page02 = conversationService.findMessagesWithMessageIndex(conversation.getSid(), pageSize, 2 * pageSize);
 
       // the pageIndex is too high, there will be no data in this page.
-      Page<Message> pageNoExist = conversationService.findMessages(conversation.getSid(), Integer.MAX_VALUE, pageSize);
+      Page<Message> pageNoExist = conversationService.findMessagesWithMessageIndex(conversation.getSid(), pageSize, Integer.MAX_VALUE);
 
       logMessages("page00", page00.getRecords());
       logMessages("page01", page01.getRecords());
@@ -98,13 +98,13 @@ public class ConversationServiceTest extends BaseIntegrationTest {
       logMessages("Given Messages", messages);
 
       // WHEN
-      Page<Message> page00_BeforeRemoving = conversationService.findMessages(conversation.getSid(), 0, pageSize);
-      Page<Message> page01_BeforeRemoving = conversationService.findMessages(conversation.getSid(), 1, pageSize);
+      Page<Message> page00_BeforeRemoving = conversationService.findMessagesWithMessageIndex(conversation.getSid(), pageSize, 0 * pageSize);
+      Page<Message> page01_BeforeRemoving = conversationService.findMessagesWithMessageIndex(conversation.getSid(), pageSize, 1 * pageSize);
       Message firstMessageInPage00 = page00_BeforeRemoving.getRecords().get(0);
 
       conversationService.deleteMessage(conversation.getSid(), firstMessageInPage00.getSid());
-      Page<Message> page00_AfterRemoving = conversationService.findMessages(conversation.getSid(), 0, pageSize);
-      Page<Message> page01_AfterRemoving = conversationService.findMessages(conversation.getSid(), 1, pageSize);
+      Page<Message> page00_AfterRemoving = conversationService.findMessagesWithMessageIndex(conversation.getSid(), pageSize, 0 * pageSize);
+      Page<Message> page01_AfterRemoving = conversationService.findMessagesWithMessageIndex(conversation.getSid(), pageSize, 1 * pageSize);
 
       logMessages("page00_BeforeRemoving", page00_BeforeRemoving.getRecords());
       logMessages("page00_AfterRemoving", page00_AfterRemoving.getRecords());
@@ -114,6 +114,51 @@ public class ConversationServiceTest extends BaseIntegrationTest {
       // THEN
       assertMessagesEquals(false, page00_BeforeRemoving.getRecords(), page00_AfterRemoving.getRecords());
       assertMessagesEquals(true, page01_BeforeRemoving.getRecords(), page01_AfterRemoving.getRecords());
+    } finally {
+      // clean up
+      conversationFixture.cleanUpConversationAndUsers(result);
+    }
+  }
+
+  @Test
+  public void test_findMessage_withMessageIndex() {
+    // GIVEN
+    ConversationCreationResult result = conversationFixture.randomConversationWithParticipants(2);
+    Conversation conversation = result.getConversation();
+    Participant firstParticipant = result.getParticipants().get(0);
+
+    int messagesCount = 7;
+    int pageSize = 2;
+    try {
+
+      List<Message> messages = messageFixture.createMessages(conversation.getSid(), firstParticipant.getIdentity(), messagesCount);
+      logMessages("Given Messages", messages);
+
+      // WHEN
+      Page<Message> page00_BeforeRemoving = conversationService.findMessagesWithMessageIndex(conversation.getSid(), pageSize,  2);
+      Page<Message> page01_BeforeRemoving = conversationService.findMessagesWithMessageIndex(conversation.getSid(), pageSize,  3);
+      Page<Message> page02_BeforeRemoving = conversationService.findMessagesWithMessageIndex(conversation.getSid(), pageSize,  3);
+      Message firstMessageInPage00 = messages.get(3);
+
+      conversationService.deleteMessage(conversation.getSid(), firstMessageInPage00.getSid());
+      Page<Message> page00_AfterRemoving = conversationService.findMessagesWithMessageIndex(conversation.getSid(), pageSize, 2);
+      Page<Message> page01_AfterRemoving = conversationService.findMessagesWithMessageIndex(conversation.getSid(), pageSize,  3);
+      Page<Message> page02_AfterRemoving = conversationService.findMessagesWithMessageIndex(conversation.getSid(), pageSize,  3);
+
+      logMessages("page00_BeforeRemoving", page00_BeforeRemoving.getRecords());
+      logMessages("page00_AfterRemoving", page00_AfterRemoving.getRecords());
+
+      logMessages("page01_BeforeRemoving", page01_BeforeRemoving.getRecords());
+      logMessages("page01_AfterRemoving", page01_AfterRemoving.getRecords());
+
+      logMessages("page02_BeforeRemoving", page02_BeforeRemoving.getRecords());
+      logMessages("page02_AfterRemoving", page02_AfterRemoving.getRecords());
+
+      // THEN
+      assertMessagesEquals(false, page00_BeforeRemoving.getRecords(), page00_AfterRemoving.getRecords());
+      assertMessagesEquals(true, page01_BeforeRemoving.getRecords(), page01_AfterRemoving.getRecords());
+
+      // It looks like when having itemIndex, the pageIndex is ignored.
     } finally {
       // clean up
       conversationFixture.cleanUpConversationAndUsers(result);

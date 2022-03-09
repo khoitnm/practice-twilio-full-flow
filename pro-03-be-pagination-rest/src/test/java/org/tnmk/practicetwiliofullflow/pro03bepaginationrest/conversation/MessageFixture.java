@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.tnmk.practicetwiliofullflow.pro03bepaginationrest.testinfra.UniqueTestData;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -18,6 +19,7 @@ public class MessageFixture {
     List<Message> result = IntStream.range(0, messagesCount)
         .parallel()
         .mapToObj(i -> randomMessage(conversationSid, authorIdentity))
+        .sorted(Comparator.comparingInt(Message::getIndex))
         .collect(Collectors.toList());
     return result;
   }
