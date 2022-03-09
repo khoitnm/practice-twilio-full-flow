@@ -39,7 +39,7 @@ public class ConversationServiceTest extends BaseIntegrationTest {
       log.info(attributes);
     } finally {
       // clean up
-      conversationService.deleteConversation(result.getConversation().getSid());
+      conversationFixture.cleanUpConversationAndUsers(result);
     }
   }
 
@@ -59,7 +59,7 @@ public class ConversationServiceTest extends BaseIntegrationTest {
       log.info("page url: " + url);
     } finally {
       // clean up
-      conversationService.deleteConversation(conversation.getSid());
+      conversationFixture.cleanUpConversationAndUsers(result);
     }
   }
 }

@@ -29,7 +29,7 @@ public class SendMessageServiceTest extends BaseIntegrationTest {
       conversationService.sendMessage(sendMessageRequest);
     } finally {
       // clean up
-      conversationService.deleteConversation(givenData.getConversation().getSid());
+      conversationFixture.cleanUpConversationAndUsers(givenData);
     }
   }
 }

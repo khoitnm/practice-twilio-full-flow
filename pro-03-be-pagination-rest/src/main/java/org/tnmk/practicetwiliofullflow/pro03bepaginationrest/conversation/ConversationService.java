@@ -40,6 +40,7 @@ public class ConversationService {
   public void deleteConversation(String conversationSid) {
     Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
     Conversation.deleter(conversationSid).delete();
+    log.info("Deleted conversation {}", conversationSid);
   }
 
   private Participant joinConversation(String userIdentity, String conversationSid) {
