@@ -1,4 +1,4 @@
-package org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation;
+package org.tnmk.practicetwiliofullflow.pro01beexploreconversation.conversation;
 
 import com.twilio.Twilio;
 import com.twilio.base.Page;
@@ -14,9 +14,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.common.twilio.TwilioErrorCode;
-import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.common.utils.JsonUtils;
-import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.common.twilio.TwilioProperties;
+import org.tnmk.practicetwiliofullflow.pro01beexploreconversation.common.twilio.TwilioErrorCode;
+import org.tnmk.practicetwiliofullflow.pro01beexploreconversation.common.utils.JsonUtils;
+import org.tnmk.practicetwiliofullflow.pro01beexploreconversation.common.twilio.TwilioProperties;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,14 +27,14 @@ import java.util.List;
 public class ConversationService {
   private final TwilioProperties twilioProperties;
 
-  public ConversationCreationResultDto createConversation(ConversationCreationRequest request) {
-    Conversation conversation = createConversation(request.getUniqueName());
+  public ConversationCreationResult createConversation(ConversationCreationRequest request) {
+    Conversation conversation = createConversation(request.getUniqueName(), request.getDisplayName());
     List<Participant> participants = new ArrayList<>();
     for (String participantIdentity : request.getParticipantIdentities()) {
       Participant participant = joinConversation(participantIdentity, conversation.getSid());
       participants.add(participant);
     }
-    return new ConversationCreationResultDto(conversation, participants);
+    return new ConversationCreationResult(conversation, participants);
   }
 
   public void deleteConversation(String conversationSid) {
@@ -48,8 +48,11 @@ public class ConversationService {
 
   private Participant joinConversation(String userIdentity, String conversationSid, String fullName) {
     Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
+    ParticipantAttributes attributes = new ParticipantAttributes(fullName);
+    String attributesJson = JsonUtils.toJsonString(attributes);
     Participant participant = Participant.creator(conversationSid)
         .setIdentity(userIdentity)
+        .setAttributes(attributesJson)
         .create();
     return participant;
   }
@@ -78,10 +81,13 @@ public class ConversationService {
     }
   }
 
-  private Conversation createConversation(String uniqueName) {
+  private Conversation createConversation(String uniqueName, String displayName) {
     Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
+    ConversationAttributes attributes = new ConversationAttributes(displayName);
+    String attributesJson = JsonUtils.toJsonString(attributes);
     Conversation conversation = Conversation.creator()
         .setUniqueName(uniqueName)
+        .setAttributes(attributesJson)
         .create();
     log.info("Created conversation {} with uniqueName {}", conversation.getSid(), uniqueName);
     return conversation;

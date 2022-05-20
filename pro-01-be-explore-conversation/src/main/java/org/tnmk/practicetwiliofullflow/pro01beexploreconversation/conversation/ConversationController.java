@@ -1,4 +1,4 @@
-package org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation;
+package org.tnmk.practicetwiliofullflow.pro01beexploreconversation.conversation;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +20,8 @@ public class ConversationController {
   }
 
   @PostMapping("/conversation")
-  public ConversationCreationResultDto createConversationForParticipants(@RequestBody ConversationCreationRequest conversationCreationRequest) {
-    ConversationCreationResultDto conversationCreationResult = conversationService.createConversation(conversationCreationRequest);
+  public ConversationCreationResult createConversationForParticipants(@RequestBody ConversationCreationRequest conversationCreationRequest) {
+    ConversationCreationResult conversationCreationResult = conversationService.createConversation(conversationCreationRequest);
     return conversationCreationResult;
   }
 

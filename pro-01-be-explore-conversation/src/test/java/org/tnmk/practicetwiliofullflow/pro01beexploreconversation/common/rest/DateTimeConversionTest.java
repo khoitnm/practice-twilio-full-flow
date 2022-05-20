@@ -1,4 +1,4 @@
-package org.tnmk.practicetwiliofullflow.pro00besimpleconversation.common.rest;
+package org.tnmk.practicetwiliofullflow.pro01beexploreconversation.common.rest;
 
 import com.twilio.rest.conversations.v1.User;
 import org.junit.jupiter.api.Test;
@@ -6,14 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.common.rest.fakebusiness.FakeRequest;
-import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.ConversationCreationRequest;
-import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.ConversationCreationResult;
-import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.ConversationService;
-import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.SendMessageRequest;
-import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.UserService;
-import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.testinfra.BaseIntegrationTest;
-import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.testinfra.JsonHelper;
+import org.tnmk.practicetwiliofullflow.pro01beexploreconversation.common.rest.fakebusiness.FakeRequest;
+import org.tnmk.practicetwiliofullflow.pro01beexploreconversation.conversation.ConversationCreationRequest;
+import org.tnmk.practicetwiliofullflow.pro01beexploreconversation.conversation.ConversationCreationResult;
+import org.tnmk.practicetwiliofullflow.pro01beexploreconversation.conversation.ConversationService;
+import org.tnmk.practicetwiliofullflow.pro01beexploreconversation.conversation.SendMessageRequest;
+import org.tnmk.practicetwiliofullflow.pro01beexploreconversation.conversation.UserService;
+import org.tnmk.practicetwiliofullflow.pro01beexploreconversation.testinfra.BaseIntegrationTest;
+import org.tnmk.practicetwiliofullflow.pro01beexploreconversation.testinfra.JsonHelper;
 
 import java.time.ZoneId;
 import java.util.Arrays;

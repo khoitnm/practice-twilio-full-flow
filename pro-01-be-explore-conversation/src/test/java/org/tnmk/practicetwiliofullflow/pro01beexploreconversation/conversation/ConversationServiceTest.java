@@ -1,4 +1,4 @@
-package org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation;
+package org.tnmk.practicetwiliofullflow.pro01beexploreconversation.conversation;
 
 import com.twilio.rest.conversations.v1.User;
 import com.twilio.rest.conversations.v1.user.UserConversation;
@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
-import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.testinfra.BaseIntegrationTest;
+import org.tnmk.practicetwiliofullflow.pro01beexploreconversation.testinfra.BaseIntegrationTest;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,7 +31,7 @@ public class ConversationServiceTest extends BaseIntegrationTest {
         "conversation display name" + System.nanoTime(),
         Arrays.asList(user01.getIdentity(), user02.getIdentity()));
 
-    ConversationCreationResultDto result = conversationService.createConversation(conversationCreationRequest);
+    ConversationCreationResult result = conversationService.createConversation(conversationCreationRequest);
     Assertions.assertNotNull(result.getConversation().getSid());
     Assertions.assertTrue(!result.getParticipants().isEmpty());
 

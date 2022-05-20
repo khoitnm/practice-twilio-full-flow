@@ -1,10 +1,10 @@
-package org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation;
+package org.tnmk.practicetwiliofullflow.pro01beexploreconversation.conversation;
 
 import com.twilio.rest.conversations.v1.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
-import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.testinfra.BaseIntegrationTest;
+import org.tnmk.practicetwiliofullflow.pro01beexploreconversation.testinfra.BaseIntegrationTest;
 
 import java.util.Arrays;
 
@@ -26,7 +26,7 @@ public class SendMessageServiceTest extends BaseIntegrationTest {
         "conversation display name" + System.nanoTime(),
         Arrays.asList(user01.getIdentity(), user02.getIdentity()));
 
-    ConversationCreationResultDto conversationCreationResult = conversationService.createConversation(conversationCreationRequest);
+    ConversationCreationResult conversationCreationResult = conversationService.createConversation(conversationCreationRequest);
 
     SendMessageRequest sendMessageRequest = new SendMessageRequest();
     sendMessageRequest.setConversationSid(conversationCreationResult.getConversation().getSid());
