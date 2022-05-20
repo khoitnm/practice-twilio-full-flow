@@ -1,12 +1,22 @@
 package org.tnmk.practicetwiliofullflow.pro00besimpleconversation.common.twilio;
 
 import com.twilio.Twilio;
+import com.twilio.http.HttpClient;
+import com.twilio.http.NetworkHttpClient;
+import com.twilio.http.TwilioRestClient;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpHost;
+import org.apache.http.client.config.RequestConfig;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Slf4j
 @Configuration
 public class TwilioConfig {
+  private final TwilioProperties twilioProperties;
+
   TwilioConfig(TwilioProperties twilioProperties) {
     /**
      * The {@link Twilio#init(String, String)} and {@link Twilio#init(String, String, String)}  methods are quite confusing.
@@ -32,7 +42,34 @@ public class TwilioConfig {
         + "\n\taccountSid: " + twilioProperties.getAccountSid()
         + "\n\tapiKey: " + twilioProperties.getApiKey()
         + "\n\tconversationServiceSid: " + twilioProperties.getConversationServiceSid());
+    this.twilioProperties = twilioProperties;
     Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
+  }
+
+  @Bean
+  public TwilioRestClient twilioRestClient(@Value("${twilio.mock-host:}") String mockHost) {
+    if (StringUtils.isBlank(mockHost)) {
+      return realTwilioRestClient();
+    } else {
+      return mockTwilioRestClient(mockHost);
+    }
+  }
+
+  private TwilioRestClient realTwilioRestClient() {
+    return Twilio.getRestClient();
+  }
+
+  private TwilioRestClient mockTwilioRestClient(String mockHost) {
+    // Mocking
+    RequestConfig requestConfig = RequestConfig.custom().setProxy(HttpHost.create(mockHost)).build();
+    HttpClient httpClient = new NetworkHttpClient(requestConfig);
+
+    TwilioRestClient.Builder builder = new TwilioRestClient.Builder(twilioProperties.getApiKey(), twilioProperties.getApiSecret())
+        .accountSid(twilioProperties.getAccountSid())
+        .httpClient(httpClient);
+
+    TwilioRestClient client = builder.build();
+    return client;
   }
 }
 
