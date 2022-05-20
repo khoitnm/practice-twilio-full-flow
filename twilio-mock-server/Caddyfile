@@ -1,9 +1,13 @@
 http://localhost
-route /app_1/* {
-uri strip_prefix /app_1
-reverse_proxy prism_1:4010
+route /twilio_chat/* {
+uri strip_prefix /twilio_chat
+reverse_proxy twilio_chat:4010
 }
-route /app_2/* {
-uri strip_prefix /app_2
-reverse_proxy prism_2:4010
+route /twilio_account/* {
+uri strip_prefix /twilio_account
+reverse_proxy twilio_account:4010
+}
+route /twilio_conversation/* {
+uri strip_prefix /twilio_conversation
+reverse_proxy twilio_conversation:4010
 }

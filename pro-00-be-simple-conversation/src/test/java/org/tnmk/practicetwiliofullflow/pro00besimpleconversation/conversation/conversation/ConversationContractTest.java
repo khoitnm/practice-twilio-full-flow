@@ -48,7 +48,7 @@ class ConversationContractTest extends BaseIntegrationTest {
       String json = mvcResult.getResponse().getContentAsString();
       log.info("Result: \n" + json);
     } finally {
-      cleanUpService.cleanUp_AllConversations_And_Users();
+      //cleanUpService.cleanUp_AllConversations_And_Users();
     }
   }
 }

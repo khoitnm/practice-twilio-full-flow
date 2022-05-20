@@ -25,12 +25,16 @@ services:
     ports:
       - '8001:4010'
     depends_on:
-      - prism_1
-      - prism_2
-  prism_1:
+      - twilio_chat
+      - twilio_account
+      - twilio_conversation
+  twilio_chat:
+    image: stoplight/prism:4
+    command: 'mock -p 4010 --host 0.0.0.0 https://github.com/twilio/twilio-oai/blob/main/spec/json/twilio_chat_v3.json'
+  twilio_account:
+    image: stoplight/prism:4
+    command: 'mock -p 4010 --host 0.0.0.0 https://github.com/twilio/twilio-oai/blob/main/spec/json/twilio_accounts_v1.json'
+  twilio_conversation:
     image: stoplight/prism:4
     # config --host 0.0.0.0 will help us to access `http:localhost:8001` from local machine.
-    command: 'mock -p 4010 --host 0.0.0.0 https://raw.githubusercontent.com/twilio/twilio-oai/main/spec/json/twilio_api_v2010.json'
-  prism_2:
-    image: stoplight/prism:4
-    command: 'mock -p 4010 --host 0.0.0.0 https://raw.githubusercontent.com/twilio/twilio-oai/main/spec/json/twilio_conversations_v1.json'
+    command: 'mock -p 4010 --host 0.0.0.0 https://github.com/twilio/twilio-oai/blob/main/spec/json/twilio_conversations_v1.json'
