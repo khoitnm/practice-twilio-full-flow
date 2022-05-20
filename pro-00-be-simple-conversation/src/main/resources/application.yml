@@ -3,8 +3,7 @@ server:
 
 # The properties structure must match {@link TwilioProperties.java}
 twilio:
-  mock-host: localhost
-  mock-port: 8001
+  mock-host: localhost:8001
   # https://www.twilio.com/docs/conversations/create-tokens
   accountSid: ${TWILIO_ACCOUNT_SID}
   apiKey: ${TWILIO_API_KEY}
@@ -29,5 +28,5 @@ spring:
 
     deserialization:
       # https://stackoverflow.com/questions/59097664/timezone-of-zoneddatetime-changed-to-utc-during-auto-conversion-of-requestbody-w
-#      adjust-dates-to-context-time-zone: false
+      #      adjust-dates-to-context-time-zone: false
       ADJUST_DATES_TO_CONTEXT_TIME_ZONE: false

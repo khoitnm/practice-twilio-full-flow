@@ -43,11 +43,11 @@ public class TwilioConfig {
   }
 
   @Bean
-  public TwilioRestClient twilioRestClient(@Value("${twilio.mock-host:}") String mockHost, @Value("${twilio.mock-port:80}") Integer mockPort) {
+  public TwilioRestClient twilioRestClient(@Value("${twilio.mock-host:}") String mockHost) {
     if (StringUtils.isBlank(mockHost)) {
       return realTwilioRestClient();
     } else {
-      return mockTwilioRestClient(mockHost, mockPort);
+      return mockTwilioRestClient(mockHost);
     }
   }
 
@@ -57,10 +57,11 @@ public class TwilioConfig {
     return twilioRestClient;
   }
 
-  private TwilioRestClient mockTwilioRestClient(String mockHost, Integer mockPort) {
-    ProxiedTwilioClientCreator clientCreator = new ProxiedTwilioClientCreator(
-        twilioProperties.getApiKey(), twilioProperties.getApiSecret(), mockHost, mockPort);
-    TwilioRestClient twilioRestClient = clientCreator.getClient();
+  private TwilioRestClient mockTwilioRestClient(String mockHost) {
+    MockNetworkHttpClient mockNetworkHttpClient = new MockNetworkHttpClient(mockHost);
+
+    TwilioRestClient.Builder builder = new TwilioRestClient.Builder(twilioProperties.getApiKey(), twilioProperties.getApiSecret());
+    TwilioRestClient twilioRestClient = builder.httpClient(mockNetworkHttpClient).build();
     Twilio.setRestClient(twilioRestClient);
     return twilioRestClient;
   }
