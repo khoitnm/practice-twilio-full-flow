@@ -1,4 +1,4 @@
-package org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation;
+package org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.conversation;
 
 import com.twilio.rest.conversations.v1.Conversation;
 import com.twilio.rest.conversations.v1.conversation.Participant;

@@ -1,11 +1,11 @@
-package org.tnmk.practicetwiliofullflow.pro00besimpleconversation.user;
+package org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.user;
 
 import com.twilio.rest.conversations.v1.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
-import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.UserService;
+import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.user.UserService;
 import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.testinfra.BaseIntegrationTest;
 
 @ActiveProfiles("test")

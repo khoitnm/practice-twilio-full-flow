@@ -6,8 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
-import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.ConversationCleanUpService;
-import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.UserCleanUpService;
+import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.conversation.ConversationCleanUpService;
+import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.user.UserCleanUpService;
 import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.testinfra.BaseIntegrationTest;
 
 import java.lang.invoke.MethodHandles;

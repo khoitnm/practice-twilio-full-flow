@@ -1,4 +1,4 @@
-package org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation;
+package org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.conversation;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

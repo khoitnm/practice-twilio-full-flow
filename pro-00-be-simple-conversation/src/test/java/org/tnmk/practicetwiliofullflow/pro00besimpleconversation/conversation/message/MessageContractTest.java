@@ -1,4 +1,4 @@
-package org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation;
+package org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.message;
 
 import com.twilio.rest.conversations.v1.User;
 import org.junit.jupiter.api.Test;
@@ -6,6 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.conversation.ConversationCreationRequest;
+import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.conversation.ConversationCreationResultDto;
+import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.conversation.ConversationService;
+import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.message.SendMessageRequest;
+import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.user.UserService;
 import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.testinfra.BaseIntegrationTest;
 import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.testinfra.JsonHelper;
 

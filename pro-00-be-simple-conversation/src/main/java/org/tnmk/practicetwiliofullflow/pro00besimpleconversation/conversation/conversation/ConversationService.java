@@ -1,4 +1,4 @@
-package org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation;
+package org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.conversation;
 
 import com.twilio.Twilio;
 import com.twilio.base.Page;
@@ -17,6 +17,10 @@ import org.springframework.util.StringUtils;
 import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.common.twilio.TwilioErrorCode;
 import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.common.utils.JsonUtils;
 import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.common.twilio.TwilioProperties;
+import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.message.MessageDto;
+import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.message.MessageMapper;
+import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.message.SendMessageRequest;
+import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.message.UpdateMessageRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,29 +91,4 @@ public class ConversationService {
     return conversation;
   }
 
-  public MessageDto sendMessage(SendMessageRequest sendMessageRequest) {
-    Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
-
-    MessageCreator messageCreator = Message.creator(sendMessageRequest.getConversationSid())
-        .setAuthor(sendMessageRequest.getCreatedByUserIdentity())
-        .setBody(sendMessageRequest.getMessageBody());
-    if (!StringUtils.isEmpty(sendMessageRequest)) {
-      messageCreator.setAttributes(JsonUtils.toJsonString(sendMessageRequest.getMessageAttributes()));
-    }
-    Message sentMessage = messageCreator.create();
-    return MessageMapper.toMessageResult(sentMessage);
-  }
-
-  public MessageDto updateMessage(UpdateMessageRequest request) {
-    Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
-    MessageUpdater updater = Message.updater(request.getConversationSid(), request.getMessageSid());
-    if (!StringUtils.isEmpty(request.getMessageBody())) {
-      updater.setBody(request.getMessageBody());
-    }
-    if (request.getMessageAttributes() != null && !request.getMessageAttributes().isEmpty()) {
-      updater.setAttributes(JsonUtils.toJsonString(request.getMessageAttributes()));
-    }
-    Message message = updater.update();
-    return MessageMapper.toMessageResult(message);
-  }
 }

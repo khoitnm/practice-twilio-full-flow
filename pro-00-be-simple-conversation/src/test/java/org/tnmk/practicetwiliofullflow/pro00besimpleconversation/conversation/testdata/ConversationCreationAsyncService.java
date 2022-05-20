@@ -6,11 +6,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.ConversationCreationRequest;
-import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.ConversationCreationResultDto;
-import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.ConversationService;
-import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.MessageDto;
-import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.SendMessageRequest;
+import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.conversation.ConversationCreationRequest;
+import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.conversation.ConversationCreationResultDto;
+import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.conversation.ConversationService;
+import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.message.MessageDto;
+import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.message.MessageService;
+import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.message.SendMessageRequest;
 
 import java.lang.invoke.MethodHandles;
 import java.util.Arrays;
@@ -22,6 +23,9 @@ public class ConversationCreationAsyncService {
 
   @Autowired
   private ConversationService conversationService;
+
+  @Autowired
+  private MessageService messageService;
 
   @Async
   public CompletableFuture<ConversationCreationResultDto> createConversation(User user01, User user02, String uniqueName) {
@@ -43,6 +47,6 @@ public class ConversationCreationAsyncService {
     sendMessageRequest.setConversationSid(conversationSid);
     sendMessageRequest.setCreatedByUserIdentity(user01.getIdentity());
     sendMessageRequest.setMessageBody(messageBody);
-    MessageDto messageResult = conversationService.sendMessage(sendMessageRequest);
+    MessageDto messageResult = messageService.sendMessage(sendMessageRequest);
   }
 }

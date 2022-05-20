@@ -1,4 +1,4 @@
-package org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation;
+package org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.message;
 
 import com.twilio.rest.conversations.v1.conversation.Message;
 import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.common.utils.JsonUtils;

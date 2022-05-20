@@ -1,4 +1,4 @@
-package org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation;
+package org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.user;
 
 import com.twilio.rest.conversations.v1.User;
 import org.springframework.web.bind.annotation.GetMapping;
