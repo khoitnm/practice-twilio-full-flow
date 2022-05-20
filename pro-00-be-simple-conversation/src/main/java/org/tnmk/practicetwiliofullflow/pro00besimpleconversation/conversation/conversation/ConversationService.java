@@ -2,6 +2,8 @@ package org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.c
 
 import com.twilio.base.Page;
 import com.twilio.exception.ApiException;
+import com.twilio.http.TwilioRestClient;
+import com.twilio.rest.api.v2010.Account;
 import com.twilio.rest.conversations.v1.Conversation;
 import com.twilio.rest.conversations.v1.user.UserConversation;
 import com.twilio.rest.conversations.v1.user.UserConversationReader;
@@ -9,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.common.twilio.TwilioErrorCode;
-import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.common.twilio.TwilioProperties;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,17 +19,20 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ConversationService {
+  private final TwilioRestClient twilioRestClient;
 
   public Conversation createConversation(String uniqueName) {
+    List<Account> accounts = Account.reader().firstPage(twilioRestClient).getRecords();
+
     Conversation conversation = Conversation.creator()
         .setUniqueName(uniqueName)
-        .create();
+        .create(twilioRestClient);
     log.info("Created conversation {} with uniqueName {}", conversation.getSid(), uniqueName);
     return conversation;
   }
 
   public void deleteConversation(String conversationSid) {
-    Conversation.deleter(conversationSid).delete();
+    Conversation.deleter(conversationSid).delete(twilioRestClient);
   }
 
   public List<UserConversation> findConversationsOfUser(String userIdentityOrUserSid) {
@@ -38,9 +42,9 @@ public class ConversationService {
       Page<UserConversation> page = null;
       do {
         if (page == null) {
-          page = reader.firstPage();
+          page = reader.firstPage(twilioRestClient);
         } else {
-          page = reader.nextPage(page);
+          page = reader.nextPage(page, twilioRestClient);
         }
         result.addAll(page.getRecords());
       } while (page.hasNextPage());
