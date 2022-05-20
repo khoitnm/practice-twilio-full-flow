@@ -17,7 +17,7 @@ import java.util.List;
 public class VideoService {
   private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-  private final TwilioProperties twilioProperties;
+  
 
   public VideoService(TwilioProperties twilioProperties) {
     this.twilioProperties = twilioProperties;
@@ -31,8 +31,7 @@ public class VideoService {
    * @return
    */
   public VideoRoom createVideo(String roomUniqueName) throws ApiException {
-    Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
-    Room room = Room.creator()
+        Room room = Room.creator()
         .setType(Room.RoomType.GO)
         .setUniqueName(roomUniqueName)
         .create();
@@ -40,15 +39,13 @@ public class VideoService {
   }
 
   public List<VideoRoom> getAllVideoRooms() {
-    Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
-    Page<Room> roomResourceSet = Room.reader().firstPage();
+        Page<Room> roomResourceSet = Room.reader().firstPage();
     List<VideoRoom> videoRooms = VideoRoomMapper.toVideoRooms(roomResourceSet.getRecords());
     return videoRooms;
   }
 
   public VideoRoom endVideo(String roomSid) {
-    Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
-    try {
+        try {
       Room beforeEndingRoom = Room.fetcher(roomSid).fetch();
       VideoRoom videoRoom = VideoRoomMapper.toVideoRoom(beforeEndingRoom);
       logger.info("Room before ending: {}", JsonUtils.toJsonString(videoRoom));

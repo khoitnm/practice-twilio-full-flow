@@ -16,22 +16,14 @@ import java.util.List;
 public class UserService {
   private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-  private final TwilioProperties twilioProperties;
-
-  public UserService(TwilioProperties twilioProperties) {
-    this.twilioProperties = twilioProperties;
-  }
-
   public User createUser(String userIdentifier) {
-    Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
-    User user = User.creator(userIdentifier).create();
+        User user = User.creator(userIdentifier).create();
     logger.info("Created user {}", user.getSid());
     return user;
   }
 
   public User getUser(String userIdentity) {
-    Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
-    User user;
+        User user;
     try {
       user = User.fetcher(userIdentity).fetch();
     } catch (ApiException apiException) {
@@ -46,8 +38,7 @@ public class UserService {
   }
 
   public List<User> findFirstPageUsersInConversationService() {
-    Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
-    List<User> users = User.reader().firstPage().getRecords();
+        List<User> users = User.reader().firstPage().getRecords();
     return users;
   }
 }

@@ -1,36 +1,33 @@
 package org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.conversation;
 
-import com.twilio.Twilio;
 import com.twilio.base.Page;
+import com.twilio.http.TwilioRestClient;
 import com.twilio.rest.conversations.v1.Conversation;
 import com.twilio.rest.conversations.v1.ConversationReader;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.common.twilio.TwilioProperties;
 
 import java.util.List;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class ConversationCleanUpService {
-  private final TwilioProperties twilioProperties;
 
-  public ConversationCleanUpService(TwilioProperties twilioProperties) {
-    this.twilioProperties = twilioProperties;
-  }
+  private TwilioRestClient twilioRestClient;
 
   public void cleanUpAllConversations() {
-    Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
     ConversationReader reader = Conversation.reader();
-    Page<Conversation> page = reader.firstPage();
+    Page<Conversation> page = reader.firstPage(twilioRestClient);
     do {
       List<Conversation> list = page.getRecords();
       list.parallelStream().forEach(item -> {
-        Conversation.deleter(item.getSid()).delete();
+        Conversation.deleter(item.getSid()).delete(twilioRestClient);
         log.info("Deleted conversationSid " + item.getSid());
       });
       if (page.hasNextPage()) {
-        page = reader.nextPage(page);
+        page = reader.nextPage(page, twilioRestClient);
       } else {
         page = null;
       }

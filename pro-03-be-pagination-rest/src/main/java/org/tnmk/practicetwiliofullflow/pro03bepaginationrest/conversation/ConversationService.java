@@ -33,7 +33,7 @@ public class ConversationService {
   private static final String MESSAGE_URL_PATTERN_WITH_ITEM_INDEX = "https://conversations.twilio.com/v1/Conversations/:conversationSid/Messages?PageSize=:pageSize&PageToken=PT:messageIndex&Order=:order";
   private static final String MESSAGE_URL_PATTERN_WITH_PAGE_INDEX = "https://conversations.twilio.com/v1/Conversations/:conversationSid/Messages?PageSize=:pageSize&Page=:pageIndex";
   private static final int DEFAULT_PAGE_SIZE = 50;
-  private final TwilioProperties twilioProperties;
+  
 
   public ConversationCreationResult createConversation(ConversationCreationRequest request) {
     Conversation conversation = createConversation(request.getUniqueName(), request.getDisplayName());
@@ -44,8 +44,7 @@ public class ConversationService {
   }
 
   public void deleteConversation(String conversationSid) {
-    Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
-    Conversation.deleter(conversationSid).delete();
+        Conversation.deleter(conversationSid).delete();
     log.info("Deleted conversation {}", conversationSid);
   }
 
@@ -54,8 +53,7 @@ public class ConversationService {
   }
 
   private Participant joinConversation(String userIdentity, String conversationSid, String fullName) {
-    Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
-    ParticipantAttributes attributes = new ParticipantAttributes(fullName);
+        ParticipantAttributes attributes = new ParticipantAttributes(fullName);
     String attributesJson = JsonUtils.toJsonString(attributes);
     Participant participant = Participant.creator(conversationSid)
         .setIdentity(userIdentity)
@@ -89,8 +87,7 @@ public class ConversationService {
   }
 
   private Conversation createConversation(String uniqueName, String displayName) {
-    Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
-    ConversationAttributes attributes = new ConversationAttributes(displayName);
+        ConversationAttributes attributes = new ConversationAttributes(displayName);
     String attributesJson = JsonUtils.toJsonString(attributes);
     Conversation conversation = Conversation.creator()
         .setUniqueName(uniqueName)
@@ -101,8 +98,7 @@ public class ConversationService {
   }
 
   public Message sendMessage(SendMessageRequest sendMessageRequest) {
-    Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
-
+    
     MessageCreator messageCreator = Message.creator(sendMessageRequest.getConversationSid())
         .setAuthor(sendMessageRequest.getCreatedByUserIdentity())
         .setBody(sendMessageRequest.getMessageBody());
@@ -113,8 +109,7 @@ public class ConversationService {
   }
 
   public MessageDto updateMessage(UpdateMessageRequest request) {
-    Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
-    MessageUpdater updater = Message.updater(request.getConversationSid(), request.getMessageSid());
+        MessageUpdater updater = Message.updater(request.getConversationSid(), request.getMessageSid());
     if (!StringUtils.isEmpty(request.getMessageBody())) {
       updater.setBody(request.getMessageBody());
     }
@@ -176,8 +171,7 @@ public class ConversationService {
   }
 
   public boolean deleteMessage(String conversationSid, String messageSid) {
-    Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
-    MessageDeleter messageDeleter = Message.deleter(conversationSid, messageSid);
+        MessageDeleter messageDeleter = Message.deleter(conversationSid, messageSid);
     log.info("[{}] message is deleted from ConversationSid {}", messageSid, conversationSid);
     return messageDeleter.delete();
   }

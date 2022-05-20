@@ -1,4 +1,4 @@
-package org.tnmk.practicetwiliofullflow.pro00besimpleconversation.common.twilio;
+package org.tnmk.practicetwiliofullflow.pro01beexploreconversation.common.twilio;
 
 import com.twilio.Twilio;
 import com.twilio.http.HttpClient;
@@ -44,39 +44,13 @@ public class TwilioConfig {
         + "\n\tapiKey: " + twilioProperties.getApiKey()
         + "\n\tconversationServiceSid: " + twilioProperties.getConversationServiceSid());
     this.twilioProperties = twilioProperties;
-      }
-
-  @Bean
-  public TwilioRestClient twilioRestClient(@Value("${twilio.mock-host:}") String mockHost) {
-    if (StringUtils.isBlank(mockHost)) {
-      return realTwilioRestClient();
-    } else {
-      return mockTwilioRestClient(mockHost);
-    }
   }
 
-  private TwilioRestClient realTwilioRestClient() {
+  @Bean
+  public TwilioRestClient twilioRestClient() {
     TwilioRestClient twilioRestClient = Twilio.getRestClient();
     Twilio.setRestClient(twilioRestClient);
     return twilioRestClient;
-  }
-
-  private TwilioRestClient mockTwilioRestClient(String mockHost) {
-    RequestConfig requestConfig = RequestConfig.custom()
-        .setProxy(HttpHost.create(mockHost))
-        .build();
-
-    HttpClientBuilder httpClientBuilder = HttpClientBuilder.create()
-        .setDefaultRequestConfig(requestConfig);
-    HttpClient httpClient = new NetworkHttpClient(httpClientBuilder);
-
-    TwilioRestClient twilioRestClient = new TwilioRestClient.Builder(twilioProperties.getApiKey(), twilioProperties.getApiSecret())
-        .accountSid(twilioProperties.getAccountSid())
-        .httpClient(httpClient)
-        .build();
-    Twilio.setRestClient(twilioRestClient);
-    return twilioRestClient;
-
   }
 }
 

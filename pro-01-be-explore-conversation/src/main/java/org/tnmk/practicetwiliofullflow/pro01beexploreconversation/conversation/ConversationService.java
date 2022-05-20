@@ -25,7 +25,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ConversationService {
-  private final TwilioProperties twilioProperties;
 
   public ConversationCreationResult createConversation(ConversationCreationRequest request) {
     Conversation conversation = createConversation(request.getUniqueName(), request.getDisplayName());
@@ -38,8 +37,7 @@ public class ConversationService {
   }
 
   public void deleteConversation(String conversationSid) {
-    Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
-    Conversation.deleter(conversationSid).delete();
+        Conversation.deleter(conversationSid).delete();
   }
 
   private Participant joinConversation(String userIdentity, String conversationSid) {
@@ -47,8 +45,7 @@ public class ConversationService {
   }
 
   private Participant joinConversation(String userIdentity, String conversationSid, String fullName) {
-    Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
-    ParticipantAttributes attributes = new ParticipantAttributes(fullName);
+        ParticipantAttributes attributes = new ParticipantAttributes(fullName);
     String attributesJson = JsonUtils.toJsonString(attributes);
     Participant participant = Participant.creator(conversationSid)
         .setIdentity(userIdentity)
@@ -82,8 +79,7 @@ public class ConversationService {
   }
 
   private Conversation createConversation(String uniqueName, String displayName) {
-    Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
-    ConversationAttributes attributes = new ConversationAttributes(displayName);
+        ConversationAttributes attributes = new ConversationAttributes(displayName);
     String attributesJson = JsonUtils.toJsonString(attributes);
     Conversation conversation = Conversation.creator()
         .setUniqueName(uniqueName)
@@ -94,8 +90,7 @@ public class ConversationService {
   }
 
   public MessageDto sendMessage(SendMessageRequest sendMessageRequest) {
-    Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
-
+    
     MessageCreator messageCreator = Message.creator(sendMessageRequest.getConversationSid())
         .setAuthor(sendMessageRequest.getCreatedByUserIdentity())
         .setBody(sendMessageRequest.getMessageBody());
@@ -107,8 +102,7 @@ public class ConversationService {
   }
 
   public MessageDto updateMessage(UpdateMessageRequest request) {
-    Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
-    MessageUpdater updater = Message.updater(request.getConversationSid(), request.getMessageSid());
+        MessageUpdater updater = Message.updater(request.getConversationSid(), request.getMessageSid());
     if (!StringUtils.isEmpty(request.getMessageBody())) {
       updater.setBody(request.getMessageBody());
     }
