@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.conversation.ConversationCreationRequest;
-import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.conversation.ConversationCreationResultDto;
+import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.create_conversation_with_participants.ConversationWithParticipantsService;
+import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.create_conversation_with_participants.CreateConversationWithParticipantsRequestDto;
+import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.create_conversation_with_participants.CreateConversationWithParticipantsResultDto;
 import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.conversation.ConversationService;
-import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.message.SendMessageRequest;
 import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.user.UserService;
 import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.testinfra.BaseIntegrationTest;
 import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.testinfra.JsonHelper;
@@ -25,7 +25,7 @@ class MessageContractTest extends BaseIntegrationTest {
   private MockMvc mvc;
 
   @Autowired
-  private ConversationService conversationService;
+  private ConversationWithParticipantsService conversationWithParticipantsService;
 
   @Autowired
   private UserService userService;
@@ -39,11 +39,10 @@ class MessageContractTest extends BaseIntegrationTest {
     User user02 = userService.createUser("user" + System.nanoTime());
 
     // Conversation
-    ConversationCreationRequest conversationCreationRequest = new ConversationCreationRequest(
+    CreateConversationWithParticipantsRequestDto conversationCreationRequest = new CreateConversationWithParticipantsRequestDto(
         "conversation" + System.nanoTime(),
-        "conversation display name" + System.nanoTime(),
         Arrays.asList(user01.getIdentity(), user02.getIdentity()));
-    ConversationCreationResultDto result = conversationService.createConversation(conversationCreationRequest);
+    CreateConversationWithParticipantsResultDto result = conversationWithParticipantsService.createConversationWithParticipants(conversationCreationRequest);
 
     //Message
     SendMessageRequest sendMessageRequest = new SendMessageRequest();

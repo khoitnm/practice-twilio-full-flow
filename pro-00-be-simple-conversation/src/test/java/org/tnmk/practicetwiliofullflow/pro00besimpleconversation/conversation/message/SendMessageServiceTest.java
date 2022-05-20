@@ -4,11 +4,9 @@ import com.twilio.rest.conversations.v1.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
-import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.conversation.ConversationCreationRequest;
-import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.conversation.ConversationCreationResultDto;
-import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.conversation.ConversationService;
-import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.message.MessageDto;
-import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.message.SendMessageRequest;
+import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.create_conversation_with_participants.ConversationWithParticipantsService;
+import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.create_conversation_with_participants.CreateConversationWithParticipantsRequestDto;
+import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.create_conversation_with_participants.CreateConversationWithParticipantsResultDto;
 import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.user.UserService;
 import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.testinfra.BaseIntegrationTest;
 
@@ -18,7 +16,7 @@ import java.util.Arrays;
 public class SendMessageServiceTest extends BaseIntegrationTest {
 
   @Autowired
-  private ConversationService conversationService;
+  private ConversationWithParticipantsService conversationWithParticipantsService;
 
   @Autowired
   private MessageService messageService;
@@ -30,12 +28,11 @@ public class SendMessageServiceTest extends BaseIntegrationTest {
   public void whenCreateAConversation_returnAConversationResult() {
     User user01 = userService.createUser("user" + System.nanoTime());
     User user02 = userService.createUser("user" + System.nanoTime());
-    ConversationCreationRequest conversationCreationRequest = new ConversationCreationRequest(
+    CreateConversationWithParticipantsRequestDto conversationCreationRequest = new CreateConversationWithParticipantsRequestDto(
         "conversation" + System.nanoTime(),
-        "conversation display name" + System.nanoTime(),
         Arrays.asList(user01.getIdentity(), user02.getIdentity()));
 
-    ConversationCreationResultDto conversationCreationResult = conversationService.createConversation(conversationCreationRequest);
+    CreateConversationWithParticipantsResultDto conversationCreationResult = conversationWithParticipantsService.createConversationWithParticipants(conversationCreationRequest);
 
     SendMessageRequest sendMessageRequest = new SendMessageRequest();
     sendMessageRequest.setConversationSid(conversationCreationResult.getConversation().getSid());

@@ -6,9 +6,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.conversation.ConversationCreationRequest;
-import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.conversation.ConversationCreationResultDto;
 import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.conversation.ConversationService;
+import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.create_conversation_with_participants.ConversationWithParticipantsService;
+import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.create_conversation_with_participants.CreateConversationWithParticipantsRequestDto;
+import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.create_conversation_with_participants.CreateConversationWithParticipantsResultDto;
 import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.message.MessageDto;
 import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.message.MessageService;
 import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.message.SendMessageRequest;
@@ -23,17 +24,17 @@ public class ConversationCreationAsyncService {
 
   @Autowired
   private ConversationService conversationService;
-
+  @Autowired
+  private ConversationWithParticipantsService conversationWithParticipantsService;
   @Autowired
   private MessageService messageService;
 
   @Async
-  public CompletableFuture<ConversationCreationResultDto> createConversation(User user01, User user02, String uniqueName) {
-    ConversationCreationRequest conversationCreationRequest = new ConversationCreationRequest(
-        uniqueName, uniqueName,
-        Arrays.asList(user01.getIdentity(), user02.getIdentity()));
+  public CompletableFuture<CreateConversationWithParticipantsResultDto> createConversation(User user01, User user02, String uniqueName) {
+    CreateConversationWithParticipantsRequestDto conversationCreationRequest = new CreateConversationWithParticipantsRequestDto(
+        uniqueName, Arrays.asList(user01.getIdentity(), user02.getIdentity()));
 
-    ConversationCreationResultDto result = conversationService.createConversation(conversationCreationRequest);
+    CreateConversationWithParticipantsResultDto result = conversationWithParticipantsService.createConversationWithParticipants(conversationCreationRequest);
 
     sendMessage(user01, result.getConversation().getSid(), "PerformanceTestMessage from " + user01.getIdentity());
     sendMessage(user02, result.getConversation().getSid(), "PerformanceTestMessage from " + user02.getIdentity());

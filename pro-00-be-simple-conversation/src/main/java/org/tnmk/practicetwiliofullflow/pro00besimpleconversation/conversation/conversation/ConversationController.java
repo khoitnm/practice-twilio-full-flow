@@ -1,24 +1,18 @@
 package org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.conversation;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.twilio.rest.conversations.v1.Conversation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.lang.invoke.MethodHandles;
-
 @RestController
+@RequiredArgsConstructor
 public class ConversationController {
   private final ConversationService conversationService;
 
-  public ConversationController(ConversationService conversationService) {
-    this.conversationService = conversationService;
-  }
-
   @PostMapping("/conversation")
-  public ConversationCreationResultDto createConversationForParticipants(@RequestBody ConversationCreationRequest conversationCreationRequest) {
-    ConversationCreationResultDto conversationCreationResult = conversationService.createConversation(conversationCreationRequest);
-    return conversationCreationResult;
+  public Conversation createConversationOnly(@RequestBody CreateConversationRequestDto requestDto) {
+    return conversationService.createConversation(requestDto.getUniqueName());
   }
 }

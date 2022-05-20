@@ -1,17 +1,15 @@
-package org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.conversation;
+package org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.create_conversation_with_participants;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class ConversationCreationRequest {
+public class CreateConversationWithParticipantsRequestDto {
   private String uniqueName;
-  private String displayName;
   private List<String> participantIdentities;
 }
