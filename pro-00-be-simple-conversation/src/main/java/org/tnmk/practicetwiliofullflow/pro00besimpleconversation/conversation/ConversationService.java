@@ -1,52 +1,45 @@
-package org.tnmk.practicetwiliofullflow.pro03bepaginationrest.conversation;
+package org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation;
 
 import com.twilio.Twilio;
 import com.twilio.base.Page;
-import com.twilio.base.Reader;
 import com.twilio.exception.ApiException;
 import com.twilio.rest.conversations.v1.Conversation;
 import com.twilio.rest.conversations.v1.conversation.Message;
 import com.twilio.rest.conversations.v1.conversation.MessageCreator;
-import com.twilio.rest.conversations.v1.conversation.MessageDeleter;
 import com.twilio.rest.conversations.v1.conversation.MessageUpdater;
 import com.twilio.rest.conversations.v1.conversation.Participant;
 import com.twilio.rest.conversations.v1.user.UserConversation;
 import com.twilio.rest.conversations.v1.user.UserConversationReader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.tnmk.practicetwiliofullflow.pro03bepaginationrest.common.twilio.TwilioErrorCode;
-import org.tnmk.practicetwiliofullflow.pro03bepaginationrest.common.twilio.TwilioProperties;
-import org.tnmk.practicetwiliofullflow.pro03bepaginationrest.common.utils.JsonUtils;
+import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.common.twilio.TwilioErrorCode;
+import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.common.utils.JsonUtils;
+import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.common.twilio.TwilioProperties;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class ConversationService {
-  // When having itemIndex, we can just ignore the pageIndex.
-  private static final String MESSAGE_URL_PATTERN_WITH_ITEM_INDEX = "https://conversations.twilio.com/v1/Conversations/:conversationSid/Messages?PageSize=:pageSize&PageToken=PT:messageIndex&Order=:order";
-  private static final String MESSAGE_URL_PATTERN_WITH_PAGE_INDEX = "https://conversations.twilio.com/v1/Conversations/:conversationSid/Messages?PageSize=:pageSize&Page=:pageIndex";
-  private static final int DEFAULT_PAGE_SIZE = 50;
   private final TwilioProperties twilioProperties;
 
   public ConversationCreationResult createConversation(ConversationCreationRequest request) {
     Conversation conversation = createConversation(request.getUniqueName(), request.getDisplayName());
-    List<Participant> participants = request.getParticipantIdentities().parallelStream()
-        .map(participantIdentity -> joinConversation(participantIdentity, conversation.getSid()))
-        .collect(Collectors.toList());
+    List<Participant> participants = new ArrayList<>();
+    for (String participantIdentity : request.getParticipantIdentities()) {
+      Participant participant = joinConversation(participantIdentity, conversation.getSid());
+      participants.add(participant);
+    }
     return new ConversationCreationResult(conversation, participants);
   }
 
   public void deleteConversation(String conversationSid) {
     Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
     Conversation.deleter(conversationSid).delete();
-    log.info("Deleted conversation {}", conversationSid);
   }
 
   private Participant joinConversation(String userIdentity, String conversationSid) {
@@ -100,7 +93,7 @@ public class ConversationService {
     return conversation;
   }
 
-  public Message sendMessage(SendMessageRequest sendMessageRequest) {
+  public MessageDto sendMessage(SendMessageRequest sendMessageRequest) {
     Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
 
     MessageCreator messageCreator = Message.creator(sendMessageRequest.getConversationSid())
@@ -109,7 +102,8 @@ public class ConversationService {
     if (!StringUtils.isEmpty(sendMessageRequest)) {
       messageCreator.setAttributes(JsonUtils.toJsonString(sendMessageRequest.getMessageAttributes()));
     }
-    return messageCreator.create();
+    Message sentMessage = messageCreator.create();
+    return MessageMapper.toMessageResult(sentMessage);
   }
 
   public MessageDto updateMessage(UpdateMessageRequest request) {
@@ -123,62 +117,5 @@ public class ConversationService {
     }
     Message message = updater.update();
     return MessageMapper.toMessageResult(message);
-  }
-
-  public Page<Message> findMessages(String conversationSid, Page<Message> previousPage, Message.OrderType orderType, Integer pageSize) {
-    Reader<Message> messageReader = Message.reader(conversationSid).setOrder(orderType).pageSize(pageSize);
-    if (previousPage == null) {
-      return messageReader.firstPage();
-    } else {
-      return messageReader.nextPage(previousPage);
-    }
-  }
-
-  public Page<Message> findMessagesWithMessageIndex(String conversationSid, @Nullable Integer pageSize, @Nullable Integer messageIndex,
-      Message.OrderType orderType) {
-    if (orderType == null) {
-      orderType = Message.OrderType.ASC;
-    }
-
-    Reader<Message> messageReader = Message.reader(conversationSid).setOrder(orderType).pageSize(pageSize);
-    if (messageIndex == null || messageIndex == 0) {
-      Page<Message> page = messageReader.firstPage();
-      return page;
-    } else {
-      String targetPageUrl = formatUrlForFindMessagesWithMessageIndex(conversationSid, pageSize, messageIndex, orderType);
-      return messageReader.getPage(targetPageUrl);
-    }
-  }
-
-  private String formatUrlForFindMessagesWithMessageIndex(String conversationSid, Integer pageSize, Integer messageIndex,
-      Message.OrderType orderType) {
-    if (pageSize == null) {
-      pageSize = DEFAULT_PAGE_SIZE;
-    }
-    String url = MESSAGE_URL_PATTERN_WITH_ITEM_INDEX;
-    url = url.replace(":conversationSid", conversationSid);
-    url = url.replace(":pageSize", String.valueOf(pageSize));
-    url = url.replace(":messageIndex", String.valueOf(messageIndex));
-    url = url.replace(":order", String.valueOf(orderType));
-    return url;
-  }
-
-  private String formatUrlForFindMessagesWithPageIndex(String conversationSid, Integer pageSize, Integer pageIndex, Message.OrderType orderType) {
-    if (pageSize == null) {
-      pageSize = DEFAULT_PAGE_SIZE;
-    }
-    String url = MESSAGE_URL_PATTERN_WITH_ITEM_INDEX;
-    url = url.replace(":conversationSid", conversationSid);
-    url = url.replace(":pageSize", String.valueOf(pageSize));
-    url = url.replace(":pageIndex", String.valueOf(pageIndex));
-    url = url.replace(":order", String.valueOf(orderType));
-    return url;
-  }
-
-  public boolean deleteMessage(String conversationSid, String messageSid) {
-    Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
-    MessageDeleter messageDeleter = Message.deleter(conversationSid, messageSid);
-    log.info("[{}] message is deleted from ConversationSid {}", messageSid, conversationSid);
-    return messageDeleter.delete();
   }
 }

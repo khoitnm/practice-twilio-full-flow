@@ -9,7 +9,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>pro-00-be-simple</module>
+        <module>pro-00-be-simple-conversation</module>
+        <module>pro-00-be-simple-call</module>
         <module>pro-03-be-pagination-rest</module>
     </modules>
 
