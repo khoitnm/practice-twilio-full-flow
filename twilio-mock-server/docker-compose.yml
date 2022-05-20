@@ -1,0 +1,20 @@
+version: "3.9"
+
+services:
+  # Guideline: https://meta.stoplight.io/docs/prism/ZG9jOjky-installation
+  twilio:
+    image: stoplight/prism:4
+
+    # Prism uses localhost by default, which usually means 127.0.0.1.
+    # When using docker the mock server will be unreachable outside the container
+    # unless you run the mock command with -h 0.0.0.0.
+    #
+    # Detail document for Twilio's Open API Spec:
+    #   - https://www.twilio.com/docs/openapi/structure-of-twilio-openapi-spec
+    #   - https://www.twilio.com/docs/openapi/mock-api-generation-with-twilio-openapi-spec
+    command: 'mock -h 0.0.0.0 https://raw.githubusercontent.com/twilio/twilio-oai/main/spec/json/twilio_api_v2010.json'
+    volumes:
+      - ./api.oas3.yml:/tmp/api.oas3.yml:ro
+    ports:
+      # Serve the mocked API locally as available on port 8080
+      - '8001:4010'
