@@ -1,11 +1,8 @@
 package org.tnmk.practicetwiliofullflow.pro00besimpleconversation.testinfra;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.test.web.servlet.MvcResult;
-import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.video.VideoRoom;
-
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 

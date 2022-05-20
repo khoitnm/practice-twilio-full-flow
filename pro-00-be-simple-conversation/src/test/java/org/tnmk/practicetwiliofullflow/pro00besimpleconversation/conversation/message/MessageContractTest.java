@@ -1,6 +1,7 @@
 package org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.message;
 
 import com.twilio.rest.conversations.v1.User;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -9,7 +10,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.create_conversation_with_participants.ConversationWithParticipantsService;
 import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.create_conversation_with_participants.CreateConversationWithParticipantsRequestDto;
 import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.create_conversation_with_participants.CreateConversationWithParticipantsResultDto;
-import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.conversation.ConversationService;
 import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.user.UserService;
 import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.testinfra.BaseIntegrationTest;
 import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.testinfra.JsonHelper;
@@ -20,6 +20,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Slf4j
 class MessageContractTest extends BaseIntegrationTest {
   @Autowired
   private MockMvc mvc;
@@ -31,7 +32,7 @@ class MessageContractTest extends BaseIntegrationTest {
   private UserService userService;
 
   @Test
-  void getSentryConfig_shouldReturn_NotEmptyValues() throws Exception {
+  void sendMessage() throws Exception {
     // Given
 
     // Users (Participants)
@@ -42,7 +43,8 @@ class MessageContractTest extends BaseIntegrationTest {
     CreateConversationWithParticipantsRequestDto conversationCreationRequest = new CreateConversationWithParticipantsRequestDto(
         "conversation" + System.nanoTime(),
         Arrays.asList(user01.getIdentity(), user02.getIdentity()));
-    CreateConversationWithParticipantsResultDto result = conversationWithParticipantsService.createConversationWithParticipants(conversationCreationRequest);
+    CreateConversationWithParticipantsResultDto result = conversationWithParticipantsService.createConversationWithParticipants(
+        conversationCreationRequest);
 
     //Message
     SendMessageRequest sendMessageRequest = new SendMessageRequest();
@@ -71,6 +73,6 @@ class MessageContractTest extends BaseIntegrationTest {
     // When creating a message the first time, it already has dateUpdated value. So we need to compare dateUpdated equals dateCreated.
     // I have to use this approach because could find any solution to compare those values by using jsonPath.
     String json = mvcResult.getResponse().getContentAsString();
-    System.out.println(json);
+    log.info("Result:\n" + json);
   }
 }
