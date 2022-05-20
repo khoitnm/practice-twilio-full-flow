@@ -2,19 +2,35 @@ version: "3.9"
 
 services:
   # Guideline: https://meta.stoplight.io/docs/prism/ZG9jOjky-installation
-  twilio:
-    image: stoplight/prism:4
+  # Detail document for Twilio's Open API Spec:
+  #   - Guideline for using Twilio's Open API Spec: https://www.twilio.com/docs/openapi/structure-of-twilio-openapi-spec
+  #   - Twilio's Open API Spec: https://github.com/twilio/twilio-oai/tree/main/spec/json
+  #   - https://www.twilio.com/docs/openapi/mock-api-generation-with-twilio-openapi-spec
+  #   - Prism with many json files: https://meta.stoplight.io/docs/prism/ZG9jOjE2MDY1Njcx-serving-multiple-open-api-documents
+#
+#  twilio:
+#    image: stoplight/prism:4
+#    command: >
+#      mock -h 0.0.0.0 https://raw.githubusercontent.com/twilio/twilio-oai/main/spec/json/twilio_api_v2010.json
+#    volumes:
+#      - ./api.oas3.yml:/tmp/api.oas3.yml:ro
+#    ports:
+#      # Serve the mocked API locally as available on port 8080
+#      - '8001:4010'
 
-    # Prism uses localhost by default, which usually means 127.0.0.1.
-    # When using docker the mock server will be unreachable outside the container
-    # unless you run the mock command with -h 0.0.0.0.
-    #
-    # Detail document for Twilio's Open API Spec:
-    #   - https://www.twilio.com/docs/openapi/structure-of-twilio-openapi-spec
-    #   - https://www.twilio.com/docs/openapi/mock-api-generation-with-twilio-openapi-spec
-    command: 'mock -h 0.0.0.0 https://raw.githubusercontent.com/twilio/twilio-oai/main/spec/json/twilio_api_v2010.json'
+  twilio:
+    image: caddy
     volumes:
-      - ./api.oas3.yml:/tmp/api.oas3.yml:ro
+      - ./Caddyfile:/etc/caddy/Caddyfile
     ports:
-      # Serve the mocked API locally as available on port 8080
       - '8001:4010'
+    depends_on:
+      - prism_1
+      - prism_2
+  prism_1:
+    image: stoplight/prism:4
+    # config --host 0.0.0.0 will help us to access `http:localhost:8001` from local machine.
+    command: 'mock -p 4010 --host 0.0.0.0 https://raw.githubusercontent.com/twilio/twilio-oai/main/spec/json/twilio_api_v2010.json'
+  prism_2:
+    image: stoplight/prism:4
+    command: 'mock -p 4010 --host 0.0.0.0 https://raw.githubusercontent.com/twilio/twilio-oai/main/spec/json/twilio_conversations_v1.json'
