@@ -1,6 +1,5 @@
 package org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.conversation;
 
-import com.twilio.Twilio;
 import com.twilio.base.Page;
 import com.twilio.exception.ApiException;
 import com.twilio.rest.conversations.v1.Conversation;
@@ -19,10 +18,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ConversationService {
-  private final TwilioProperties twilioProperties;
 
   public Conversation createConversation(String uniqueName) {
-    Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
     Conversation conversation = Conversation.creator()
         .setUniqueName(uniqueName)
         .create();
@@ -31,14 +28,12 @@ public class ConversationService {
   }
 
   public void deleteConversation(String conversationSid) {
-    Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
     Conversation.deleter(conversationSid).delete();
   }
 
   public List<UserConversation> findConversationsOfUser(String userIdentityOrUserSid) {
     try {
       List<UserConversation> result = new ArrayList<>();
-
       UserConversationReader reader = UserConversation.reader(userIdentityOrUserSid);
       Page<UserConversation> page = null;
       do {

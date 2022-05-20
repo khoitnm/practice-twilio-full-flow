@@ -20,8 +20,10 @@ public class CleanUpService {
   private UserCleanUpService userCleanUpService;
 
   public void cleanUp_AllConversations_And_Users() {
+    logger.info("Clean up all conversations and users: starting...");
+
     conversationCleanUpService.cleanUpAllConversations();
     userCleanUpService.cleanUpAllUsers();
-    logger.info("Clean up all conversations and users");
+    logger.info("Clean up all conversations and users: ended!!!");
   }
 }

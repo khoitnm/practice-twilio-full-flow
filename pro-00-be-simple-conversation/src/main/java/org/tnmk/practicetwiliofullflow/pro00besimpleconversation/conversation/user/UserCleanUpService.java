@@ -13,14 +13,7 @@ import java.util.List;
 @Slf4j
 @Service
 public class UserCleanUpService {
-  private final TwilioProperties twilioProperties;
-
-  public UserCleanUpService(TwilioProperties twilioProperties) {
-    this.twilioProperties = twilioProperties;
-  }
-
   public void cleanUpAllUsers() {
-    Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
     UserReader reader = User.reader();
     Page<User> page = reader.firstPage();
     do {

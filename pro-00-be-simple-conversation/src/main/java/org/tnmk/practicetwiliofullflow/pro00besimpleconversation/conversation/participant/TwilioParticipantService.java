@@ -7,6 +7,5 @@ import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.common.twilio.T
 @Service
 @RequiredArgsConstructor
 public class TwilioParticipantService {
-  private final TwilioProperties twilioProperties;
 
 }

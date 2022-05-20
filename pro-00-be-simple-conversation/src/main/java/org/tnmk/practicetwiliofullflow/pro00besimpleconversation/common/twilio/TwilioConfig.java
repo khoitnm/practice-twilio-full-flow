@@ -1,0 +1,38 @@
+package org.tnmk.practicetwiliofullflow.pro00besimpleconversation.common.twilio;
+
+import com.twilio.Twilio;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Configuration;
+
+@Slf4j
+@Configuration
+public class TwilioConfig {
+  TwilioConfig(TwilioProperties twilioProperties) {
+    /**
+     * The {@link Twilio#init(String, String)} and {@link Twilio#init(String, String, String)}  methods are quite confusing.
+     * In those methods, username and password could have different meanings:
+     * - username & password could be accountSid and authToken.
+     * - Or username & password could also be apiKey and apiSecret
+     *
+     * This is the document when we login into Twilio console: https://www.twilio.com/console/video/project/api-keys
+     * "API Keys are revokable credentials for the Twilio API.
+     * You can use API Keys to authenticate to the REST API using basic auth
+     * , with user=KeySid and password=KeySecret.
+     *
+     * And, you can use API Keys to sign Access Tokens,
+     * which are used by Twilio's Real-Time Communications SDKs.
+     * Access Tokens are short-lived credentials that can be distributed safely to client-side applications."
+     *
+     * ---------------------------
+     * Conclusion:
+     * So, in our case, we decide to use {ApiKey, ApiSecret, and AccountSid} instead of {AccountSid and AuthToken}
+     * The reason is it's much safer with ApiKey & ApiSecret: https://www.twilio.com/blog/protect-phishing-auth-token-fraud
+     */
+    log.info("Initiate twilio with configurations: "
+        + "\n\taccountSid: " + twilioProperties.getAccountSid()
+        + "\n\tapiKey: " + twilioProperties.getApiKey()
+        + "\n\tconversationServiceSid: " + twilioProperties.getConversationServiceSid());
+    Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
+  }
+}
+
