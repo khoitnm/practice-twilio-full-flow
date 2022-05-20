@@ -3,7 +3,8 @@ server:
 
 # The properties structure must match {@link TwilioProperties.java}
 twilio:
-  mock-host: localhost:8001
+  mock-host: localhost
+  mock-port: 8001
   # https://www.twilio.com/docs/conversations/create-tokens
   accountSid: ${TWILIO_ACCOUNT_SID}
   apiKey: ${TWILIO_API_KEY}
