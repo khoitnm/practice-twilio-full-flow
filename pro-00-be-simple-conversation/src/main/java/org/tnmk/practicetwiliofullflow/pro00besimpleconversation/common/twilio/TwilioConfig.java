@@ -7,6 +7,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.common.twilio.mockclient.MockNetworkHttpClient;
+import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.common.twilio.mockclient.MockTwilioPathMapping;
 
 @Slf4j
 @Configuration
@@ -43,11 +45,11 @@ public class TwilioConfig {
   }
 
   @Bean
-  public TwilioRestClient twilioRestClient(@Value("${twilio.mock-host:}") String mockHost) {
+  public TwilioRestClient twilioRestClient(@Value("${twilio.mock-host:}") String mockHost, MockTwilioPathMapping mockTwilioPathMapping) {
     if (StringUtils.isBlank(mockHost)) {
       return realTwilioRestClient();
     } else {
-      return mockTwilioRestClient(mockHost);
+      return mockTwilioRestClient(mockHost, mockTwilioPathMapping);
     }
   }
 
@@ -57,8 +59,8 @@ public class TwilioConfig {
     return twilioRestClient;
   }
 
-  private TwilioRestClient mockTwilioRestClient(String mockHost) {
-    MockNetworkHttpClient mockNetworkHttpClient = new MockNetworkHttpClient(mockHost);
+  private TwilioRestClient mockTwilioRestClient(String mockHost, MockTwilioPathMapping mockTwilioPathMapping) {
+    MockNetworkHttpClient mockNetworkHttpClient = new MockNetworkHttpClient(mockHost, mockTwilioPathMapping);
 
     TwilioRestClient.Builder builder = new TwilioRestClient.Builder(twilioProperties.getApiKey(), twilioProperties.getApiSecret());
     TwilioRestClient twilioRestClient = builder.httpClient(mockNetworkHttpClient).build();
