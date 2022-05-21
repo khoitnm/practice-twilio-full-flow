@@ -22,6 +22,14 @@ public class MockNetworkHttpClient extends NetworkHttpClient {
 
   private final MockTwilioPathMapping mockTwilioPathMapping;
 
+  /**
+   * This is the main method that send the request to Twilio server.
+   * With this mock class,
+   * we'll change the host so that the request will be redirected to the mock Twilio server
+   * instead of the real Twilio server.
+   * @return response from mock server.
+   */
+  @Override
   public Response makeRequest(final Request realRequest) {
     String realUrl = realRequest.getUrl();
     String mockUrl = replaceHost(realUrl, "http", this.host);
@@ -32,9 +40,11 @@ public class MockNetworkHttpClient extends NetworkHttpClient {
     copyPostParams(realRequest, mockRequest);
     return super.makeRequest(mockRequest);
   }
+
   private void copyAuth(Request sourceRequest, Request targetRequest) {
     targetRequest.setAuth(sourceRequest.getUsername(), sourceRequest.getPassword());
   }
+
   private void copyHeaders(Request sourceRequest, Request targetRequest) {
     Map<String, List<String>> source = sourceRequest.getHeaderParams();
     for (String key : source.keySet()) {
