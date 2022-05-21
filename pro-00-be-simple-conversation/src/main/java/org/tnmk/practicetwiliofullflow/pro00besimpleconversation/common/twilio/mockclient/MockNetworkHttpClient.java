@@ -12,6 +12,8 @@ import org.apache.http.client.utils.URIUtils;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -20,11 +22,44 @@ public class MockNetworkHttpClient extends NetworkHttpClient {
 
   private final MockTwilioPathMapping mockTwilioPathMapping;
 
-  public Response makeRequest(final Request request) {
-    String realUrl = request.getUrl();
+  public Response makeRequest(final Request realRequest) {
+    String realUrl = realRequest.getUrl();
     String mockUrl = replaceHost(realUrl, "http", this.host);
-    Request mockRequest = new Request(request.getMethod(), mockUrl);
+    Request mockRequest = new Request(realRequest.getMethod(), mockUrl);
+    copyAuth(realRequest, mockRequest);
+    copyHeaders(realRequest, mockRequest);
+    copyQueryParams(realRequest, mockRequest);
+    copyPostParams(realRequest, mockRequest);
     return super.makeRequest(mockRequest);
+  }
+  private void copyAuth(Request sourceRequest, Request targetRequest) {
+    targetRequest.setAuth(sourceRequest.getUsername(), sourceRequest.getPassword());
+  }
+  private void copyHeaders(Request sourceRequest, Request targetRequest) {
+    Map<String, List<String>> source = sourceRequest.getHeaderParams();
+    for (String key : source.keySet()) {
+      for (String value : source.get(key)) {
+        targetRequest.addHeaderParam(key, value);
+      }
+    }
+  }
+
+  private void copyQueryParams(Request sourceRequest, Request targetRequest) {
+    Map<String, List<String>> source = sourceRequest.getQueryParams();
+    for (String key : source.keySet()) {
+      for (String value : source.get(key)) {
+        targetRequest.addQueryParam(key, value);
+      }
+    }
+  }
+
+  private void copyPostParams(Request sourceRequest, Request targetRequest) {
+    Map<String, List<String>> source = sourceRequest.getPostParams();
+    for (String key : source.keySet()) {
+      for (String value : source.get(key)) {
+        targetRequest.addPostParam(key, value);
+      }
+    }
   }
 
   private String replaceHost(String originalUrl, String newSchema, String newHost) {

@@ -11,3 +11,7 @@ route /twilio_conversations/* {
 uri strip_prefix /twilio_conversations
 reverse_proxy twilio_conversations:4010
 }
+route /prism_1/* {
+uri strip_prefix /prism_1
+reverse_proxy prism_1:4010
+}

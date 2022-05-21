@@ -3,7 +3,6 @@ package org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.c
 import com.twilio.base.Page;
 import com.twilio.exception.ApiException;
 import com.twilio.http.TwilioRestClient;
-import com.twilio.rest.api.v2010.Account;
 import com.twilio.rest.conversations.v1.Conversation;
 import com.twilio.rest.conversations.v1.user.UserConversation;
 import com.twilio.rest.conversations.v1.user.UserConversationReader;
@@ -22,13 +21,17 @@ public class ConversationService {
   private final TwilioRestClient twilioRestClient;
 
   public Conversation createConversation(String uniqueName) {
-    List<Account> accounts = Account.reader().firstPage(twilioRestClient).getRecords();
-
-    Conversation conversation = Conversation.creator()
-        .setUniqueName(uniqueName)
-        .create(twilioRestClient);
-    log.info("Created conversation {} with uniqueName {}", conversation.getSid(), uniqueName);
-    return conversation;
+    try {
+      Conversation conversation = Conversation.creator()
+          .setUniqueName(uniqueName)
+          .create(twilioRestClient);
+      log.info("Created conversation {} with uniqueName {}", conversation.getSid(), uniqueName);
+      return conversation;
+    } catch (ApiException apiException) {
+      String message = String.format("status: %s, code: %s, message: %s, details: %s", apiException.getStatusCode(), apiException.getCode(),
+          apiException.getMessage(), apiException.getDetails());
+      throw new IllegalArgumentException(message, apiException);
+    }
   }
 
   public void deleteConversation(String conversationSid) {
