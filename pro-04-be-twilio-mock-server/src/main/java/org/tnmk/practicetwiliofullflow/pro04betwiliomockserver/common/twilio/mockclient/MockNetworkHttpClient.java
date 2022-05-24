@@ -6,7 +6,6 @@ import com.twilio.http.Response;
 import com.twilio.rest.Domains;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHost;
 import org.apache.http.client.utils.URIUtils;
 
@@ -15,9 +14,18 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * By default, Twilio SDK will use {@link NetworkHttpClient} to send request to the real Twilio server.
+ * However, this class will override it so that we can send request to a mock Twilio server.
+ */
 @Slf4j
 @RequiredArgsConstructor
 public class MockNetworkHttpClient extends NetworkHttpClient {
+  public static final String hostPattern = "^https\\:\\/\\/.*?\\.twilio\\.com";
+  /**
+   * The host (including schema) of the mock server.
+   * For example: "http://localhost:8001"
+   */
   private final String host;
 
   private final MockTwilioPathMapping mockTwilioPathMapping;
@@ -34,7 +42,7 @@ public class MockNetworkHttpClient extends NetworkHttpClient {
   @Override
   public Response makeRequest(final Request realRequest) {
     String realUrl = realRequest.getUrl();
-    String mockUrl = replaceHost(realUrl, "http", this.host);
+    String mockUrl = replaceHost(realUrl, this.host);
     Request mockRequest = new Request(realRequest.getMethod(), mockUrl);
     copyAuth(realRequest, mockRequest);
     copyHeaders(realRequest, mockRequest);
@@ -74,7 +82,7 @@ public class MockNetworkHttpClient extends NetworkHttpClient {
     }
   }
 
-  private String replaceHost(String originalUrl, String newSchema, String newHost) {
+  private String replaceHost(String originalUrl, String newHost) {
     URI realUri;
     HttpHost originalHost;
     try {
@@ -85,8 +93,10 @@ public class MockNetworkHttpClient extends NetworkHttpClient {
     }
 
     String newPathPrefix = getNewPathPrefix(originalHost);
-    String newUrl = StringUtils.replace(originalUrl, originalHost.getSchemeName() + "://", newSchema + "://");
-    newUrl = StringUtils.replace(newUrl, originalHost.getHostName(), newHost + "/" + newPathPrefix);
+    String newHostAndPathPrefix = newHost + "/" + newPathPrefix;
+    String newUrl = originalUrl.replaceFirst(hostPattern, newHostAndPathPrefix);
+    //    String newUrl = StringUtils.replace(originalUrl, originalHost.getSchemeName() + "://", newSchema + "://");
+    //    newUrl = StringUtils.replace(newUrl, originalHost.getHostName(), newHost + "/" + newPathPrefix);
     log.info("Mock Twilio: \n"
         + "\toriginalUrl: {}\n"
         + "\tmockUrl: {}", originalUrl, newUrl);

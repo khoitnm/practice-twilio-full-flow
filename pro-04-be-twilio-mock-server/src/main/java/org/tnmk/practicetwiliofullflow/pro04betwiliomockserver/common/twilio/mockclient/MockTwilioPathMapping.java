@@ -11,6 +11,13 @@ import java.util.Map;
 @Service
 @Getter
 public class MockTwilioPathMapping {
+  /**
+   * This is the map between the Twilio domain ({@link Domains} and the prefix in URL path to mock server.
+   * For example:
+   * Domain 'conversations' will be mapped to path prefix 'twilio_conversations'. So:
+   * 	- originalUrl: https://conversations.twilio.com/xxx
+   * 	- mockUrl: http://localhost:8001/twilio_conversations/xxx
+   */
   private final Map<Domains, String> pathPrefixMapByDomain = Collections.unmodifiableMap(createPathPrefixMapByDomain());
 
   /**

@@ -15,19 +15,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ConversationCleanUpService {
 
-  private TwilioRestClient twilioRestClient;
-
   public void cleanUpAllConversations() {
     ConversationReader reader = Conversation.reader();
-    Page<Conversation> page = reader.firstPage(twilioRestClient);
+    Page<Conversation> page = reader.firstPage();
     do {
       List<Conversation> list = page.getRecords();
       list.parallelStream().forEach(item -> {
-        Conversation.deleter(item.getSid()).delete(twilioRestClient);
+        Conversation.deleter(item.getSid()).delete();
         log.info("Deleted conversationSid " + item.getSid());
       });
       if (page.hasNextPage()) {
-        page = reader.nextPage(page, twilioRestClient);
+        page = reader.nextPage(page);
       } else {
         page = null;
       }
