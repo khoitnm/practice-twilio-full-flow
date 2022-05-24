@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.conversation.ConversationService;
+import org.tnmk.practicetwiliofullflow.pro00besimpleconversation.conversation.participant.ParticipantService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,21 +16,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ConversationWithParticipantsService {
   private final ConversationService conversationService;
-
+  private final ParticipantService participantService;
   public CreateConversationWithParticipantsResultDto createConversationWithParticipants(CreateConversationWithParticipantsRequestDto request) {
     Conversation conversation = conversationService.createConversation(request.getUniqueName());
     List<Participant> participants = new ArrayList<>();
     for (String participantIdentity : request.getParticipantIdentities()) {
-      Participant participant = joinConversation(participantIdentity, conversation.getSid());
+      Participant participant = participantService.joinConversation(participantIdentity, conversation.getSid());
       participants.add(participant);
     }
     return new CreateConversationWithParticipantsResultDto(conversation, participants);
   }
 
-  private Participant joinConversation(String userIdentity, String conversationSid) {
-    Participant participant = Participant.creator(conversationSid)
-        .setIdentity(userIdentity)
-        .create();
-    return participant;
-  }
+
 }

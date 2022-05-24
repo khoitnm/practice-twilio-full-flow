@@ -18,13 +18,12 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ConversationService {
-  private final TwilioRestClient twilioRestClient;
 
   public Conversation createConversation(String uniqueName) {
     try {
       Conversation conversation = Conversation.creator()
           .setUniqueName(uniqueName)
-          .create(twilioRestClient);
+          .create();
       log.info("Created conversation {} with uniqueName {}", conversation.getSid(), uniqueName);
       return conversation;
     } catch (ApiException apiException) {
@@ -35,7 +34,7 @@ public class ConversationService {
   }
 
   public void deleteConversation(String conversationSid) {
-    Conversation.deleter(conversationSid).delete(twilioRestClient);
+    Conversation.deleter(conversationSid).delete();
   }
 
   public List<UserConversation> findConversationsOfUser(String userIdentityOrUserSid) {
@@ -45,9 +44,9 @@ public class ConversationService {
       Page<UserConversation> page = null;
       do {
         if (page == null) {
-          page = reader.firstPage(twilioRestClient);
+          page = reader.firstPage();
         } else {
-          page = reader.nextPage(page, twilioRestClient);
+          page = reader.nextPage(page);
         }
         result.addAll(page.getRecords());
       } while (page.hasNextPage());
