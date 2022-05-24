@@ -23,10 +23,12 @@ public class MockNetworkHttpClient extends NetworkHttpClient {
   private final MockTwilioPathMapping mockTwilioPathMapping;
 
   /**
+   *
    * This is the main method that send the request to Twilio server.
    * With this mock class,
    * we'll change the host so that the request will be redirected to the mock Twilio server
    * instead of the real Twilio server.
+   * @param realRequest the request to real Twilio server which will be replaced by another request to a mock Twilio server.
    * @return response from mock server.
    */
   @Override
