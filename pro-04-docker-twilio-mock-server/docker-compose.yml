@@ -17,7 +17,8 @@ services:
       - twilio_chat
       - twilio_accounts
       - twilio_conversations
-  prism_1:
+  hello:
+    # We can test request to this server by using: http://localhost:8080/hello/pets
     image: stoplight/prism:4
     command: 'mock -p 4010 --host 0.0.0.0 https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml'
   twilio_chat:

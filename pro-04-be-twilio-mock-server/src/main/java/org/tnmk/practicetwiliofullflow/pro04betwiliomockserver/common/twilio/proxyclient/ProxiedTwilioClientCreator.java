@@ -1,4 +1,4 @@
-package org.tnmk.practicetwiliofullflow.pro00besimpleconversation.common.twilio;
+package org.tnmk.practicetwiliofullflow.pro04betwiliomockserver.common.twilio.proxyclient;
 
 import com.twilio.http.HttpClient;
 import com.twilio.http.NetworkHttpClient;

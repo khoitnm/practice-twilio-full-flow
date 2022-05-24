@@ -13,6 +13,7 @@
         <module>pro-00-be-simple-call</module>
         <module>pro-01-be-explore-conversation</module>
         <module>pro-03-be-pagination-rest</module>
+        <module>pro-04-be-twilio-mock-server</module>
     </modules>
 
     <properties>

@@ -1,0 +1,14 @@
+<configuration>
+    <!-- CONSOLE -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%yellow(%d{HH:mm:ss.SSS}) [%thread] %highlight(%-5level) %logger{36} - %mdc %cyan(%msg) %n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+<!--    <logger name="com.twilio.http" level="ERROR"/>-->
+    <logger name="org.springframework.boot.test.context.SpringBootTestContextBootstrapper" level="OFF"/>
+</configuration>

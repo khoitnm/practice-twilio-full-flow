@@ -1,8 +1,14 @@
-package org.tnmk.practicetwiliofullflow.pro00besimpleconversation.common.twilio;
+package org.tnmk.practicetwiliofullflow.pro04betwiliomockserver.common.twilio;
 
 import com.twilio.Twilio;
+import com.twilio.http.TwilioRestClient;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.tnmk.practicetwiliofullflow.pro04betwiliomockserver.common.twilio.mockclient.MockNetworkHttpClient;
+import org.tnmk.practicetwiliofullflow.pro04betwiliomockserver.common.twilio.mockclient.MockTwilioPathMapping;
 
 @Slf4j
 @Configuration
@@ -36,6 +42,30 @@ public class TwilioConfig {
         + "\n\tconversationServiceSid: " + twilioProperties.getConversationServiceSid());
     this.twilioProperties = twilioProperties;
     Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
+  }
+
+  @Bean
+  public TwilioRestClient twilioRestClient(@Value("${twilio.mock-host:}") String mockHost, MockTwilioPathMapping mockTwilioPathMapping) {
+    if (StringUtils.isBlank(mockHost)) {
+      return realTwilioRestClient();
+    } else {
+      return mockTwilioRestClient(mockHost, mockTwilioPathMapping);
+    }
+  }
+
+  private TwilioRestClient realTwilioRestClient() {
+    TwilioRestClient twilioRestClient = Twilio.getRestClient();
+    Twilio.setRestClient(twilioRestClient);
+    return twilioRestClient;
+  }
+
+  private TwilioRestClient mockTwilioRestClient(String mockHost, MockTwilioPathMapping mockTwilioPathMapping) {
+    MockNetworkHttpClient mockNetworkHttpClient = new MockNetworkHttpClient(mockHost, mockTwilioPathMapping);
+
+    TwilioRestClient.Builder builder = new TwilioRestClient.Builder(twilioProperties.getApiKey(), twilioProperties.getApiSecret());
+    TwilioRestClient twilioRestClient = builder.httpClient(mockNetworkHttpClient).build();
+    Twilio.setRestClient(twilioRestClient);
+    return twilioRestClient;
   }
 }
 

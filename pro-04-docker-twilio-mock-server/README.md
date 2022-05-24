@@ -1,0 +1,2 @@
+Twilio Open API Spec has different spec files, and each file need to be run on a separate **Prism** container.
+So we need to use **Caddy** proxy to map all separate prism containers into one proxy host.
