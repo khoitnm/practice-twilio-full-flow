@@ -28,16 +28,13 @@ mvn spring-boot:run -Dspring-boot.run.profiles=local
 After that, you'll see in the log that the server is starting at the port: 8080
 
 # Client (Web App)
+We can start either:
+- `pro-01-fe-simple` (similar to Zoom call when we have to join a specific room)
+- or `pro-02-fe-direct-video-call` (similar to Facebook call)
 
-Build project with the command line from folder `pro-01-fe-simple`
-``` 
-npm install
-```
-
-Start project (from folder `pro-01-fe-simple`)
-``` 
-npm start
-```
+ 
+For example, go into folder `pro-02-fe-direct-video-call` and compile the code with the command line: `npm install`
+Start project: `npm start`
 
 Then in the terminal, we'll see the log say that the web application is running on the port 3001 (configured in `.env`)
 
@@ -54,7 +51,8 @@ Then join room `room01` with username `user02`
 Then we'll see `user01` and `user02` talking to each other.
 
 # Connecting Video from other devices <br/>
-When testing with Video, we must either run on localhost, or run on https, running on http won't work.
+
+When testing with Video, we must either run **on localhost, or run on https**, running on http won't work.
 So let say you have a laptop at start the web server at localhost:3001, then your second device (mobile or laptop, for example) won't be able to connect with http.
 On solution to test with second device is using [ngrok](https://ngrok.com/), you can register a free account and use it:
 - Register a free account (free forever)
