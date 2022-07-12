@@ -1,15 +1,8 @@
 package org.tnmk.practicetwiliofullflow.pro01beexploreconversation.common.twilio;
 
 import com.twilio.Twilio;
-import com.twilio.http.HttpClient;
-import com.twilio.http.NetworkHttpClient;
 import com.twilio.http.TwilioRestClient;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpHost;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -44,6 +37,7 @@ public class TwilioConfig {
         + "\n\tapiKey: " + twilioProperties.getApiKey()
         + "\n\tconversationServiceSid: " + twilioProperties.getConversationServiceSid());
     this.twilioProperties = twilioProperties;
+    Twilio.init(twilioProperties.getApiKey(), twilioProperties.getApiSecret(), twilioProperties.getAccountSid());
   }
 
   @Bean
